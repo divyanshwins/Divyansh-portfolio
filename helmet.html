@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Minimal Structural Cycling Helmet</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --text:#111;
+  --muted:#6e6e73;
+  --border:#e5e5e7;
+  --bg:#fff;
+  --max-width:760px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",
+  Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+.page{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:0 24px;
+}
+
+header{
+  border-bottom:1px solid var(--border);
+}
+
+header .page{
+  height:64px;
+  display:flex;
+  align-items:center;
+  font-size:14px;
+  font-weight:500;
+}
+
+/* Back Arrow */
+.back-arrow{
+  display:inline-block;
+  margin:20px 0 16px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+.back-arrow:hover{opacity:0.6;}
+
+/* Hero */
+.hero{
+  border-top:none;
+  padding:0 0 56px;
+}
+
+.hero img{
+  width:100%;
+  border-radius:20px;
+  margin-bottom:32px;
+}
+
+/* Typography */
+h1{
+  font-size:34px;
+  font-weight:600;
+  letter-spacing:-0.02em;
+  margin-bottom:14px;
+}
+
+.subtitle{
+  font-size:16px;
+  color:var(--muted);
+  max-width:640px;
+}
+
+/* Sections */
+section{
+  padding:60px 0;
+  border-top:1px solid var(--border);
+}
+
+h2{
+  font-size:24px;
+  font-weight:600;
+  margin-bottom:18px;
+}
+
+p{
+  font-size:16px;
+  color:var(--muted);
+  margin-bottom:18px;
+  max-width:680px;
+}
+
+/* Market image full width */
+.market-image{
+  margin-top:28px;
+}
+
+.market-image img{
+  width:100%;
+  border-radius:16px;
+}
+
+/* Connect */
+.connect{
+  border-top:1px solid var(--border);
+  padding:80px 0;
+  text-align:center;
+}
+
+.connect p{
+  margin:16px auto 32px;
+  max-width:560px;
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:12px 22px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:14px;
+}
+
+.btn.primary{
+  background:#111;
+  color:#fff;
+  border:none;
+}
+
+/* Footer */
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 0;
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+}
+
+@media(max-width:640px){
+  h1{font-size:28px;}
+  h2{font-size:20px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="page">
+    Divyansh Srivastava
+  </div>
+</header>
+
+<main class="page">
+
+<a href="index.html" class="back-arrow">← Back</a>
+
+<!-- HERO -->
+<section class="hero">
+
+<img src="Helmet%20project%20photos/22.png"
+     alt="Minimal Structural Cycling Helmet">
+
+<h1>Minimal Structural Cycling Helmet</h1>
+
+<p class="subtitle">
+A lean, structurally expressive cycling helmet designed through anthropometric study,
+material reduction, iterative prototyping, and controlled structural refinement.
+</p>
+
+</section>
+
+
+<!-- INTRODUCTION -->
+<section>
+
+<h2>Introduction</h2>
+
+<p>
+The Indian cycling helmet market is divided between bulky entry-level EPS shells
+and aggressively styled premium variants. Entry-level products prioritize affordability
+but compromise structural clarity, while premium helmets increase segmentation and cost.
+</p>
+
+<p>
+This project investigates a structurally honest alternative —
+a helmet defined by rib continuity, controlled void placement,
+and material efficiency rather than decorative surface treatment.
+</p>
+
+</section>
+
+
+<!-- PROBLEM -->
+<section>
+
+<h2>Problem Statement</h2>
+
+<p>
+How might we reduce material mass, improve airflow efficiency,
+maintain IS 4151 compliance, and preserve ergonomic comfort —
+while remaining manufacturable within a constrained cost bracket?
+</p>
+
+</section>
+
+
+<!-- MARKET -->
+<section>
+
+<h2>Market Research & Positioning</h2>
+
+<p>
+A comparative study across Straus, Firefox Youth, Benstar,
+Kmart, and Cockatoo revealed pricing between ₹300–₹1500.
+Most helmets rely on thick EPS shells and repetitive vent patterns.
+</p>
+
+<p>
+There is a clear gap for a lean structural helmet positioned between ₹400–₹900,
+emphasizing clarity of form rather than aggressive segmentation.
+</p>
+
+<div class="market-image">
+  <img src="Helmet%20project%20photos/image%208.png"
+       alt="Helmet Market Research Table">
+</div>
+
+</section>
+<!-- ANTHROPOMETRIC FOUNDATION -->
+<section>
+
+<h2>Anthropometric & BIS Standard Study</h2>
+
+<p>
+The foundational geometry of the helmet was derived from IS 4151:1993 headform standards. 
+Instead of designing visually first and correcting proportion later, the internal volume 
+was constructed around standardized head circumference ranges between 500mm and 620mm.
+</p>
+
+<p>
+Particular attention was given to crown height, temporal width, and occipital projection. 
+These measurements informed structural rib placement and ensured that airflow voids 
+did not compromise coverage in critical impact zones.
+</p>
+
+<p>
+This early integration of anthropometric constraints prevented over-design and 
+ensured that the minimal structural system remained compliant and realistic.
+</p>
+
+</section>
+
+
+
+<!-- DESIGN STRATEGY -->
+<section>
+
+<h2>Design Strategy: Structure as Identity</h2>
+
+<p>
+Rather than layering decorative surfaces, the design strategy centered around 
+structural subtraction. Material was removed wherever load transfer was unnecessary, 
+allowing ribs to define the visual language.
+</p>
+
+<p>
+The central drop-shaped crown void emerged as both ventilation channel and 
+load redistribution anchor. Peripheral ribs were thickened selectively 
+to maintain impact stability while reducing total mass.
+</p>
+
+<p>
+The result is a helmet that appears skeletal yet stable — visually lightweight 
+but structurally intentional.
+</p>
+
+</section>
+
+
+
+<!-- CLAY EXPLORATION -->
+<section>
+
+<h2>Clay Form Exploration</h2>
+
+<p>
+Physical clay modeling allowed real-scale evaluation of curvature transitions 
+and rib continuity. Multiple iterations were tested to understand how surface 
+tension influences perceived stability.
+</p>
+
+<p>
+Early clay models failed due to excess thickness at the crown and 
+imbalanced lateral distribution. These failures informed material subtraction 
+and edge refinement in later stages.
+</p>
+
+<p>
+Clay exploration validated the structural rhythm before committing 
+to digital precision.
+</p>
+
+</section>
+
+
+
+<!-- CAD DEVELOPMENT -->
+<section>
+
+<h2>Digital Modelling & Structural Refinement</h2>
+
+<p>
+The refined clay direction was translated into Fusion 360 for parametric control. 
+Rib thickness, curvature continuity, and vent proportions were iterated digitally.
+</p>
+
+<p>
+Wall thickness adjustments were tested to balance rigidity and material efficiency. 
+Stress concentration at rib intersections was minimized through controlled fillet transitions.
+</p>
+
+<p>
+Digital symmetry validation ensured that structural balance remained intact 
+while preserving the subtractive design language.
+</p>
+
+</section>
+
+
+
+<!-- 3D PRINTING -->
+<section>
+
+<h2>3D Printing & Iterative Prototyping</h2>
+
+<p>
+Prototypes were fabricated through 3D printing to test ergonomic fit and 
+structural performance. Print orientation significantly affected rib strength 
+and layer adhesion.
+</p>
+
+<p>
+Early iterations revealed cracking at thin intersections and minor warping 
+under load simulation. These insights led to localized reinforcement 
+without compromising overall minimalism.
+</p>
+
+<p>
+Each iteration improved structural clarity while preserving material efficiency.
+</p>
+
+</section>
+
+
+
+<!-- USER VALIDATION -->
+<section>
+
+<h2>User Fit Validation</h2>
+
+<p>
+Fit testing evaluated crown clearance, neck mobility, ear alignment, 
+and airflow perception. The skeletal structure reduced visual bulk 
+while maintaining essential protective coverage.
+</p>
+
+<p>
+Users reported improved breathability and reduced perceived weight 
+compared to conventional EPS-heavy helmets.
+</p>
+
+<p>
+The final geometry balanced comfort, airflow, and structural integrity 
+within the intended cost bracket.
+</p>
+
+</section>
+
+
+<!-- CONCLUSION -->
+<section>
+
+<h2>Conclusion</h2>
+
+<p>
+The final helmet achieves structural clarity through subtraction.
+Its identity emerges from ribs, voids, and load-bearing geometry —
+demonstrating how intentional material reduction
+can coexist with cost efficiency and ergonomic integrity.
+</p>
+
+</section>
+
+</main>
+
+<section class="connect">
+  <div class="page">
+    <h2>Let’s Connect</h2>
+    <p>
+      I'm always open to discussing new projects, creative ideas,
+      or opportunities to collaborate.
+    </p>
+    <div class="buttons">
+      <button class="btn">Email Me</button>
+      <button class="btn primary">WhatsApp Me</button>
+      <button class="btn">View Resume</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="page">
+    © 2026 Divyansh Srivastava. All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>

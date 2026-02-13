@@ -294,7 +294,7 @@
   <section class="hero">
     <h1>
       My life revolves around mathematics, data, psychology and the arts —
-      the alchemy through which I become a product designer.
+      the alchemy through which I become a product <span id="animated-word">designer</span>.
     </h1>
     <div class="hero-image">
       <img src="photos/IMG_2858%201.png" alt="Divyansh Srivastava">
@@ -403,6 +403,51 @@
     </div>
   </div>
 </footer>
+<script>
+const words = ["designer", "thinker", "enthusiast", "nerd"];
+const el = document.getElementById("animated-word");
 
+let wordIndex = 0;
+let charIndex = words[0].length;
+let isDeleting = true;
+
+const typingSpeed = 100;
+const deletingSpeed = 80;
+const pauseAfterTyping = 900;
+
+function typeLoop() {
+  const currentWord = words[wordIndex];
+
+  if (isDeleting) {
+    charIndex--;
+    el.textContent = currentWord.substring(0, charIndex);
+
+    if (charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      setTimeout(typeLoop, 300);
+      return;
+    }
+
+    setTimeout(typeLoop, deletingSpeed);
+
+  } else {
+    charIndex++;
+    el.textContent = words[wordIndex].substring(0, charIndex);
+
+    if (charIndex === words[wordIndex].length) {
+      setTimeout(() => {
+        isDeleting = true;
+        typeLoop();
+      }, pauseAfterTyping);
+      return;
+    }
+
+    setTimeout(typeLoop, typingSpeed);
+  }
+}
+
+setTimeout(typeLoop, 1000);
+</script>
 </body>
 </html>

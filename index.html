@@ -192,6 +192,7 @@
       border: 1px solid var(--border);
       background: #fff;
       cursor: pointer;
+      display: inline-block;
     }
 
     .btn.primary {
@@ -234,7 +235,6 @@
       .grid { grid-template-columns: 1fr; }
       .nav-links a:not([href="about.html"]) { display: none; }
     }
-
   </style>
 </head>
 
@@ -316,7 +316,7 @@
 </main>
 
 <!-- Connect -->
-<section id="connect" class="connect">
+<section class="connect">
   <div class="container connect-grid">
     <div>
       <h2 class="section-title">Let’s Connect</h2>
@@ -325,9 +325,9 @@
         or opportunities to be part of your vision.
       </p>
       <div class="buttons">
-        <button class="btn">Email Me</button>
-        <button class="btn primary">WhatsApp Me</button>
-        <button class="btn">View Resume</button>
+        <a href="about.html" class="btn">Email Me</a>
+        <a href="about.html" class="btn primary">WhatsApp Me</a>
+        <a href="resume.pdf" target="_blank" download class="btn">View Resume</a>
       </div>
     </div>
 
@@ -400,5 +400,4 @@ setTimeout(typeLoop, 1000);
 
 </body>
 </html>
-
 

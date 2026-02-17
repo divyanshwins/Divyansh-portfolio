@@ -20,11 +20,7 @@
       --max-width: 1200px;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -33,10 +29,7 @@
       line-height: 1.6;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
     img {
       width: 100%;
@@ -51,7 +44,7 @@
       padding: 0 24px;
     }
 
-    /* ---------------- Header ---------------- */
+    /* Header */
     header {
       padding: 28px 0;
       border-bottom: 1px solid var(--border);
@@ -63,10 +56,7 @@
       align-items: center;
     }
 
-    .logo {
-      font-weight: 600;
-      font-size: 18px;
-    }
+    .logo { font-weight: 600; font-size: 18px; }
 
     .nav-links a {
       margin-left: 32px;
@@ -74,7 +64,7 @@
       color: var(--muted);
     }
 
-    /* ---------------- Hero ---------------- */
+    /* Hero */
     .hero {
       display: grid;
       grid-template-columns: 1.4fr 1fr;
@@ -95,10 +85,8 @@
       overflow: hidden;
     }
 
-    /* ---------------- Sections ---------------- */
-    section {
-      padding: 80px 0;
-    }
+    /* Sections */
+    section { padding: 80px 0; }
 
     .section-title {
       font-size: 32px;
@@ -112,16 +100,8 @@
       font-size: 15px;
     }
 
-    /* ---------------- Projects ---------------- */
-    .category {
-      margin-top: 56px;
-    }
-
-    .category h3 {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 24px;
-    }
+    /* Projects */
+    .category { margin-top: 56px; }
 
     .grid {
       display: grid;
@@ -137,23 +117,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-}
-
-    .coming-soon {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.4px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    /* ---------------- Tools ---------------- */
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Tools */
     .tool-grid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -172,7 +144,7 @@
       color: var(--muted);
     }
 
-    /* ---------------- Interests ---------------- */
+    /* Interests */
     .interests {
       margin-top: 32px;
       display: flex;
@@ -188,7 +160,7 @@
       color: var(--muted);
     }
 
-    /* ---------------- Connect ---------------- */
+    /* Connect */
     .connect {
       background: #fafafa;
       border-top: 1px solid var(--border);
@@ -235,7 +207,7 @@
       color: #2563eb;
     }
 
-    /* ---------------- Footer ---------------- */
+    /* Footer */
     footer {
       border-top: 1px solid var(--border);
       padding: 24px 0;
@@ -251,30 +223,18 @@
       gap: 16px;
     }
 
-    /* ---------------- Responsive ---------------- */
+    /* Responsive */
     @media (max-width: 900px) {
-      .hero,
-      .connect-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .tool-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      .hero, .connect-grid { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr 1fr; }
+      .tool-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     @media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+      .grid { grid-template-columns: 1fr; }
+      .nav-links a:not([href="#connect"]) { display: none; }
+    }
 
-  .nav-links a:not([href="#connect"]) {
-    display: none;
-  }
   </style>
 </head>
 
@@ -313,7 +273,6 @@
     </p>
 
     <div class="category">
-      <h3>UI/UX Design</h3>
       <div class="grid">
         <a href="arth.html" class="card">
           <img src="photos/Image%20(Arth%20E-commerce%20Analytics%20Dashboard).png">
@@ -321,23 +280,8 @@
         <a href="fedex.html" class="card">
           <img src="photos/fedex%20thumbn.png">
         </a>
-        <a href="uiux-3.html" class="card">
-          <span class="coming-soon">Coming soon</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="category">
-      <h3>Product & Branding Design</h3>
-      <div class="grid">
         <a href="helmet.html" class="card">
           <img src="photos/helmet%20projet%20thumbnail.png">
-        </a>
-        <a href="product-branding-2.html" class="card">
-          <span class="coming-soon">Coming soon</span>
-        </a>
-        <a href="product-branding-3.html" class="card">
-          <span class="coming-soon">Coming soon</span>
         </a>
       </div>
     </div>
@@ -406,8 +350,9 @@
     </div>
   </div>
 </footer>
+
 <script>
-const words = ["designer", "thinker", "enthusiast", "nerd"];
+const words = ["designer", "Thinker", "enthusiast", "Nerd"];
 const el = document.getElementById("animated-word");
 
 let wordIndex = 0;
@@ -452,5 +397,7 @@ function typeLoop() {
 
 setTimeout(typeLoop, 1000);
 </script>
+
 </body>
 </html>
+

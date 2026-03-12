@@ -108,7 +108,7 @@ p{
   margin-top:8px;
 }
 
-/* FIXED — prevents form sketching image from stretching and becoming blurry */
+/* Sketch image sharpness */
 .sketch-image img{
   width:auto;
   max-width:100%;
@@ -147,6 +147,33 @@ p{
   height:100%;
   border:none;
   border-radius:16px;
+}
+
+/* ===== CONCLUSION BENTO GRID ===== */
+
+.conclusion-grid{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-auto-rows:120px;
+  gap:10px;
+}
+
+.conclusion-grid img{
+  width:auto;
+  max-width:100%;
+  height:auto;
+  border-radius:12px;
+  display:block;
+}
+
+.conclusion-grid .big{
+  grid-column:span 2;
+  grid-row:span 2;
+}
+
+.conclusion-grid .wide{
+  grid-column:span 2;
 }
 
 .connect{
@@ -193,6 +220,7 @@ footer{
   h1{font-size:28px;}
   h2{font-size:20px;}
   .clay-grid{grid-template-columns:1fr;}
+  .conclusion-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -454,6 +482,20 @@ demonstrating how intentional material reduction
 can coexist with cost efficiency and ergonomic integrity.
 </p>
 
+<div class="conclusion-grid">
+
+<img class="big" src="Helmet%20project%20photos/image%2017.png">
+
+<img src="Helmet%20project%20photos/image%2015.png">
+<img src="Helmet%20project%20photos/image%2014.png">
+
+<img class="wide" src="Helmet%20project%20photos/image%2013.png">
+
+<img src="Helmet%20project%20photos/WhatsApp%20Image%202026-02-13%20at%2011.12.38%20AM%20(1).jpeg">
+<img src="Helmet%20project%20photos/WhatsApp%20Image%202026-02-13%20at%2011.12.39%20AM%20(1).jpeg">
+
+</div>
+
 </section>
 
 </main>
@@ -494,3 +536,4 @@ observer.observe(document.getElementById("cad-section"));
 
 </body>
 </html>
+

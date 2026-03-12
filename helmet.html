@@ -7,6 +7,11 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
+<!-- THREE JS -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/OBJLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+
 <style>
 :root{
   --text:#111;
@@ -102,48 +107,13 @@ p{
   border-radius:16px;
 }
 
-.caption{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:8px;
-}
-
-/* Sketch image sharpness */
-.sketch-image img{
+/* 3D viewer container */
+#viewer{
   width:100%;
+  height:420px;
   border-radius:16px;
-  image-rendering:auto;
-}
-
-/* Clay grid */
-.clay-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:24px;
-}
-
-.clay-grid img{
-  width:100%;
-  border-radius:12px;
-}
-
-/* Video */
-.video-wrapper{
-  margin-top:32px;
-  position:relative;
-  padding-bottom:56.25%;
-  height:0;
-}
-
-.video-wrapper iframe{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  border:none;
-  border-radius:16px;
+  border:1px solid var(--border);
+  margin-bottom:24px;
 }
 
 .connect{
@@ -189,7 +159,6 @@ footer{
 @media(max-width:640px){
   h1{font-size:28px;}
   h2{font-size:20px;}
-  .clay-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -269,8 +238,7 @@ emphasizing clarity of form rather than aggressive segmentation.
 </p>
 
 <div class="market-image">
-<img src="Helmet%20project%20photos/image%208.png"
-alt="Helmet Market Research Table">
+<img src="Helmet%20project%20photos/image%208.png">
 </div>
 
 </section>
@@ -298,8 +266,7 @@ ensured that the minimal structural system remained compliant and realistic.
 </p>
 
 <div class="market-image">
-<img src="Helmet%20project%20photos/image%202.png"
-alt="Anthropometric helmet study">
+<img src="Helmet%20project%20photos/image%202.png">
 </div>
 
 </section>
@@ -308,6 +275,10 @@ alt="Anthropometric helmet study">
 <section>
 
 <h2>Design Strategy: Structure as Identity</h2>
+
+<div class="market-image">
+<img src="Helmet%20project%20photos/image%2025.png">
+</div>
 
 <p>
 Rather than layering decorative surfaces, the design strategy centered around 
@@ -326,17 +297,18 @@ The result is a helmet that appears skeletal yet stable — visually lightweight
 but structurally intentional.
 </p>
 
-<div class="sketch-image">
-<img src="Helmet%20project%20photos/image%2025.png" alt="Form Sketching">
-<div class="caption">Form Sketching</div>
-</div>
-
 </section>
 
 
 <section>
 
 <h2>Clay Form Exploration</h2>
+
+<div class="market-image">
+<img src="Helmet%20project%20photos/image%2010.png">
+<img src="Helmet%20project%20photos/image%2011.png">
+<img src="Helmet%20project%20photos/image%209.png">
+</div>
 
 <p>
 Physical clay modeling allowed real-scale evaluation of curvature transitions 
@@ -355,18 +327,14 @@ Clay exploration validated the structural rhythm before committing
 to digital precision.
 </p>
 
-<div class="clay-grid">
-<img src="Helmet%20project%20photos/image%2010.png">
-<img src="Helmet%20project%20photos/image%2011.png">
-<img src="Helmet%20project%20photos/image%209.png">
-</div>
-
 </section>
 
 
-<section id="cad-section">
+<section>
 
 <h2>Digital Modelling & Structural Refinement</h2>
+
+<div id="viewer"></div>
 
 <p>
 The refined clay direction was translated into Fusion 360 for parametric control. 
@@ -382,14 +350,6 @@ Stress concentration at rib intersections was minimized through controlled fille
 Digital symmetry validation ensured that structural balance remained intact 
 while preserving the subtractive design language.
 </p>
-
-<div class="video-wrapper">
-<iframe id="cad-video"
-src="https://www.youtube.com/embed/yplkm9JtSRU?enablejsapi=1&mute=1"
-allow="autoplay; encrypted-media"
-allowfullscreen>
-</iframe>
-</div>
 
 </section>
 
@@ -477,16 +437,54 @@ or opportunities to collaborate.
 </footer>
 
 <script>
-const video=document.getElementById("cad-video");
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-video.src+="&autoplay=1";
-observer.disconnect();
+
+const container = document.getElementById("viewer");
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffffff);
+
+const camera = new THREE.PerspectiveCamera(60, container.clientWidth / 420, 0.1, 1000);
+camera.position.set(0,1.5,4);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(container.clientWidth,420);
+container.appendChild(renderer.domElement);
+
+const light = new THREE.HemisphereLight(0xffffff,0x444444,1.2);
+scene.add(light);
+
+const directional = new THREE.DirectionalLight(0xffffff,0.8);
+directional.position.set(3,5,2);
+scene.add(directional);
+
+const loader = new THREE.OBJLoader();
+
+loader.load(
+"Helmet project photos/Helmet PROPER FINAL.obj",
+function(object){
+
+const box = new THREE.Box3().setFromObject(object);
+const center = box.getCenter(new THREE.Vector3());
+object.position.sub(center);
+
+object.scale.set(0.8,0.8,0.8);
+
+scene.add(object);
+
 }
-});
-},{threshold:0.6});
-observer.observe(document.getElementById("cad-section"));
+);
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+function animate(){
+requestAnimationFrame(animate);
+controls.update();
+renderer.render(scene,camera);
+}
+
+animate();
+
 </script>
 
 </body>

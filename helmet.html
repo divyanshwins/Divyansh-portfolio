@@ -104,6 +104,41 @@ p{
   border-radius:16px;
 }
 
+.caption{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:8px;
+}
+
+.clay-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:24px;
+}
+
+.clay-grid img{
+  width:100%;
+  border-radius:12px;
+}
+
+.video-wrapper{
+  margin-top:30px;
+  position:relative;
+  padding-bottom:56.25%;
+  height:0;
+}
+
+.video-wrapper iframe{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border:none;
+  border-radius:16px;
+}
+
 .connect{
   border-top:1px solid var(--border);
   padding:80px 0;
@@ -147,16 +182,18 @@ footer{
 @media(max-width:640px){
   h1{font-size:28px;}
   h2{font-size:20px;}
+  .clay-grid{grid-template-columns:1fr;}
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="page">
-    Divyansh Srivastava
-  </div>
+<div class="page">
+Divyansh Srivastava
+</div>
 </header>
 
 <main class="page">
@@ -165,8 +202,7 @@ footer{
 
 <section class="hero">
 
-<img src="Helmet%20project%20photos/22.png"
-     alt="Minimal Structural Cycling Helmet">
+<img src="Helmet%20project%20photos/22.png" alt="Minimal Structural Cycling Helmet">
 
 <h1>Minimal Structural Cycling Helmet</h1>
 
@@ -223,8 +259,7 @@ emphasizing clarity of form rather than aggressive segmentation.
 </p>
 
 <div class="market-image">
-  <img src="Helmet%20project%20photos/image%208.png"
-       alt="Helmet Market Research Table">
+<img src="Helmet%20project%20photos/image%208.png" alt="Helmet Market Research Table">
 </div>
 
 </section>
@@ -234,25 +269,19 @@ emphasizing clarity of form rather than aggressive segmentation.
 <h2>Anthropometric & BIS Standard Study</h2>
 
 <p>
-The foundational geometry of the helmet was derived from IS 4151:1993 headform standards. 
-Instead of designing visually first and correcting proportion later, the internal volume 
-was constructed around standardized head circumference ranges between 500mm and 620mm.
+The foundational geometry of the helmet was derived from IS 4151:1993 headform standards.
 </p>
 
 <p>
-Particular attention was given to crown height, temporal width, and occipital projection. 
-These measurements informed structural rib placement and ensured that airflow voids 
-did not compromise coverage in critical impact zones.
+Particular attention was given to crown height, temporal width, and occipital projection.
 </p>
 
 <p>
-This early integration of anthropometric constraints prevented over-design and 
-ensured that the minimal structural system remained compliant and realistic.
+This early integration of anthropometric constraints prevented over-design.
 </p>
 
 <div class="market-image">
-  <img src="Helmet%20project%20photos/image%202.png"
-       alt="Anthropometric helmet study">
+<img src="Helmet%20project%20photos/image%202.png" alt="Anthropometric helmet study">
 </div>
 
 </section>
@@ -262,21 +291,13 @@ ensured that the minimal structural system remained compliant and realistic.
 <h2>Design Strategy: Structure as Identity</h2>
 
 <p>
-Rather than layering decorative surfaces, the design strategy centered around 
-structural subtraction. Material was removed wherever load transfer was unnecessary, 
-allowing ribs to define the visual language.
+Rather than layering decorative surfaces, the design strategy centered around structural subtraction.
 </p>
 
-<p>
-The central drop-shaped crown void emerged as both ventilation channel and 
-load redistribution anchor. Peripheral ribs were thickened selectively 
-to maintain impact stability while reducing total mass.
-</p>
-
-<p>
-The result is a helmet that appears skeletal yet stable — visually lightweight 
-but structurally intentional.
-</p>
+<div class="market-image">
+<img src="Helmet%20project%20photos/image%2025.png" alt="Helmet form sketching">
+<div class="caption">Form Sketching</div>
+</div>
 
 </section>
 
@@ -285,42 +306,34 @@ but structurally intentional.
 <h2>Clay Form Exploration</h2>
 
 <p>
-Physical clay modeling allowed real-scale evaluation of curvature transitions 
-and rib continuity. Multiple iterations were tested to understand how surface 
-tension influences perceived stability.
+Physical clay modeling allowed real-scale evaluation of curvature transitions
+and rib continuity.
 </p>
 
-<p>
-Early clay models failed due to excess thickness at the crown and 
-imbalanced lateral distribution. These failures informed material subtraction 
-and edge refinement in later stages.
-</p>
-
-<p>
-Clay exploration validated the structural rhythm before committing 
-to digital precision.
-</p>
+<div class="clay-grid">
+<img src="Helmet%20project%20photos/image%2010.png">
+<img src="Helmet%20project%20photos/image%2011.png">
+<img src="Helmet%20project%20photos/image%209.png">
+</div>
 
 </section>
 
-<section>
+<section id="cad-section">
 
 <h2>Digital Modelling & Structural Refinement</h2>
 
 <p>
-The refined clay direction was translated into Fusion 360 for parametric control. 
-Rib thickness, curvature continuity, and vent proportions were iterated digitally.
+The refined clay direction was translated into Fusion 360 for parametric control.
 </p>
 
-<p>
-Wall thickness adjustments were tested to balance rigidity and material efficiency. 
-Stress concentration at rib intersections was minimized through controlled fillet transitions.
-</p>
-
-<p>
-Digital symmetry validation ensured that structural balance remained intact 
-while preserving the subtractive design language.
-</p>
+<div class="video-wrapper">
+<iframe
+id="cad-video"
+src="https://www.youtube.com/embed/yplkm9JtSRU?enablejsapi=1&mute=1"
+allow="autoplay; encrypted-media"
+allowfullscreen>
+</iframe>
+</div>
 
 </section>
 
@@ -329,19 +342,7 @@ while preserving the subtractive design language.
 <h2>3D Printing & Iterative Prototyping</h2>
 
 <p>
-Prototypes were fabricated through 3D printing to test ergonomic fit and 
-structural performance. Print orientation significantly affected rib strength 
-and layer adhesion.
-</p>
-
-<p>
-Early iterations revealed cracking at thin intersections and minor warping 
-under load simulation. These insights led to localized reinforcement 
-without compromising overall minimalism.
-</p>
-
-<p>
-Each iteration improved structural clarity while preserving material efficiency.
+Prototypes were fabricated through 3D printing to test ergonomic fit and structural performance.
 </p>
 
 </section>
@@ -351,19 +352,7 @@ Each iteration improved structural clarity while preserving material efficiency.
 <h2>User Fit Validation</h2>
 
 <p>
-Fit testing evaluated crown clearance, neck mobility, ear alignment, 
-and airflow perception. The skeletal structure reduced visual bulk 
-while maintaining essential protective coverage.
-</p>
-
-<p>
-Users reported improved breathability and reduced perceived weight 
-compared to conventional EPS-heavy helmets.
-</p>
-
-<p>
-The final geometry balanced comfort, airflow, and structural integrity 
-within the intended cost bracket.
+Fit testing evaluated crown clearance, neck mobility, ear alignment, and airflow perception.
 </p>
 
 </section>
@@ -374,9 +363,6 @@ within the intended cost bracket.
 
 <p>
 The final helmet achieves structural clarity through subtraction.
-Its identity emerges from ribs, voids, and load-bearing geometry —
-demonstrating how intentional material reduction
-can coexist with cost efficiency and ergonomic integrity.
 </p>
 
 </section>
@@ -384,25 +370,42 @@ can coexist with cost efficiency and ergonomic integrity.
 </main>
 
 <section class="connect">
-  <div class="page">
-    <h2>Let’s Connect</h2>
-    <p>
-      I'm always open to discussing new projects, creative ideas,
-      or opportunities to collaborate.
-    </p>
-    <div class="buttons">
-      <button class="btn">Email Me</button>
-      <button class="btn primary">WhatsApp Me</button>
-      <button class="btn">View Resume</button>
-    </div>
-  </div>
+<div class="page">
+<h2>Let’s Connect</h2>
+<p>
+I'm always open to discussing new projects, creative ideas,
+or opportunities to collaborate.
+</p>
+<div class="buttons">
+<button class="btn">Email Me</button>
+<button class="btn primary">WhatsApp Me</button>
+<button class="btn">View Resume</button>
+</div>
+</div>
 </section>
 
 <footer>
-  <div class="page">
-    © 2026 Divyansh Srivastava. All rights reserved.
-  </div>
+<div class="page">
+© 2026 Divyansh Srivastava. All rights reserved.
+</div>
 </footer>
+
+<script>
+
+const video=document.getElementById("cad-video");
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+video.src+="&autoplay=1";
+observer.disconnect();
+}
+});
+},{threshold:0.6});
+
+observer.observe(document.getElementById("cad-section"));
+
+</script>
 
 </body>
 </html>

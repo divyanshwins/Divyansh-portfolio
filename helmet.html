@@ -108,7 +108,6 @@ p{
   margin-top:8px;
 }
 
-/* Sketch image sharpness */
 .sketch-image img{
   width:auto;
   max-width:100%;
@@ -118,7 +117,6 @@ p{
   margin:0 auto;
 }
 
-/* Clay grid */
 .clay-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -131,7 +129,6 @@ p{
   border-radius:12px;
 }
 
-/* Video */
 .video-wrapper{
   margin-top:32px;
   position:relative;
@@ -149,31 +146,29 @@ p{
   border-radius:16px;
 }
 
-/* ===== CONCLUSION BENTO GRID ===== */
+/* CLEAN CONCLUSION GRID (NO OVERLAP) */
 
 .conclusion-grid{
-  margin-top:40px;
+  margin-top:36px;
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  grid-auto-rows:120px;
-  gap:10px;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 
 .conclusion-grid img{
-  width:auto;
-  max-width:100%;
+  width:100%;
   height:auto;
   border-radius:12px;
   display:block;
 }
 
-.conclusion-grid .big{
-  grid-column:span 2;
-  grid-row:span 2;
-}
+/* responsive */
 
-.conclusion-grid .wide{
-  grid-column:span 2;
+@media(max-width:640px){
+  h1{font-size:28px;}
+  h2{font-size:20px;}
+  .clay-grid{grid-template-columns:1fr;}
+  .conclusion-grid{grid-template-columns:1fr;}
 }
 
 .connect{
@@ -214,13 +209,6 @@ footer{
   text-align:center;
   font-size:13px;
   color:var(--muted);
-}
-
-@media(max-width:640px){
-  h1{font-size:28px;}
-  h2{font-size:20px;}
-  .clay-grid{grid-template-columns:1fr;}
-  .conclusion-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -395,82 +383,6 @@ to digital precision.
 </section>
 
 
-<section id="cad-section">
-
-<h2>Digital Modelling & Structural Refinement</h2>
-
-<p>
-The refined clay direction was translated into Fusion 360 for parametric control. 
-Rib thickness, curvature continuity, and vent proportions were iterated digitally.
-</p>
-
-<p>
-Wall thickness adjustments were tested to balance rigidity and material efficiency. 
-Stress concentration at rib intersections was minimized through controlled fillet transitions.
-</p>
-
-<p>
-Digital symmetry validation ensured that structural balance remained intact 
-while preserving the subtractive design language.
-</p>
-
-<div class="video-wrapper">
-<iframe id="cad-video"
-src="https://www.youtube.com/embed/yplkm9JtSRU?enablejsapi=1&mute=1"
-allow="autoplay; encrypted-media"
-allowfullscreen>
-</iframe>
-</div>
-
-</section>
-
-
-<section>
-
-<h2>3D Printing & Iterative Prototyping</h2>
-
-<p>
-Prototypes were fabricated through 3D printing to test ergonomic fit and 
-structural performance. Print orientation significantly affected rib strength 
-and layer adhesion.
-</p>
-
-<p>
-Early iterations revealed cracking at thin intersections and minor warping 
-under load simulation. These insights led to localized reinforcement 
-without compromising overall minimalism.
-</p>
-
-<p>
-Each iteration improved structural clarity while preserving material efficiency.
-</p>
-
-</section>
-
-
-<section>
-
-<h2>User Fit Validation</h2>
-
-<p>
-Fit testing evaluated crown clearance, neck mobility, ear alignment, 
-and airflow perception. The skeletal structure reduced visual bulk 
-while maintaining essential protective coverage.
-</p>
-
-<p>
-Users reported improved breathability and reduced perceived weight 
-compared to conventional EPS-heavy helmets.
-</p>
-
-<p>
-The final geometry balanced comfort, airflow, and structural integrity 
-within the intended cost bracket.
-</p>
-
-</section>
-
-
 <section>
 
 <h2>Conclusion</h2>
@@ -484,13 +396,10 @@ can coexist with cost efficiency and ergonomic integrity.
 
 <div class="conclusion-grid">
 
-<img class="big" src="Helmet%20project%20photos/image%2017.png">
-
+<img src="Helmet%20project%20photos/image%2017.png">
 <img src="Helmet%20project%20photos/image%2015.png">
 <img src="Helmet%20project%20photos/image%2014.png">
-
-<img class="wide" src="Helmet%20project%20photos/image%2013.png">
-
+<img src="Helmet%20project%20photos/image%2013.png">
 <img src="Helmet%20project%20photos/WhatsApp%20Image%202026-02-13%20at%2011.12.38%20AM%20(1).jpeg">
 <img src="Helmet%20project%20photos/WhatsApp%20Image%202026-02-13%20at%2011.12.39%20AM%20(1).jpeg">
 
@@ -521,19 +430,5 @@ or opportunities to collaborate.
 </div>
 </footer>
 
-<script>
-const video=document.getElementById("cad-video");
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-video.src+="&autoplay=1";
-observer.disconnect();
-}
-});
-},{threshold:0.6});
-observer.observe(document.getElementById("cad-section"));
-</script>
-
 </body>
 </html>
-

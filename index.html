@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Divyansh Srivastava – Portfolio</title>
 
-<!-- Performance: Preconnect fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- Performance: preload hero image -->
-<link rel="preload" as="image" href="photos/IMG_2858 1.png">
 
 <style>
 
@@ -21,9 +19,12 @@
 --bg:#ffffff;
 --text:#0f0f0f;
 --muted:#6b6b6b;
---light:#f4f4f5;
---border:#e5e5e5;
+--light:#f7f7f8;
+--border:#eaeaea;
+
 --primary:#22c55e;
+--accent:#2563eb;
+
 --radius:18px;
 --radius-lg:22px;
 --max-width:1200px;
@@ -36,6 +37,7 @@ font-family:'Inter',sans-serif;
 background:var(--bg);
 color:var(--text);
 line-height:1.6;
+cursor:none;
 }
 
 a{text-decoration:none;color:inherit;}
@@ -53,11 +55,16 @@ margin:0 auto;
 padding:0 24px;
 }
 
-/* Header */
+/* NAVBAR */
 
 header{
-padding:28px 0;
+padding:20px 0;
 border-bottom:1px solid var(--border);
+background:rgba(255,255,255,0.7);
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+z-index:100;
 }
 
 .nav{
@@ -77,20 +84,31 @@ font-size:14px;
 color:var(--muted);
 }
 
-/* Hero */
+/* HERO */
 
 .hero{
 display:grid;
 grid-template-columns:1.4fr 1fr;
 gap:80px;
-padding:80px 0;
+padding:90px 0;
 align-items:center;
 }
 
 .hero h1{
-font-size:28px;
+font-size:30px;
 font-weight:400;
-max-width:520px;
+line-height:1.5;
+}
+
+.word-wrapper{
+display:inline-block;
+width:180px;
+}
+
+#animated-word{
+font-style:italic;
+font-weight:500;
+color:var(--primary);
 }
 
 .hero-image{
@@ -99,7 +117,7 @@ border-radius:var(--radius-lg);
 overflow:hidden;
 }
 
-/* Sections */
+/* SECTIONS */
 
 section{padding:80px 0;}
 
@@ -111,13 +129,12 @@ margin-bottom:12px;
 
 .section-desc{
 color:var(--muted);
-max-width:720px;
 font-size:15px;
+line-height:1.8;
+margin-bottom:30px;
 }
 
-/* Projects */
-
-.category{margin-top:56px;}
+/* PROJECT CARDS */
 
 .grid{
 display:grid;
@@ -127,21 +144,66 @@ gap:24px;
 
 .card{
 height:300px;
-background:var(--light);
+background:#f8f8f8;
 border-radius:var(--radius);
 overflow:hidden;
 display:flex;
 align-items:center;
 justify-content:center;
-transition:transform .3s ease,box-shadow .3s ease;
+transition:all .35s ease;
+border:1px solid var(--border);
 }
 
 .card:hover{
-transform:translateY(-6px);
-box-shadow:0 20px 40px rgba(0,0,0,.08);
+transform:translateY(-8px);
+box-shadow:0 30px 60px rgba(0,0,0,0.12);
+background:linear-gradient(135deg,#000,#222);
 }
 
-/* Tools */
+/* EXPERIENCE */
+
+.exp-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:28px;
+margin-top:40px;
+}
+
+.exp-card{
+background:#f8f8f8;
+border-radius:var(--radius-lg);
+padding:30px;
+transition:all .35s ease;
+border:1px solid var(--border);
+}
+
+.exp-role{
+font-size:20px;
+font-weight:600;
+}
+
+.exp-company{
+color:var(--accent);
+font-size:14px;
+margin-bottom:12px;
+}
+
+.exp-desc{
+color:var(--muted);
+font-size:15px;
+}
+
+.exp-card:hover{
+transform:translateY(-10px);
+box-shadow:0 30px 60px rgba(0,0,0,0.15);
+background:linear-gradient(135deg,#000,#222);
+}
+
+.exp-card:hover *{
+color:white;
+}
+
+/* TOOLS */
 
 .tool-grid{
 display:grid;
@@ -151,20 +213,50 @@ margin-top:24px;
 }
 
 .tool{
-background:var(--light);
+background:#f7f7f8;
 border-radius:14px;
-height:56px;
+height:80px;
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
 font-size:12px;
 color:var(--muted);
+gap:8px;
+transition:all .35s ease;
+border:1px solid var(--border);
+text-align:center;
 }
 
-/* Interests */
+.tool img{
+width:26px;
+height:26px;
+object-fit:contain;
+}
+
+.tool:hover{
+transform:translateY(-6px);
+background:linear-gradient(135deg,#000,#222);
+color:white;
+}
+
+.tool:hover img{
+filter:invert(1);
+}
+
+/* INTERESTS */
+
+.interests-section{
+margin-top:50px;
+}
+
+.interests-title{
+font-size:18px;
+font-weight:500;
+margin-bottom:16px;
+}
 
 .interests{
-margin-top:32px;
 display:flex;
 gap:12px;
 flex-wrap:wrap;
@@ -172,13 +264,13 @@ flex-wrap:wrap;
 
 .chip{
 padding:10px 16px;
-background:var(--light);
+background:#eff6ff;
 border-radius:999px;
 font-size:13px;
-color:var(--muted);
+color:var(--accent);
 }
 
-/* Connect */
+/* CONNECT */
 
 .connect{
 background:#fafafa;
@@ -210,8 +302,6 @@ border-radius:999px;
 font-size:14px;
 border:1px solid var(--border);
 background:#fff;
-cursor:pointer;
-display:inline-block;
 }
 
 .btn.primary{
@@ -227,7 +317,7 @@ font-size:14px;
 color:#2563eb;
 }
 
-/* Footer */
+/* FOOTER */
 
 footer{
 border-top:1px solid var(--border);
@@ -240,33 +330,141 @@ color:var(--muted);
 display:flex;
 justify-content:space-between;
 align-items:center;
-flex-wrap:wrap;
-gap:16px;
 }
 
-/* Responsive */
+/* CURSOR */
 
-@media(max-width:900px){
-.hero,.connect-grid{grid-template-columns:1fr;}
-.grid{grid-template-columns:1fr 1fr;}
-.tool-grid{grid-template-columns:repeat(4,1fr);}
+.cursor{
+width:18px;
+height:18px;
+background:rgba(0,0,0,0.75);
+border-radius:50%;
+position:fixed;
+pointer-events:none;
+transform:translate(-50%,-50%);
+z-index:9999;
+transition:background .2s;
 }
 
-@media(max-width:600px){
-.grid{grid-template-columns:1fr;}
-.nav-links a:not([href="about.html"]){display:none;}
+.cursor.light{
+background:white;
+}
+
+
+/* ============================= */
+/* RESPONSIVE IMPROVEMENTS ONLY */
+/* Desktop layout unchanged */
+/* ============================= */
+
+@media (max-width:1024px){
+
+.hero{
+grid-template-columns:1fr;
+gap:50px;
+padding:70px 0;
+}
+
+.hero-image{
+height:340px;
+}
+
+.exp-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.grid{
+grid-template-columns:1fr 1fr;
+}
+
+.tool-grid{
+grid-template-columns:repeat(4,1fr);
+}
+
+.connect-grid{
+grid-template-columns:1fr;
+gap:50px;
+}
+
+}
+
+@media (max-width:600px){
+
+.container{
+padding:0 18px;
+}
+
+.hero{
+padding:60px 0;
+}
+
+.hero h1{
+font-size:24px;
+}
+
+.hero-image{
+height:260px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.exp-grid{
+grid-template-columns:1fr;
+}
+
+.tool-grid{
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.tool{
+height:72px;
+font-size:11px;
+}
+
+.buttons{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.footer-grid{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+}
+
+@media (max-width:420px){
+
+.hero h1{
+font-size:22px;
+}
+
+.hero-image{
+height:220px;
+}
+
+.tool{
+height:68px;
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
+
+<div class="cursor"></div>
 
 <header>
 <div class="container nav">
 <div class="logo">Divyansh Srivastava</div>
 <div class="nav-links">
-<a href="resume.pdf" target="_blank" download>Resume</a>
+<a href="resume.pdf">Resume</a>
 <a href="#work">Work</a>
 <a href="about.html">Connect</a>
 </div>
@@ -280,16 +478,11 @@ gap:16px;
 <h1>
 My life revolves around mathematics, data, psychology and the arts —
 the alchemy through which I become a product
-<span id="animated-word">designer</span>.
+<span class="word-wrapper"><span id="animated-word">designer.</span></span>
 </h1>
 
 <div class="hero-image">
-<img
-src="photos/IMG_2858%201.png"
-alt="Portrait of Divyansh Srivastava"
-width="900"
-height="900"
-decoding="async">
+<img src="photos/IMG_2858%201.png">
 </div>
 
 </section>
@@ -299,45 +492,52 @@ decoding="async">
 <h2 class="section-title">My Works</h2>
 
 <p class="section-desc">
-A curated collection of design projects developed during my academic journey
-at IIT Roorkee, showcasing research-driven and human-centered thinking.
+A curated collection of design projects developed during my academic journey at IIT Roorkee.
+Each project represents a blend of analytical thinking, research, and creative exploration.
+Through these works I explore how design can translate insights into meaningful digital
+experiences and products that solve real human problems.
 </p>
-
-<div class="category">
 
 <div class="grid">
 
-<a href="arth.html" class="card">
-<img
-src="photos/Image%20(Arth%20E-commerce%20Analytics%20Dashboard).png"
-alt="Arth ecommerce analytics dashboard UI design"
-loading="lazy"
-decoding="async"
-width="800"
-height="600">
-</a>
-
-<a href="fedex.html" class="card">
-<img
-src="photos/fedex%20thumbn.png"
-alt="FedEx territory management dashboard design"
-loading="lazy"
-decoding="async"
-width="800"
-height="600">
-</a>
-
-<a href="helmet.html" class="card">
-<img
-src="photos/helmet%20projet%20thumbnail.png"
-alt="Helmet product design project"
-loading="lazy"
-decoding="async"
-width="800"
-height="600">
-</a>
+<a href="arth.html" class="card"><img src="photos/Image%20(Arth%20E-commerce%20Analytics%20Dashboard).png"></a>
+<a href="fedex.html" class="card"><img src="photos/fedex%20thumbn.png"></a>
+<a href="helmet.html" class="card"><img src="photos/helmet%20projet%20thumbnail.png"></a>
 
 </div>
+
+</section>
+
+<section>
+
+<h2 class="section-title">Work Experience</h2>
+
+<div class="exp-grid">
+
+<div class="exp-card">
+<div class="exp-role">Growth Lead</div>
+<div class="exp-company">Shopdeck</div>
+<div class="exp-desc">
+Handled Meta and Google marketing for 30+ sellers helping them achieve the highest GMV with the least marketing spend while collaborating with the product team to improve analytics tools and platform insights.
+</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-role">Influencer Marketing Executive</div>
+<div class="exp-company">RareRabbit</div>
+<div class="exp-desc">
+Managed 100+ influencer collaborations for RareRabbit and Rareism creating high-impact video campaigns generating millions of views and helping increase ROAS by around 20%.
+</div>
+</div>
+
+<div class="exp-card">
+<div class="exp-role">Graduation Project</div>
+<div class="exp-company">Bestseller India Pvt Ltd</div>
+<div class="exp-desc">
+Worked in the ecommerce department to build a recommendation powered email marketing pipeline enabling personalized product suggestions through detailed user interest mapping.
+</div>
+</div>
+
 </div>
 
 </section>
@@ -347,25 +547,36 @@ height="600">
 <h2 class="section-title">Tools & Interests</h2>
 
 <p class="section-desc">
-The technologies I work with and the passions that drive my creative process.
+Over the past 5–6 years I have developed proficiency with a diverse set of tools that support
+my design, research, and analytical workflow. Some of these were learned during my Bachelor’s
+program at NIFT in B.FTech, others during my Master’s journey at IIT Roorkee, and several through
+hands-on professional experience while working with teams at Rarerabbit and Shopdeck.
 </p>
 
 <div class="tool-grid">
-<div class="tool">Figma</div>
-<div class="tool">Analytics</div>
-<div class="tool">Clarity</div>
-<div class="tool">Premiere</div>
-<div class="tool">Fusion 360</div>
-<div class="tool">AutoCAD</div>
-<div class="tool">Excel</div>
-<div class="tool">MS Suite</div>
+
+<div class="tool"><img src="https://cdn.simpleicons.org/figma"><span>Figma</span></div>
+<div class="tool"><img src="https://cdn.simpleicons.org/googleanalytics"><span>Analytics</span></div>
+<div class="tool"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"><span>Clarity</span></div>
+<div class="tool"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg"><span>Premiere</span></div>
+<div class="tool"><img src="https://cdn.simpleicons.org/autodesk"><span>Fusion 360</span></div>
+<div class="tool"><img src="https://cdn.simpleicons.org/autocad"><span>AutoCAD</span></div>
+<div class="tool"><img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Microsoft_Excel_2013-2019_logo.svg"><span>Excel</span></div>
+<div class="tool"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_365_%282022%29.svg"><span>MS Suite</span></div>
+
 </div>
+
+<div class="interests-section">
+
+<h3 class="interests-title">Interests & Curiosities</h3>
 
 <div class="interests">
 <div class="chip">Robotics</div>
 <div class="chip">Design Thinking</div>
 <div class="chip">Chess</div>
 <div class="chip">Photography</div>
+</div>
+
 </div>
 
 </section>
@@ -388,7 +599,7 @@ or opportunities to be part of your vision.
 <div class="buttons">
 <a href="about.html" class="btn">Email Me</a>
 <a href="about.html" class="btn primary">WhatsApp Me</a>
-<a href="resume.pdf" target="_blank" download class="btn">View Resume</a>
+<a href="resume.pdf" class="btn">View Resume</a>
 </div>
 
 </div>
@@ -406,70 +617,73 @@ or opportunities to be part of your vision.
 </div>
 
 </div>
+
 </section>
 
 <footer>
 
 <div class="container footer-grid">
+
 <div>© 2026 Divyansh Srivastava. All rights reserved.</div>
+
 <div>
 <a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a>
 </div>
+
 </div>
 
 </footer>
 
 <script>
 
-const words=["designer","Thinker","enthusiast","Nerd"];
-const el=document.getElementById("animated-word");
+const cursor=document.querySelector(".cursor")
 
-let wordIndex=0;
-let charIndex=words[0].length;
-let isDeleting=true;
+document.addEventListener("mousemove",(e)=>{
+cursor.style.left=e.clientX+"px"
+cursor.style.top=e.clientY+"px"
+})
 
-const typingSpeed=100;
-const deletingSpeed=80;
-const pauseAfterTyping=900;
+const cards=document.querySelectorAll(".card,.exp-card,.tool")
+
+cards.forEach(card=>{
+card.addEventListener("mouseenter",()=>cursor.classList.add("light"))
+card.addEventListener("mouseleave",()=>cursor.classList.remove("light"))
+})
+
+const words=["designer.","thinker.","enthusiast.","nerd."]
+const el=document.getElementById("animated-word")
+
+let wordIndex=0
+let charIndex=words[0].length
+let isDeleting=true
 
 function typeLoop(){
 
-const currentWord=words[wordIndex];
+const currentWord=words[wordIndex]
 
 if(isDeleting){
-
-charIndex--;
-el.textContent=currentWord.substring(0,charIndex);
-
+charIndex--
+el.textContent=currentWord.substring(0,charIndex)
 if(charIndex===0){
-isDeleting=false;
-wordIndex=(wordIndex+1)%words.length;
-setTimeout(typeLoop,300);
-return;
+isDeleting=false
+wordIndex=(wordIndex+1)%words.length
+setTimeout(typeLoop,300)
+return
 }
-
-setTimeout(typeLoop,deletingSpeed);
-
+setTimeout(typeLoop,80)
 }else{
-
-charIndex++;
-el.textContent=words[wordIndex].substring(0,charIndex);
-
+charIndex++
+el.textContent=words[wordIndex].substring(0,charIndex)
 if(charIndex===words[wordIndex].length){
-setTimeout(()=>{
-isDeleting=true;
-typeLoop();
-},pauseAfterTyping);
-return;
+setTimeout(()=>{isDeleting=true;typeLoop()},900)
+return
 }
-
-setTimeout(typeLoop,typingSpeed);
-
+setTimeout(typeLoop,100)
 }
 
 }
 
-setTimeout(typeLoop,1000);
+setTimeout(typeLoop,1000)
 
 </script>
 

@@ -1,336 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FedEx Territory Management Dashboard</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FedEx Territory Management Dashboard · Divyansh Srivastava</title>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <!-- PDF.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  </script>
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+</script>
 
-  <style>
-    :root {
-      --text: #111111;
-      --muted: #6e6e73;
-      --border: #e5e5e7;
-      --bg: #ffffff;
-      --max-width: 760px;
-    }
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --cream:  #f5f0e8;
+  --cream2: #ede7da;
+  --paper:  #faf8f4;
+  --ink:    #1a1714;
+  --ink2:   #3d3830;
+  --muted:  #9a9087;
+  --border: #e2dbd0;
+  --accent: #b5601e;
+  --good:   #2e6b45;
+  --warn:   #8a5c00;
+  --r:  16px;
+  --rl: 22px;
+  --max: 780px;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 
-    body {
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                   Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  cursor: none;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+a { text-decoration: none; color: inherit; }
+img { display: block; width: 100%; height: auto; }
 
-    img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+/* ─── NOISE ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+}
 
-    /* Layout */
-    .page {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+/* ─── CURSOR ─── */
+#cursor {
+  position: fixed;
+  width: 14px; height: 14px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .25s, height .25s, background .25s, opacity .2s;
+  mix-blend-mode: multiply;
+}
+#cursor.expand {
+  width: 38px; height: 38px;
+  background: var(--accent);
+  opacity: 0.5;
+}
 
-    /* Header */
-    header {
-      border-bottom: 1px solid var(--border);
-    }
+/* ─── WRAP ─── */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 28px;
+}
 
-    header .page {
-      display: flex;
-      align-items: center;
-      height: 64px;
-    }
+/* ─── NAV ─── */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(250,248,244,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-right a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color .2s;
+}
+.nav-right a:hover { color: var(--ink); }
 
-    /* Back arrow */
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
+/* ─── BACK LINK ─── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 48px;
+  transition: color .2s, gap .2s;
+  cursor: none;
+}
+.back-link:hover { color: var(--ink); gap: 12px; }
 
-    .back-link:hover {
-      color: var(--text);
-    }
+/* ─── HERO ─── */
+.hero {
+  padding: 56px 0 64px;
+  border-bottom: 1px solid var(--border);
+}
 
-    /* Sections */
-    section {
-      padding: 56px 0;
-      border-top: 1px solid var(--border);
-    }
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--muted);
+}
 
-    h1 {
-      font-size: 32px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
-    }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 32px;
+}
+h1 em { font-style: italic; color: var(--accent); }
 
-    h2 {
-      font-size: 24px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-    }
+.hero-img-wrap {
+  margin-bottom: 40px;
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
 
-    h3 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 24px 0 10px;
-    }
+/* META GRID */
+.meta-section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-top: 36px;
+  margin-bottom: 14px;
+}
 
-    p {
-      font-size: 16px;
-      color: var(--muted);
-      max-width: 680px;
-      margin-bottom: 14px;
-    }
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
 
-    ul {
-      padding-left: 18px;
-      color: var(--muted);
-    }
+.meta-cell {
+  padding: 20px 22px;
+  border-right: 1px solid var(--border);
+}
+.meta-cell:last-child { border-right: none; }
 
-    ul li {
-      margin-bottom: 8px;
-    }
+.meta-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+}
 
-    .meta {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 32px;
-      font-size: 14px;
-      color: var(--muted);
-    }
+/* ─── SECTIONS ─── */
+section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+.hero { opacity: 1; transform: none; }
 
-    .disclaimer {
-      background: #fafafa;
-      border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 12px;
-      font-size: 14px;
-      color: var(--muted);
-    }
+.section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
 
-    /* PDF Screens */
-    .pdf-canvas-stack {
-      margin-top: 48px;
-      display: flex;
-      flex-direction: column;
-      gap: 56px;
-    }
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
 
-    .pdf-canvas-stack canvas {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-    }
+p {
+  font-size: 16px;
+  color: var(--ink2);
+  line-height: 1.85;
+  max-width: 640px;
+}
 
-    /* Connect */
-    .connect {
-      border-top: 1px solid var(--border);
-      padding: 72px 0;
-      text-align: center;
-    }
+/* ─── DISCLAIMER ─── */
+.disclaimer {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--warn);
+  border-radius: 10px;
+  padding: 24px 26px;
+  margin-top: 4px;
+}
 
-    .connect p {
-      margin: 14px auto 28px;
-    }
+.disclaimer-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+.disclaimer p {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 100%;
+  margin: 0;
+  line-height: 1.75;
+}
 
-    .btn {
-      padding: 12px 22px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-size: 14px;
-    }
+.disclaimer strong {
+  display: block;
+  font-size: 13px;
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--warn);
+  margin-bottom: 6px;
+}
 
-    .btn.primary {
-      background: #111;
-      color: #fff;
-      border: none;
-    }
+/* ─── CALLOUT ─── */
+.callout {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-top: 28px;
+}
+.callout p {
+  font-size: 15px;
+  color: var(--ink2);
+  font-style: italic;
+  max-width: 100%;
+  margin: 0;
+}
 
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 0;
-      text-align: center;
-      font-size: 13px;
-      color: var(--muted);
-    }
+/* ─── INSIGHT LIST ─── */
+.insight-list {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+}
 
-    @media (max-width: 640px) {
-      h1 { font-size: 28px; }
-      h2 { font-size: 22px; }
-    }
-  </style>
+.insight-item {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--ink2);
+  transition: color .2s;
+  line-height: 1.6;
+}
+.insight-item:last-child { border-bottom: 1px solid var(--border); }
+.insight-item:hover { color: var(--ink); }
+
+.insight-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  flex-shrink: 0;
+  width: 24px;
+}
+
+/* ─── CHALLENGE GRID ─── */
+.challenge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.challenge-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 22px 24px;
+  transition: border-color .2s, transform .2s;
+  cursor: none;
+}
+.challenge-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.challenge-card-icon { font-size: 20px; margin-bottom: 10px; }
+.challenge-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.challenge-card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ─── PDF STACK ─── */
+.pdf-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 36px;
+}
+
+.pdf-frame {
+  position: relative;
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--cream2);
+}
+
+.pdf-frame canvas {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+.pdf-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  min-height: 200px;
+}
+
+/* ─── CONCLUSION STATS ─── */
+.conclusion-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.c-stat {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 22px;
+  text-align: center;
+  transition: border-color .2s, transform .2s;
+  cursor: none;
+}
+.c-stat:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+.c-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+.c-stat-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ─── CONNECT ─── */
+.connect-section {
+  background: var(--ink);
+  padding: 80px 0;
+  border-bottom: none;
+  opacity: 1 !important;
+  transform: none !important;
+}
+.connect-section h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--paper);
+  margin-bottom: 14px;
+}
+.connect-section p {
+  color: var(--muted);
+  margin-bottom: 32px;
+  max-width: 100%;
+}
+.connect-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-inv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: transparent;
+  color: var(--paper);
+  cursor: none;
+  transition: background .22s, border-color .22s, transform .2s;
+}
+.btn-inv:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
+.btn-inv.solid-inv { background: var(--accent); border-color: var(--accent); }
+.btn-inv.solid-inv:hover { background: #c86a2a; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 24px 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-copy {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+  transition: color .2s;
+  cursor: none;
+}
+.footer-links a:hover { color: rgba(255,255,255,.7); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+  .meta-cell:nth-child(2) { border-right: none; }
+  .meta-cell:nth-child(1),
+  .meta-cell:nth-child(2) { border-bottom: 1px solid var(--border); }
+  .challenge-grid { grid-template-columns: 1fr; }
+  .conclusion-stats { grid-template-columns: 1fr; }
+  h1 { font-size: 28px; }
+  .nav-right a:not(:last-child) { display: none; }
+}
+</style>
 </head>
-
 <body>
 
+<div id="cursor"></div>
+
+<!-- NAV -->
 <header>
-  <div class="page">
-    <div>Divyansh Srivastava</div>
+  <div class="wrap nav">
+    <a href="index.html" class="nav-logo">Divyansh Srivastava</a>
+    <div class="nav-right">
+      <a href="index.html#work">Work</a>
+      <a href="resume.pdf">Resume</a>
+      <a href="about.html">Connect</a>
+    </div>
   </div>
 </header>
 
-<main class="page">
+<main>
 
-  <!-- Hero -->
-  <section>
+  <!-- HERO -->
+  <div class="wrap">
+    <section class="hero">
+      <a href="index.html" class="back-link">← Back to work</a>
 
-    <!-- Back arrow -->
-    <a href="index.html" class="back-link">← Back</a>
+      <div class="hero-eyebrow">Case Study · 2026</div>
 
-    <img src="./photos/fedex%20thumbn.png"
-         alt="FedEx Territory Dashboard thumbnail"
-         style="margin-bottom:32px;">
+      <h1>FedEx <em>Territory Management</em> Dashboard</h1>
 
-    <h1>FedEx Territory Management Dashboard</h1>
+      <div class="hero-img-wrap">
+        <img src="./photos/fedex%20thumbn.png" alt="FedEx Territory Dashboard" loading="eager">
+      </div>
 
-    <div class="meta">
-      <div>Target Users<br><strong>Logistics managers, Territory planners</strong></div>
-      <div>Context<br><strong>Logistics Dashboard Problem Solving</strong></div>
-      <div>Year<br><strong>2026</strong></div>
-      <div>Project<br><strong>Project 2 : FedEx</strong></div>
-    </div>
-  </section>
+      <div class="meta-section-label">Project at a Glance</div>
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="meta-label">Target Users</div>
+          <div class="meta-value">Logistics managers & Territory planners</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Context</div>
+          <div class="meta-value">Logistics dashboard problem solving</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Mentor</div>
+          <div class="meta-value">Nishant Kumar, FedEx Vadodara</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Year</div>
+          <div class="meta-value">2026</div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-  <section>
-    <h2>Academic Project Disclosure</h2>
-    <div class="disclaimer">
-      This design project was completed as part of my academic learning journey at IIT Roorkee,
-      under the guidance and mentorship of Mr. Nishant Kumar, Territory Manager at FedEx Vadodara.
-      This is an independent academic exercise and not an official FedEx project or endorsed by
-      FedEx Corporation. No proprietary or confidential business data was used.
-    </div>
-  </section>
+  <!-- DISCLOSURE -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">00 — Disclosure</div>
+      <h2>Academic project</h2>
+      <div class="disclaimer">
+        <div class="disclaimer-icon">📋</div>
+        <div>
+          <strong>Independent academic exercise</strong>
+          <p>This design project was completed as part of my academic learning at IIT Roorkee, under the guidance of Mr. Nishant Kumar, Territory Manager at FedEx Vadodara. This is not an official FedEx project and is not endorsed by FedEx Corporation. No proprietary or confidential business data was used.</p>
+        </div>
+      </div>
+    </section>
+  </div>
 
-  <section>
-    <h2>Overview</h2>
-    <p>
-      In the contemporary logistics ecosystem, territory managers operate within an increasingly
-      fragmented information architecture. The challenge lies in synthesizing operational data
-      into a single actionable surface.
-    </p>
-  </section>
+  <!-- OVERVIEW -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">01 — Overview</div>
+      <h2>The fragmentation problem</h2>
+      <p>
+        In the contemporary logistics ecosystem, territory managers operate within an increasingly fragmented information architecture. Delivery status, client records, route performance, and exception handling all live in separate systems — forcing managers to context-switch constantly to build any coherent picture of their territory.
+      </p>
+      <p style="margin-top: 16px;">
+        The challenge: synthesizing all of that operational data into a single actionable surface — one where a manager can move from overview to drill-down without leaving the screen.
+      </p>
 
-  <section>
-    <h2>Problem Statement</h2>
-    <p>
-      How might we design a unified dashboard interface that consolidates fragmented data streams
-      into a cohesive analytical environment?
-    </p>
-  </section>
+      <div class="callout">
+        <p>"How might we design a unified dashboard interface that consolidates fragmented data streams into a cohesive analytical environment for territory managers?"</p>
+      </div>
+    </section>
+  </div>
 
-  <section>
-    <h2>Final Design</h2>
-    <p>
-      The unified dashboard interface consolidates all critical territory management
-      functions into a single workspace.
-    </p>
+  <!-- CHALLENGES -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">02 — Key Challenges</div>
+      <h2>What makes logistics dashboards hard</h2>
+      <p>
+        Through conversations with the mentor and secondary research into logistics operations, four core design tensions emerged:
+      </p>
 
-    <div class="pdf-canvas-stack">
-      <canvas data-pdf="Fedex%20project/Home.pdf"></canvas>
-      <canvas data-pdf="Fedex%20project/client%20screen.pdf"></canvas>
-      <canvas data-pdf="Fedex%20project/client%20screen%20issue%20page.pdf"></canvas>
-      <canvas data-pdf="Fedex%20project/client%20screen%20analytics%20page.pdf"></canvas>
-    </div>
-  </section>
+      <div class="challenge-grid">
+        <div class="challenge-card">
+          <div class="challenge-card-icon">🗂</div>
+          <div class="challenge-card-title">Data sprawl</div>
+          <div class="challenge-card-desc">Delivery, client, route, and exception data originate from different systems with incompatible formats and update frequencies.</div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-card-icon">⚡</div>
+          <div class="challenge-card-title">Time sensitivity</div>
+          <div class="challenge-card-desc">Logistics is real-time. Delays cascade. Managers need to spot issues before they compound — not after a report is generated.</div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-card-icon">🗺</div>
+          <div class="challenge-card-title">Spatial complexity</div>
+          <div class="challenge-card-desc">Territory data is geographic by nature. Representing route density and coverage gaps in a flat interface requires careful hierarchy.</div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-card-icon">👤</div>
+          <div class="challenge-card-title">Client-level visibility</div>
+          <div class="challenge-card-desc">Managers need to jump from territory-level overview to a specific client's issue log without losing context or reloading.</div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-  <section>
-    <h2>Conclusion</h2>
-    <p>
-      This project demonstrates how logistics data can be unified into a single
-      analytical surface, enabling faster and more confident decision-making.
-    </p>
-  </section>
+  <!-- FINAL DESIGN -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">03 — Final Design</div>
+      <h2>Four unified views</h2>
+      <p>
+        The dashboard is structured around the way a manager actually works — starting from the territory home view, drilling into client records, resolving issues, and reading analytics — all within one continuous interface.
+      </p>
+
+      <div class="pdf-stack">
+        <div class="pdf-frame">
+          <div class="pdf-loading">Loading…</div>
+          <canvas data-pdf="Fedex%20project/Home.pdf"></canvas>
+        </div>
+        <div class="pdf-frame">
+          <div class="pdf-loading">Loading…</div>
+          <canvas data-pdf="Fedex%20project/client%20screen.pdf"></canvas>
+        </div>
+        <div class="pdf-frame">
+          <div class="pdf-loading">Loading…</div>
+          <canvas data-pdf="Fedex%20project/client%20screen%20issue%20page.pdf"></canvas>
+        </div>
+        <div class="pdf-frame">
+          <div class="pdf-loading">Loading…</div>
+          <canvas data-pdf="Fedex%20project/client%20screen%20analytics%20page.pdf"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">04 — Conclusion</div>
+      <h2>What this achieves</h2>
+      <p>
+        The FedEx Territory Management Dashboard demonstrates how logistics data — when unified rather than siloed — enables faster, more confident decision-making. Territory managers gain a single surface that moves with them from the overview down to the issue log, without losing context at any step.
+      </p>
+
+      <div class="conclusion-stats">
+        <div class="c-stat">
+          <span class="c-stat-val">4</span>
+          <span class="c-stat-label">Unified views</span>
+        </div>
+        <div class="c-stat">
+          <span class="c-stat-val">1</span>
+          <span class="c-stat-label">Workspace</span>
+        </div>
+        <div class="c-stat">
+          <span class="c-stat-val">0</span>
+          <span class="c-stat-label">Context switches needed</span>
+        </div>
+      </div>
+    </section>
+  </div>
 
 </main>
 
-<section class="connect">
-  <div class="page">
-    <h2>Let’s Connect</h2>
-    <p>
-      I'm always open to discussing new projects, creative ideas,
-      or opportunities to collaborate.
-    </p>
-    <div class="buttons">
-      <button class="btn">Email Me</button>
-      <button class="btn primary">WhatsApp Me</button>
-      <button class="btn">View Resume</button>
+<!-- CONNECT -->
+<section class="connect-section">
+  <div class="wrap">
+    <div class="section-label" style="color:var(--muted);margin-bottom:10px;">Get in touch</div>
+    <h2>Let's build something together</h2>
+    <p>Open to discussing projects, creative directions, and opportunities.</p>
+    <div class="connect-btns">
+      <a href="about.html" class="btn-inv">Email Me</a>
+      <a href="about.html" class="btn-inv solid-inv">WhatsApp</a>
+      <a href="resume.pdf" class="btn-inv">Resume ↗</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="page">
-    © 2026 Divyansh Srivastava. All rights reserved.
+  <div class="wrap footer-inner">
+    <div class="footer-copy">© 2026 Divyansh Srivastava. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#work">Work</a>
+    </div>
   </div>
 </footer>
 
-<!-- PDF.js Renderer -->
 <script>
-  const canvases = document.querySelectorAll("canvas[data-pdf]");
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+let mx = -100, my = -100, cx = -100, cy = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function loop() {
+  cx += (mx - cx) * 0.18;
+  cy += (my - cy) * 0.18;
+  cursor.style.left = cx + 'px';
+  cursor.style.top  = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, button, .challenge-card, .c-stat, .insight-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+});
 
-  canvases.forEach(async (canvas) => {
-    try {
-      const pdfUrl = canvas.dataset.pdf;
-      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-      const page = await pdf.getPage(1);
-
-      const viewport = page.getViewport({ scale: 1.5 });
-      const context = canvas.getContext("2d");
-
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-
-      await page.render({
-        canvasContext: context,
-        viewport
-      }).promise;
-    } catch (err) {
-      console.error("PDF render failed:", err);
+/* ── SCROLL REVEAL ── */
+const sections = document.querySelectorAll('section:not(.hero):not(.connect-section)');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      ro.unobserve(e.target);
     }
   });
+}, { threshold: 0.08 });
+sections.forEach(s => ro.observe(s));
+
+/* ── PDF RENDER ── */
+document.querySelectorAll('canvas[data-pdf]').forEach(async (canvas) => {
+  const frame = canvas.closest('.pdf-frame');
+  try {
+    const pdf  = await pdfjsLib.getDocument(canvas.dataset.pdf).promise;
+    const page = await pdf.getPage(1);
+    const vp   = page.getViewport({ scale: 2 });
+    const ctx  = canvas.getContext('2d');
+    canvas.width  = vp.width;
+    canvas.height = vp.height;
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    frame?.querySelector('.pdf-loading')?.remove();
+  } catch (err) {
+    const loader = frame?.querySelector('.pdf-loading');
+    if (loader) loader.textContent = 'Design file unavailable';
+  }
+});
 </script>
+
+</body>
+</html>
 
 </body>
 </html>

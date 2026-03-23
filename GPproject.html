@@ -1,0 +1,1657 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bestseller Performance Investigation · Divyansh Srivastava</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --cream:  #f5f0e8;
+  --cream2: #ede7da;
+  --paper:  #faf8f4;
+  --ink:    #1a1714;
+  --ink2:   #3d3830;
+  --muted:  #9a9087;
+  --border: #e2dbd0;
+  --accent: #b5601e;
+  --good:   #2e6b45;
+  --warn:   #8a5c00;
+  --bad:    #9b2335;
+  --r:  16px;
+  --rl: 22px;
+  --max: 780px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  cursor: none;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NOISE ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ─── CURSOR ─── */
+#cursor {
+  position: fixed;
+  width: 14px; height: 14px;
+  background: var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .25s, height .25s, background .25s, opacity .2s;
+  mix-blend-mode: multiply;
+}
+#cursor.expand {
+  width: 38px; height: 38px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+/* ─── SCROLL PROGRESS ─── */
+#progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  width: 0%;
+  z-index: 9997;
+  transition: width 0.1s linear;
+}
+
+/* ─── WRAP ─── */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ─── NAV ─── */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(250,248,244,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  cursor: none;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-right a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color .2s;
+  cursor: none;
+  text-decoration: none;
+}
+.nav-right a:hover { color: var(--ink); }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 56px 0 64px;
+  border-bottom: 1px solid var(--border);
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--muted);
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+h1 em { font-style: italic; color: var(--accent); }
+
+.hero-sub {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 580px;
+  line-height: 1.85;
+  margin-bottom: 40px;
+}
+
+.meta-section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-top: 36px;
+  margin-bottom: 14px;
+}
+
+/* ─── HERO IMAGE ─── */
+.hero-img-wrap {
+  margin-bottom: 40px;
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.hero-img-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 420px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.meta-cell {
+  padding: 20px 22px;
+  border-right: 1px solid var(--border);
+}
+.meta-cell:last-child { border-right: none; }
+
+/* Report cell */
+.meta-cell--report {
+  background: #f3ede4;
+}
+.report-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  cursor: none;
+  transition: color .2s, gap .2s;
+  margin-bottom: 4px;
+}
+.report-link:hover { color: #8a4414; gap: 8px; }
+.report-link-icon { font-size: 14px; }
+.report-sub {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.meta-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* ─── SECTIONS ─── */
+section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+
+.section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 15px;
+  color: var(--ink2);
+  line-height: 1.85;
+  max-width: 640px;
+}
+
+/* ─── CALLOUT ─── */
+.callout {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-top: 28px;
+}
+.callout strong {
+  display: block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.callout ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.callout ul li {
+  font-size: 14px;
+  color: var(--ink2);
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.65;
+}
+.callout ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 12px;
+}
+.callout ul li strong { font-weight: 600; color: var(--ink); }
+
+.callout.danger {
+  border-left-color: var(--bad);
+}
+.callout.danger strong { color: var(--bad); }
+.callout.danger ul li::before { color: var(--bad); }
+
+/* ─── FUNNEL ─── */
+.funnel-wrap {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.funnel-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 120px 48px;
+  align-items: center;
+  gap: 14px;
+}
+
+.funnel-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.funnel-bar-wrap {
+  height: 32px;
+  background: var(--cream2);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.funnel-bar {
+  height: 100%;
+  border-radius: 6px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.f1 { background: var(--ink2); }
+.f2 { background: #6b5f52; }
+.f3 { background: var(--warn); }
+.f4 { background: var(--accent); }
+.f5 { background: var(--bad); }
+
+.funnel-sessions {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.funnel-pct {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.alert-box {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--bad);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-top: 28px;
+}
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.alert-box p { font-size: 14px; color: var(--ink2); max-width: 100%; margin: 0; line-height: 1.75; }
+.alert-box strong { color: var(--bad); font-weight: 600; }
+
+/* ─── FLOWS GRID ─── */
+.flows-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.flow-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px;
+  transition: border-color .2s, transform .2s;
+  cursor: none;
+}
+.flow-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.flow-card-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.flow-mini {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 14px;
+}
+
+.mini-node {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-family: 'Geist Mono', monospace;
+}
+.mini-node.bad {
+  background: #f9eded;
+  border-color: #d9a8a8;
+  color: var(--bad);
+}
+.mini-arrow {
+  color: var(--border);
+  padding: 0 6px;
+  font-size: 14px;
+}
+
+.flow-card p { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 100%; }
+
+/* ─── TIMELINE ─── */
+.timeline-track {
+  display: flex;
+  align-items: stretch;
+  margin-top: 36px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.tl-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.tl-dot-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.tl-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  z-index: 2;
+}
+.tl-step.danger .tl-dot {
+  background: var(--bad);
+  box-shadow: 0 0 0 3px rgba(155,35,53,0.15);
+}
+
+.tl-line {
+  flex: 1; height: 2px;
+  background: var(--border);
+}
+.tl-line.danger { background: rgba(155,35,53,0.35); }
+
+.tl-content {
+  margin-top: 14px;
+  text-align: center;
+  padding: 0 10px;
+}
+.tl-name {
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--ink2);
+}
+.tl-step.danger .tl-name { color: var(--bad); }
+.tl-sub {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+/* ─── PERF HERO ─── */
+.perf-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 36px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  padding: 36px;
+}
+
+.gauge-wrap {
+  position: relative;
+  width: 130px; height: 130px;
+  flex-shrink: 0;
+}
+.gauge-wrap svg {
+  width: 130px; height: 130px;
+  transform: rotate(-90deg);
+}
+.gauge-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.gauge-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--bad);
+  display: block;
+}
+.gauge-lbl {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.perf-text h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.perf-text p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 12px;
+  max-width: 100%;
+}
+.env-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.env-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ─── SECTION HEAD ─── */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 44px 0 24px;
+}
+.section-head-line { flex: 1; height: 1px; background: var(--border); }
+.section-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+/* ─── VITALS GRID ─── */
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.vital {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 14px;
+  text-align: center;
+  transition: transform .2s, border-color .2s;
+  cursor: none;
+}
+.vital:hover { transform: translateY(-3px); }
+.vital.bad { border-color: rgba(155,35,53,0.25); }
+.vital.bad:hover { border-color: var(--bad); }
+.vital.good { border-color: rgba(46,107,69,0.25); }
+.vital.good:hover { border-color: var(--good); }
+.vital.neutral { border-color: rgba(138,92,0,0.25); }
+.vital.neutral:hover { border-color: var(--warn); }
+
+.vital-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 6px;
+}
+.vital.bad .vital-val { color: var(--bad); }
+.vital.good .vital-val { color: var(--good); }
+.vital.neutral .vital-val { color: var(--warn); }
+.vital-name { font-size: 10px; color: var(--muted); line-height: 1.4; }
+
+/* ─── DIAG GRID ─── */
+.diag-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.diag-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 12px;
+  text-align: center;
+  transition: transform .2s, border-color .2s;
+  cursor: none;
+}
+.diag-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.diag-val {
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--warn);
+  display: block;
+  margin-bottom: 6px;
+}
+.diag-desc { font-size: 10px; color: var(--muted); line-height: 1.45; }
+
+/* ─── ISSUES GRID ─── */
+.issues-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.issue-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-left: 3px solid rgba(155,35,53,0.4);
+  border-radius: var(--r);
+  padding: 22px 24px;
+  transition: border-color .2s, transform .2s;
+  cursor: none;
+}
+.issue-card:hover {
+  border-left-color: var(--bad);
+  transform: translateY(-2px);
+}
+.issue-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.issue-desc { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 100%; }
+
+/* ─── OBS CARDS ─── */
+.obs-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  padding: 32px;
+  margin-bottom: 20px;
+  transition: border-color .2s;
+  cursor: none;
+}
+.obs-card:hover { border-color: var(--muted); }
+
+.obs-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.obs-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.obs-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.obs-body { font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 100%; }
+
+/* Carousel visual */
+.carousel-visual {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  min-width: 150px;
+  text-align: center;
+}
+.img-placeholder-sm {
+  width: 110px; height: 140px;
+  background: var(--cream2);
+  border-radius: 6px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  border: 1px solid var(--border);
+}
+.dots-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 8px; }
+.dot-sm { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+.dot-sm.active { background: var(--ink); }
+.arrows-row { display: flex; justify-content: center; gap: 24px; color: var(--muted); font-size: 14px; }
+
+/* Image format visual */
+.img-format-visual {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 180px;
+}
+.fmt-box { text-align: center; }
+.fmt-icon {
+  width: 70px; height: 70px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.fmt-icon.jpg { background: var(--cream2); border: 1px solid var(--border); }
+.fmt-icon.webp { background: #edf5f0; border: 1px solid rgba(46,107,69,0.3); }
+.fmt-label { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted); }
+.fmt-size { font-size: 12px; font-weight: 600; margin-top: 2px; }
+.fmt-size.big { color: var(--bad); }
+.fmt-size.small { color: var(--good); }
+.fmt-arrow { font-size: 18px; color: var(--muted); }
+
+/* Obs footer */
+.obs-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.obs-insight, .obs-solution {
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 13px;
+}
+.obs-insight { background: #f9eded; border: 1px solid #d9a8a8; }
+.obs-solution { background: #edf5f0; border: 1px solid rgba(46,107,69,0.25); }
+.obs-insight-label, .obs-solution-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.obs-insight-label { color: var(--bad); }
+.obs-solution-label { color: var(--good); }
+.obs-insight p, .obs-solution p { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 100%; }
+
+/* ─── RESOLUTION GRID ─── */
+.resolution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.res-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px;
+  transition: transform .2s, border-color .2s;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+}
+.res-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--good), transparent);
+}
+.res-card:hover { transform: translateY(-2px); border-color: rgba(46,107,69,0.4); }
+.res-icon { font-size: 22px; margin-bottom: 12px; display: block; }
+.res-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.res-desc { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 100%; }
+
+/* ─── UI COMPARE ─── */
+.ui-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ui-panel {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 22px;
+}
+.ui-panel-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.ui-panel.before .ui-panel-label { color: var(--bad); }
+.ui-panel.after .ui-panel-label { color: var(--good); }
+
+.product-mockup { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.product-mockup.two-col { grid-template-columns: repeat(2, 1fr); }
+.prod-block {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: background .2s;
+}
+.prod-block:hover { background: var(--cream2); }
+
+.ui-note-text { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.6; max-width: 100%; }
+
+.view-more-btn {
+  width: 100%;
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 5px;
+  color: var(--muted);
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  padding: 8px;
+  margin-top: 6px;
+  cursor: none;
+  transition: border-color .2s, color .2s;
+}
+.view-more-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── RESULT FLOW ─── */
+.result-flow-wrap {
+  display: flex;
+  align-items: center;
+  margin-top: 36px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+.result-node {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 12px;
+  font-family: 'Geist Mono', monospace;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: border-color .2s;
+}
+.result-node.highlight {
+  background: #f3ede4;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.result-node:hover { border-color: var(--muted); }
+.result-arrow { color: var(--border); padding: 0 10px; font-size: 16px; flex-shrink: 0; }
+
+/* ─── CLOSING ─── */
+.closing {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-top: 36px;
+}
+.closing p { font-size: 15px; color: var(--ink2); line-height: 1.85; max-width: 100%; font-style: italic; }
+
+/* ─── CONNECT ─── */
+.connect-section {
+  background: var(--ink);
+  padding: 80px 0;
+  border-bottom: none;
+  opacity: 1 !important;
+  transform: none !important;
+}
+.connect-section .section-label { color: var(--muted); margin-bottom: 10px; }
+.connect-section h2 { font-family: 'Playfair Display', serif; color: var(--paper); margin-bottom: 14px; }
+.connect-section p { color: var(--muted); margin-bottom: 32px; max-width: 100%; }
+.connect-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-inv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: transparent;
+  color: var(--paper);
+  cursor: none;
+  text-decoration: none;
+  transition: background .22s, border-color .22s, transform .2s;
+}
+.btn-inv:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
+.btn-inv.solid-inv { background: var(--accent); border-color: var(--accent); }
+.btn-inv.solid-inv:hover { background: #c86a2a; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 24px 0;
+}
+.footer-inner { display: flex; align-items: center; justify-content: space-between; }
+.footer-copy { font-family: 'Geist Mono', monospace; font-size: 11px; color: rgba(255,255,255,.3); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+  .meta-cell:nth-child(2) { border-right: none; }
+  .meta-cell:nth-child(1),
+  .meta-cell:nth-child(2),
+  .meta-cell:nth-child(3),
+  .meta-cell:nth-child(4) { border-bottom: 1px solid var(--border); }
+  .meta-cell:nth-child(4) { border-right: none; }
+  .meta-cell--report { grid-column: 1 / -1; border-right: none; }
+  .flows-grid, .issues-grid, .resolution-grid, .ui-compare, .obs-footer { grid-template-columns: 1fr; }
+  .obs-header { grid-template-columns: 1fr; }
+  .vitals-grid { grid-template-columns: repeat(3, 1fr); }
+  .diag-grid { grid-template-columns: repeat(3, 1fr); }
+  .perf-hero { grid-template-columns: 1fr; }
+  .funnel-row { grid-template-columns: 90px 1fr 90px 40px; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="progress"></div>
+
+<!-- NAV -->
+<header>
+  <div class="wrap nav">
+    <span class="nav-logo">Divyansh Srivastava</span>
+    <div class="nav-right">
+      <a href="#">Work</a>
+      <a href="#">Resume</a>
+      <a href="#">Connect</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── HERO ── -->
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-eyebrow">Performance Investigation · 2026</div>
+      <h1>Why Vero Moda was <em>losing users</em> before they even arrived</h1>
+      <p class="hero-sub">
+        A deep-dive into Bestseller's product page performance, using GA4 funnel analysis and Lighthouse diagnostics to trace 600k+ sessions and find where — and why — users were vanishing.
+      </p>
+
+      <div class="hero-img-wrap">
+        <img src="./shutterstock_284543756.webp" alt="Vero Moda — Bestseller Performance Investigation" loading="eager">
+      </div>
+
+      <div class="meta-section-label">Project at a Glance</div>
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="meta-label">Company</div>
+          <div class="meta-value">Bestseller / Vero Moda</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Tools</div>
+          <div class="meta-value">GA4 · Lighthouse · PSI</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Sessions Analysed</div>
+          <div class="meta-value">634,884</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">UX + Performance Research</div>
+        </div>
+        <div class="meta-cell meta-cell--report">
+          <div class="meta-label">Full Report</div>
+          <a href="./__FINAL DOC.pdf" target="_blank" class="report-link">
+            <span class="report-link-icon">📄</span>
+            <span>70-page PDF ↗</span>
+          </a>
+          <div class="report-sub">Complete research document</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── CONTEXT ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">01 — Background</div>
+      <h2>The company</h2>
+      <p>
+        Bestseller is a Danish fashion company behind global brands including Vero Moda, Jack &amp; Jones, Only and Selected. Their growth is fuelled by performance marketing campaigns that send users directly to product pages — making page speed a revenue-critical metric.
+      </p>
+      <div class="callout">
+        <strong>The business problem</strong>
+        <ul>
+          <li>Performance marketing spend was not converting at expected rates.</li>
+          <li>Users arriving from paid ads were exiting immediately — before any meaningful interaction.</li>
+          <li>The hypothesis: the drop was a performance issue, not a targeting issue.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── FUNNEL ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">02 — Funnel Analysis</div>
+      <h2>Where do users drop?</h2>
+      <p>
+        634,884 sessions were traced through the purchase funnel in GA4. The results revealed a catastrophic drop immediately after landing.
+      </p>
+
+      <div class="funnel-wrap" id="funnelChart">
+        <div class="funnel-row">
+          <div class="funnel-label">Ad Click</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar f1" data-width="100"></div></div>
+          <div class="funnel-sessions">634,884 sessions</div>
+          <div class="funnel-pct">100%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Product Page</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar f2" data-width="100"></div></div>
+          <div class="funnel-sessions">634,884 sessions</div>
+          <div class="funnel-pct">100%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Add to Cart</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar f3" data-width="11"></div></div>
+          <div class="funnel-sessions">69,837 sessions</div>
+          <div class="funnel-pct">11%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Checkout</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar f4" data-width="5"></div></div>
+          <div class="funnel-sessions">31,744 sessions</div>
+          <div class="funnel-pct">5%</div>
+        </div>
+        <div class="funnel-row">
+          <div class="funnel-label">Purchase</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar f5" data-width="3"></div></div>
+          <div class="funnel-sessions">19,046 sessions</div>
+          <div class="funnel-pct">3%</div>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        <div class="alert-icon">⚠</div>
+        <p><strong>89% of users</strong> exited the funnel between the product page and Add to Cart — the single largest drop-off in the entire journey.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── USER FLOWS ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">03 — User Flow Investigation</div>
+      <h2>Two dominant entry journeys</h2>
+      <p>
+        User flow analysis showed that almost no traffic entered via the homepage. Ad campaigns were sending users directly into product discovery surfaces — two patterns emerged.
+      </p>
+
+      <div class="flows-grid">
+        <div class="flow-card">
+          <div class="flow-card-label">Flow 01 — Direct to PDP</div>
+          <div class="flow-mini">
+            <div class="mini-node">Ad Click</div>
+            <span class="mini-arrow">→</span>
+            <div class="mini-node">Product Page</div>
+            <span class="mini-arrow">→</span>
+            <div class="mini-node bad">Exit</div>
+          </div>
+          <p>Users arriving directly on the product page frequently exited without scrolling or interacting. No dwell time was recorded.</p>
+        </div>
+        <div class="flow-card">
+          <div class="flow-card-label">Flow 02 — Product Listing</div>
+          <div class="flow-mini">
+            <div class="mini-node">Ad Click</div>
+            <span class="mini-arrow">→</span>
+            <div class="mini-node">PLP</div>
+            <span class="mini-arrow">→</span>
+            <div class="mini-node bad">Exit</div>
+          </div>
+          <p>Users who landed on the product listing page left without discovering relevant products. Poor recommendation surfaces accelerated drop.</p>
+        </div>
+      </div>
+
+      <div class="callout danger" style="margin-top: 24px;">
+        <strong>Two root causes identified</strong>
+        <ul>
+          <li><strong>Ad → PDP Drop:</strong> Slow product page loading causing abandonment before engagement.</li>
+          <li><strong>Ad → PLP Drop:</strong> Ineffective product discovery due to poor recommendation and filtering systems.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── CRITICAL DISCOVERY ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">04 — Critical Discovery</div>
+      <h2>The bottleneck was the page itself</h2>
+      <p>
+        Deeper investigation confirmed the largest exit cluster was happening during page load — before users could see any content at all. This pointed to a performance bottleneck, not a campaign targeting problem.
+      </p>
+
+      <div class="timeline-track">
+        <div class="tl-step">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-content">
+            <div class="tl-name">Ad Click</div>
+            <div class="tl-sub">t = 0ms</div>
+          </div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div>
+          <div class="tl-content">
+            <div class="tl-name">Page Request</div>
+            <div class="tl-sub">~200ms</div>
+          </div>
+        </div>
+        <div class="tl-step danger">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line danger"></div></div>
+          <div class="tl-content">
+            <div class="tl-name">Heavy JS Execution</div>
+            <div class="tl-sub">blocks thread 9.1s</div>
+          </div>
+        </div>
+        <div class="tl-step danger">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line danger"></div></div>
+          <div class="tl-content">
+            <div class="tl-name">First Paint</div>
+            <div class="tl-sub">3.6s</div>
+          </div>
+        </div>
+        <div class="tl-step danger">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line danger"></div></div>
+          <div class="tl-content">
+            <div class="tl-name">LCP</div>
+            <div class="tl-sub">8.0s</div>
+          </div>
+        </div>
+        <div class="tl-step danger">
+          <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+          <div class="tl-content">
+            <div class="tl-name">User Exit</div>
+            <div class="tl-sub">long before LCP</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── PAGE SPEED ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">05 — Google PageSpeed Insights</div>
+      <h2>Performance diagnostics</h2>
+      <p>
+        The product page was tested using Lighthouse under Slow 4G on an emulated Moto G Power. The results were severe.
+      </p>
+
+      <div class="perf-hero">
+        <div class="gauge-wrap">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" stroke="#e2dbd0" stroke-width="10" fill="none"/>
+            <circle cx="60" cy="60" r="52"
+              stroke="url(#rg)"
+              stroke-width="10"
+              fill="none"
+              stroke-linecap="round"
+              stroke-dasharray="327"
+              stroke-dashoffset="200"
+              id="gaugePath"
+            />
+            <defs>
+              <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#9b2335"/>
+                <stop offset="100%" stop-color="#b5601e"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="gauge-center">
+            <span class="gauge-score" id="gaugeNum">0</span>
+            <span class="gauge-lbl">Score</span>
+          </div>
+        </div>
+        <div class="perf-text">
+          <h3>Critical performance failure detected</h3>
+          <p>A score of 38/100 placed the product page firmly in the "Poor" bracket. With the Largest Contentful Paint clocking in at 8 seconds, the page was effectively invisible to users by the time it rendered.</p>
+          <p>For mobile users arriving from paid ads — often on cellular connections — the experience was a blank screen that never resolved.</p>
+          <div class="env-tags">
+            <span class="env-tag">Moto G Power</span>
+            <span class="env-tag">Slow 4G</span>
+            <span class="env-tag">Lighthouse 13</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <span class="section-tag">Core Web Vitals</span>
+        <div class="section-head-line"></div>
+      </div>
+
+      <div class="vitals-grid">
+        <div class="vital bad">
+          <span class="vital-val">3.6s</span>
+          <span class="vital-name">First Contentful Paint</span>
+        </div>
+        <div class="vital bad">
+          <span class="vital-val">8.0s</span>
+          <span class="vital-name">Largest Contentful Paint</span>
+        </div>
+        <div class="vital bad">
+          <span class="vital-val">2,090ms</span>
+          <span class="vital-name">Total Blocking Time</span>
+        </div>
+        <div class="vital good">
+          <span class="vital-val">0.007</span>
+          <span class="vital-name">Cumulative Layout Shift</span>
+        </div>
+        <div class="vital neutral">
+          <span class="vital-val">6.4s</span>
+          <span class="vital-name">Speed Index</span>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <span class="section-tag">Network Payload</span>
+        <div class="section-head-line"></div>
+      </div>
+
+      <div class="diag-grid">
+        <div class="diag-card">
+          <span class="diag-val">7,223 KB</span>
+          <span class="diag-desc">Total network payload</span>
+        </div>
+        <div class="diag-card">
+          <span class="diag-val">2,359 KB</span>
+          <span class="diag-desc">Image optimization potential</span>
+        </div>
+        <div class="diag-card">
+          <span class="diag-val">1,160 KB</span>
+          <span class="diag-desc">Unused JavaScript</span>
+        </div>
+        <div class="diag-card">
+          <span class="diag-val">63 KB</span>
+          <span class="diag-desc">Unused CSS</span>
+        </div>
+        <div class="diag-card">
+          <span class="diag-val">602 KB</span>
+          <span class="diag-desc">Cache lifetime savings</span>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <span class="section-tag">Root Causes</span>
+        <div class="section-head-line"></div>
+      </div>
+
+      <div class="issues-grid">
+        <div class="issue-card">
+          <div class="issue-title">Heavy JavaScript execution</div>
+          <div class="issue-desc">Main thread blocked for 9.1 seconds. No user interactions could be registered during this window. Users were staring at a locked, partially rendered page.</div>
+        </div>
+        <div class="issue-card">
+          <div class="issue-title">Excessive main-thread work</div>
+          <div class="issue-desc">12.5 seconds of total main thread work — scripts, layout recalculations, and style processing consumed far beyond acceptable thresholds.</div>
+        </div>
+        <div class="issue-card">
+          <div class="issue-title">Large network payload</div>
+          <div class="issue-desc">Over 7 MB transferred during initial load. On a Slow 4G connection, this alone adds several seconds of wait time before any rendering begins.</div>
+        </div>
+        <div class="issue-card">
+          <div class="issue-title">Critical request chains</div>
+          <div class="issue-desc">Dependency chains between network requests introduced an additional 1.6 seconds of latency — resources were waiting on each other before loading.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── UX OBSERVATIONS ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">06 — UX Engineering</div>
+      <h2>Interface decisions driving the bloat</h2>
+      <p>
+        Beyond raw Lighthouse diagnostics, a closer inspection of the product page interface revealed specific design choices that were directly contributing to the performance problem.
+      </p>
+
+      <div style="margin-top: 32px;">
+        <!-- OBS 1 -->
+        <div class="obs-card">
+          <div class="obs-header">
+            <div>
+              <div class="obs-num">Observation 01</div>
+              <div class="obs-title">Image navigation rendering</div>
+              <p class="obs-body">
+                Every product page dynamically generated one DOM dot indicator per product image. A product with 20 images created 20 dots, 20 click handlers, and 20 layout recalculations — multiplied across hundreds of products viewed per session.
+              </p>
+            </div>
+            <div class="carousel-visual">
+              <div class="img-placeholder-sm">🧥</div>
+              <div class="dots-row">
+                <span class="dot-sm active"></span>
+                <span class="dot-sm"></span>
+                <span class="dot-sm"></span>
+                <span class="dot-sm"></span>
+                <span class="dot-sm"></span>
+                <span class="dot-sm"></span>
+                <span class="dot-sm"></span>
+                <span class="dot-sm"></span>
+              </div>
+              <div class="arrows-row">
+                <span>←</span>
+                <span>→</span>
+              </div>
+            </div>
+          </div>
+          <div class="obs-footer">
+            <div class="obs-insight">
+              <div class="obs-insight-label">Performance Impact</div>
+              <p>Excessive DOM nodes and JavaScript recalculation increase Total Blocking Time and delay rendering.</p>
+            </div>
+            <div class="obs-solution">
+              <div class="obs-solution-label">Recommended Fix</div>
+              <p>Replace dot navigation with simple in-frame arrow controls. Dramatic reduction in DOM complexity.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- OBS 2 -->
+        <div class="obs-card">
+          <div class="obs-header">
+            <div>
+              <div class="obs-num">Observation 02</div>
+              <div class="obs-title">High-resolution product images</div>
+              <p class="obs-body">
+                Fashion e-commerce demands high image quality — fabric texture, color accuracy and garment detail are all communicated photographically. As a result, images are uploaded at maximum resolution without format optimisation, accounting for over 2 MB of avoidable payload.
+              </p>
+            </div>
+            <div class="img-format-visual">
+              <div class="fmt-box">
+                <div class="fmt-icon jpg">📷</div>
+                <div class="fmt-label">JPG / PNG</div>
+                <div class="fmt-size big">~800 KB</div>
+              </div>
+              <div class="fmt-arrow">→</div>
+              <div class="fmt-box">
+                <div class="fmt-icon webp">✨</div>
+                <div class="fmt-label">WebP</div>
+                <div class="fmt-size small">~300 KB</div>
+              </div>
+            </div>
+          </div>
+          <div class="obs-footer">
+            <div class="obs-insight">
+              <div class="obs-insight-label">Business Constraint</div>
+              <p>Reducing resolution was not feasible — visual clarity is a primary purchasing signal in fashion.</p>
+            </div>
+            <div class="obs-solution">
+              <div class="obs-solution-label">Recommended Fix</div>
+              <p>Convert images to WebP format. Maintains visual quality while reducing file size by ~60%.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── RESOLUTION ── -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">07 — Project Resolution</div>
+      <h2>What was proposed and built</h2>
+      <p>
+        With the bottlenecks mapped, a two-pronged solution was designed: reduce the time-to-interactive for users arriving from paid ads, and expand the product discovery surface to catch non-converting visitors.
+      </p>
+
+      <div class="resolution-grid">
+        <div class="res-card">
+          <span class="res-icon">⚡</span>
+          <div class="res-title">Lazy loading implementation</div>
+          <p class="res-desc">
+            Images and non-critical assets were deferred until they entered the viewport. Users arriving from ads now saw rendered content significantly faster — critical for the first 3-second window where abandonment is highest.
+          </p>
+        </div>
+        <div class="res-card">
+          <span class="res-icon">🛍</span>
+          <div class="res-title">Expanded product discovery</div>
+          <p class="res-desc">
+            Users who landed but didn't convert were shown additional products inline. Instead of exiting, they were routed into browse mode — keeping them engaged in the Vero Moda ecosystem.
+          </p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <span class="section-tag">Recommendation Layout Redesign</span>
+        <div class="section-head-line"></div>
+      </div>
+
+      <div class="ui-compare">
+        <div class="ui-panel before">
+          <div class="ui-panel-label">Before — 3-col carousel</div>
+          <div class="product-mockup">
+            <div class="prod-block">👗</div>
+            <div class="prod-block">👔</div>
+            <div class="prod-block">👖</div>
+            <div class="prod-block">🧥</div>
+            <div class="prod-block">👟</div>
+            <div class="prod-block">👗</div>
+          </div>
+          <p class="ui-note-text">Two rows of 3 products in a horizontal carousel. On mobile, only 1 product visible per row. Users rarely scrolled.</p>
+        </div>
+        <div class="ui-panel after">
+          <div class="ui-panel-label">After — 2-col vertical</div>
+          <div class="product-mockup two-col">
+            <div class="prod-block">👗</div>
+            <div class="prod-block">👔</div>
+          </div>
+          <button class="view-more-btn">+ View More Products</button>
+          <div class="product-mockup two-col" style="margin-top:6px;opacity:0.5;">
+            <div class="prod-block">👖</div>
+            <div class="prod-block">🧥</div>
+          </div>
+          <p class="ui-note-text">2-column layout with progressive loading. More visible product surface, simpler scroll interaction.</p>
+        </div>
+      </div>
+
+      <div class="result-flow-wrap">
+        <div class="result-node">Ad Click</div>
+        <div class="result-arrow">→</div>
+        <div class="result-node highlight">Faster First Paint</div>
+        <div class="result-arrow">→</div>
+        <div class="result-node">Content Visible</div>
+        <div class="result-arrow">→</div>
+        <div class="result-node highlight">Product Discovery</div>
+        <div class="result-arrow">→</div>
+        <div class="result-node">Higher Engagement</div>
+      </div>
+
+      <div class="closing">
+        <p>
+          By mapping the drop-off to a specific performance bottleneck rather than a marketing problem, the investigation reframed the solution entirely. The redesigned experience reduces friction in the critical first seconds of a user's visit and creates secondary conversion opportunities for users who don't immediately purchase — maximising the value of every ad click.
+        </p>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<!-- CONNECT -->
+<section class="connect-section">
+  <div class="wrap">
+    <div class="section-label">Get in touch</div>
+    <h2>Let's build something together</h2>
+    <p>Open to discussing projects, creative directions, and opportunities.</p>
+    <div class="connect-btns">
+      <a href="#" class="btn-inv">Email Me</a>
+      <a href="#" class="btn-inv solid-inv">WhatsApp</a>
+      <a href="#" class="btn-inv">Resume ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-copy">© 2026 Divyansh Srivastava. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+let mx = -100, my = -100, cx = -100, cy = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function loop() {
+  cx += (mx - cx) * 0.18;
+  cy += (my - cy) * 0.18;
+  cursor.style.left = cx + 'px';
+  cursor.style.top  = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, button, .flow-card, .issue-card, .res-card, .obs-card, .vital, .diag-card, .c-stat, .report-link').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+});
+
+/* ── SCROLL PROGRESS ── */
+const progress = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  progress.style.width = pct + '%';
+});
+
+/* ── SCROLL REVEAL ── */
+const sections = document.querySelectorAll('section:not(.hero):not(.connect-section)');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+sections.forEach(s => ro.observe(s));
+
+/* ── FUNNEL BARS ── */
+const funnelObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.funnel-bar').forEach((bar, i) => {
+        const w = bar.getAttribute('data-width');
+        setTimeout(() => { bar.style.width = w + '%'; }, i * 120);
+      });
+      funnelObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const fc = document.getElementById('funnelChart');
+if (fc) funnelObs.observe(fc);
+
+/* ── GAUGE ── */
+const gaugeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const path = document.getElementById('gaugePath');
+      const numEl = document.getElementById('gaugeNum');
+      const target = 38;
+      const offset = 327 - (target / 100) * 327;
+      path.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1)';
+      path.style.strokeDashoffset = offset;
+      let current = 0;
+      const interval = setInterval(() => {
+        current++;
+        numEl.textContent = current;
+        if (current >= target) clearInterval(interval);
+      }, 1400 / target);
+      gaugeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+const gaugeEl = document.querySelector('.perf-hero');
+if (gaugeEl) gaugeObs.observe(gaugeEl);
+
+/* ── STAGGERED CARDS ── */
+const staggerObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.vital, .diag-card, .issue-card, .res-card, .flow-card').forEach((card, i) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(14px)';
+        card.style.transition = `opacity 0.4s ease ${i*80}ms, transform 0.4s ease ${i*80}ms`;
+        setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 60 + i * 80);
+      });
+      staggerObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.vitals-grid, .diag-grid, .issues-grid, .resolution-grid, .flows-grid').forEach(el => staggerObs.observe(el));
+
+/* ── CAROUSEL DOTS ── */
+const dots = document.querySelectorAll('.dot-sm');
+let activeIdx = 0;
+setInterval(() => {
+  dots.forEach(d => d.classList.remove('active'));
+  activeIdx = (activeIdx + 1) % dots.length;
+  dots[activeIdx].classList.add('active');
+}, 600);
+
+/* ── TIMELINE PULSE ── */
+document.querySelectorAll('.tl-step.danger .tl-dot').forEach((dot, i) => {
+  dot.animate(
+    [{ boxShadow: '0 0 0 0 rgba(155,35,53,0.5)' }, { boxShadow: '0 0 0 8px rgba(155,35,53,0)' }],
+    { duration: 1400, delay: i * 300, iterations: Infinity, easing: 'ease-out' }
+  );
+});
+</script>
+
+</body>
+</html>

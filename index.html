@@ -3,29 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Divyansh Srivastava – Product Designer</title>
+<title>Divyansh Srivastava - Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ─── TOKENS ─────────────────────────────── */
 :root {
-  --cream:   #f5f0e8;
-  --cream2:  #ede7da;
-  --paper:   #faf8f4;
-  --ink:     #1a1714;
-  --ink2:    #3d3830;
-  --muted:   #9a9087;
-  --border:  #e2dbd0;
-  --accent:  #b5601e;
+  --cream: #f5f0e8;
+  --cream2: #ede7da;
+  --paper: #faf8f4;
+  --ink: #1a1714;
+  --ink2: #3d3830;
+  --muted: #9a9087;
+  --border: #e2dbd0;
+  --accent: #b5601e;
   --accent2: #2a5c8a;
-  --good:    #2e6b45;
+  --good: #2e6b45;
   --r: 16px;
   --rl: 22px;
 }
 
-/* ─── RESET ──────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -39,10 +37,10 @@ body {
 a { text-decoration: none; color: inherit; }
 img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-/* ─── CUSTOM CURSOR ──────────────────────── */
 #cursor {
   position: fixed;
-  width: 14px; height: 14px;
+  width: 14px;
+  height: 14px;
   background: var(--ink);
   border-radius: 50%;
   pointer-events: none;
@@ -52,7 +50,8 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   mix-blend-mode: multiply;
 }
 #cursor.expand {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
   background: var(--accent);
   opacity: 0.55;
 }
@@ -61,7 +60,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   mix-blend-mode: normal;
 }
 
-/* ─── NOISE OVERLAY ──────────────────────── */
 body::after {
   content: '';
   position: fixed;
@@ -71,12 +69,12 @@ body::after {
   z-index: 9998;
 }
 
-/* ─── WRAP ───────────────────────────────── */
 .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
 
-/* ─── NAV ────────────────────────────────── */
 header {
-  position: sticky; top: 0; z-index: 200;
+  position: sticky;
+  top: 0;
+  z-index: 200;
   background: rgba(250,248,244,.88);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
@@ -109,17 +107,17 @@ header {
 .nav-right a:hover { color: var(--ink); }
 
 .nav-dot {
-  width: 8px; height: 8px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--good);
   animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,107,69,.5); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,107,69,.5); }
   50% { opacity: .8; box-shadow: 0 0 0 6px rgba(46,107,69,0); }
 }
 
-/* ─── HERO ───────────────────────────────── */
 .hero {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -146,7 +144,8 @@ header {
 .hero-eyebrow::before {
   content: '';
   display: inline-block;
-  width: 24px; height: 1px;
+  width: 24px;
+  height: 1px;
   background: var(--muted);
 }
 
@@ -164,10 +163,7 @@ header {
   color: var(--accent);
 }
 
-.hero-bottom {
-  margin-top: 48px;
-}
-
+.hero-bottom { margin-top: 48px; }
 .hero-cta-wrap { display: flex; gap: 12px; }
 
 .btn {
@@ -190,9 +186,7 @@ header {
 .btn.solid { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn.solid:hover { background: var(--ink); border-color: var(--ink); }
 
-/* HERO IMAGE */
 .hero-right { position: relative; }
-
 .hero-image {
   width: 100%;
   height: 520px;
@@ -200,13 +194,13 @@ header {
   overflow: hidden;
   position: relative;
 }
-
 .hero-image img { transition: transform .6s ease; }
 .hero-image:hover img { transform: scale(1.04); }
 
 .hero-tag {
   position: absolute;
-  bottom: 20px; left: 20px;
+  bottom: 20px;
+  left: 20px;
   background: rgba(250,248,244,.9);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
@@ -224,7 +218,6 @@ header {
   margin-bottom: 2px;
 }
 
-/* ─── MARQUEE ────────────────────────────── */
 .marquee-wrap {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -248,16 +241,12 @@ header {
   padding: 0 40px;
   flex-shrink: 0;
 }
-.marquee-dot {
-  color: var(--accent);
-  padding: 0;
-}
+.marquee-dot { color: var(--accent); padding: 0; }
 @keyframes marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to { transform: translateX(-50%); }
 }
 
-/* ─── SECTIONS ───────────────────────────── */
 section { padding: 96px 0; border-bottom: 1px solid var(--border); }
 
 .section-header {
@@ -290,25 +279,25 @@ h2 {
   color: var(--muted);
 }
 
-/* ─── WORK GRID ──────────────────────────── */
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 }
 
 .card {
+  aspect-ratio: 4 / 3;
   border-radius: var(--rl);
   overflow: hidden;
   position: relative;
-  aspect-ratio: 4/3;
   background: var(--cream2);
   border: 1px solid var(--border);
   display: block;
 }
 
 .card-img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center top;
   transition: transform .5s cubic-bezier(.25,.46,.45,.94);
@@ -344,13 +333,17 @@ h2 {
 
 .card-arrow {
   position: absolute;
-  top: 20px; right: 20px;
-  width: 36px; height: 36px;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: rgba(250,248,244,.15);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.2);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   font-size: 16px;
   opacity: 0;
@@ -359,21 +352,6 @@ h2 {
 }
 .card:hover .card-arrow { opacity: 1; transform: translateY(0); }
 
-/* empty card placeholder */
-.card-empty {
-  background: var(--cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 1px dashed var(--border);
-}
-
-/* ─── EXPERIENCE ─────────────────────────── */
 .exp-list { display: flex; flex-direction: column; gap: 0; }
 
 .exp-item {
@@ -388,8 +366,6 @@ h2 {
 }
 
 .exp-item:last-child { border-bottom: 1px solid var(--border); }
-
-.exp-meta {}
 .exp-company {
   font-family: 'Geist Mono', monospace;
   font-size: 11px;
@@ -403,8 +379,6 @@ h2 {
   font-size: 10px;
   color: var(--muted);
 }
-
-.exp-body {}
 .exp-role {
   font-family: 'Playfair Display', serif;
   font-size: 20px;
@@ -431,7 +405,6 @@ h2 {
   height: fit-content;
 }
 
-/* ─── TOOLS ──────────────────────────────── */
 .tools-desc {
   font-size: 14px;
   color: var(--muted);
@@ -473,7 +446,6 @@ h2 {
 }
 .tool:hover img { filter: invert(1); }
 
-/* INTERESTS */
 .interests-wrap { margin-top: 48px; }
 .interests-label {
   font-family: 'Geist Mono', monospace;
@@ -496,7 +468,6 @@ h2 {
 }
 .chip:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
-/* ─── CONNECT ────────────────────────────── */
 .connect-section {
   background: var(--ink);
   border-bottom: none;
@@ -540,7 +511,6 @@ h2 {
 .btn-inv.solid-inv { background: var(--accent); border-color: var(--accent); }
 .btn-inv.solid-inv:hover { background: #c86a2a; }
 
-.connect-right {}
 .socials-label {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
@@ -565,7 +535,6 @@ h2 {
 .social-item:hover { color: var(--paper); }
 .social-item span { font-size: 18px; }
 
-/* ─── FOOTER ─────────────────────────────── */
 footer {
   background: var(--ink);
   border-top: 1px solid rgba(255,255,255,.08);
@@ -593,7 +562,6 @@ footer {
 }
 .footer-links a:hover { color: rgba(255,255,255,.7); }
 
-/* ─── SCROLL REVEAL ──────────────────────── */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -604,11 +572,9 @@ footer {
   transform: translateY(0);
 }
 
-/* ─── RESPONSIVE ─────────────────────────── */
 @media (max-width: 1024px) {
   .hero { grid-template-columns: 1fr; min-height: auto; gap: 48px; padding: 72px 0 64px; }
   .hero-image { height: 420px; }
-  .work-grid { grid-template-columns: 1fr 1fr; }
   .tool-grid { grid-template-columns: repeat(4, 1fr); }
   .connect-inner { grid-template-columns: 1fr; gap: 56px; }
 }
@@ -634,11 +600,8 @@ footer {
 </style>
 </head>
 <body>
-
-<!-- CURSOR -->
 <div id="cursor"></div>
 
-<!-- NAV -->
 <header>
   <div class="wrap nav">
     <div class="logo">Divyansh Srivastava</div>
@@ -651,14 +614,13 @@ footer {
   </div>
 </header>
 
-<!-- HERO -->
 <div class="wrap">
   <section class="hero" style="opacity:1;transform:none;border-bottom:none;">
     <div class="hero-left">
       <div>
         <div class="hero-eyebrow">Product Designer · IIT Roorkee</div>
         <h1>
-          My life revolves around mathematics, data, psychology and the arts — 
+          My life revolves around mathematics, data, psychology and the arts -
           the alchemy through which I become a product
           <em id="animated-word">designer.</em>
         </h1>
@@ -683,10 +645,8 @@ footer {
   </section>
 </div>
 
-<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <!-- two copies for seamless loop -->
     <span class="marquee-item">Product Design</span><span class="marquee-item marquee-dot">·</span>
     <span class="marquee-item">UX Research</span><span class="marquee-item marquee-dot">·</span>
     <span class="marquee-item">Data Analysis</span><span class="marquee-item marquee-dot">·</span>
@@ -704,7 +664,6 @@ footer {
   </div>
 </div>
 
-<!-- WORK -->
 <div class="wrap">
   <section id="work">
     <div class="section-header reveal">
@@ -712,7 +671,7 @@ footer {
         <div class="section-label">Selected Work</div>
         <h2>Projects</h2>
       </div>
-      <span class="section-count">03 case studies</span>
+      <span class="section-count">04 case studies</span>
     </div>
 
     <div class="work-grid">
@@ -734,7 +693,16 @@ footer {
         <div class="card-arrow">↗</div>
       </a>
 
-      <a href="helmet.html" class="card reveal" style="transition-delay:.16s">
+      <a href="GPproject.html" class="card reveal" style="transition-delay:.16s">
+        <img class="card-img" src="GPproject/shutterstock_284543756.webp" alt="Vero Moda Performance Investigation" loading="lazy">
+        <div class="card-overlay">
+          <div class="card-title">Vero Moda</div>
+          <div class="card-sub">Performance Research · GA4 · Lighthouse</div>
+        </div>
+        <div class="card-arrow">↗</div>
+      </a>
+
+      <a href="helmet.html" class="card reveal" style="transition-delay:.24s">
         <img class="card-img" src="photos/helmet%20projet%20thumbnail.webp" alt="Helmet design project" loading="lazy">
         <div class="card-overlay">
           <div class="card-title">Helmet Design</div>
@@ -746,7 +714,6 @@ footer {
   </section>
 </div>
 
-<!-- EXPERIENCE -->
 <div class="wrap">
   <section>
     <div class="section-header reveal">
@@ -797,7 +764,6 @@ footer {
   </section>
 </div>
 
-<!-- TOOLS -->
 <div class="wrap">
   <section>
     <div class="section-header reveal">
@@ -808,7 +774,7 @@ footer {
     </div>
 
     <p class="tools-desc reveal">
-      Developed over 5–6 years across NIFT B.FTech, IIT Roorkee MDes, and hands-on roles at RareRabbit and Shopdeck — a toolkit that spans design, analytics, marketing, and industrial fabrication.
+      Developed over 5-6 years across NIFT B.FTech, IIT Roorkee MDes, and hands-on roles at RareRabbit and Shopdeck - a toolkit that spans design, analytics, marketing, and industrial fabrication.
     </p>
 
     <div class="tool-grid reveal">
@@ -834,7 +800,6 @@ footer {
   </section>
 </div>
 
-<!-- CONNECT -->
 <section class="connect-section">
   <div class="wrap">
     <div style="padding: 96px 0;">
@@ -842,7 +807,7 @@ footer {
         <div>
           <div class="section-label" style="color:var(--muted);margin-bottom:10px;">Get in touch</div>
           <h2>Let's build something together</h2>
-          <p class="connect-sub">Open to discussing projects, creative directions, and opportunities. Reach out through any channel — I usually reply within a day.</p>
+          <p class="connect-sub">Open to discussing projects, creative directions, and opportunities. Reach out through any channel - I usually reply within a day.</p>
           <div class="connect-btns">
             <a href="about.html" class="btn-inv">Email Me</a>
             <a href="about.html" class="btn-inv solid-inv">WhatsApp</a>
@@ -868,7 +833,6 @@ footer {
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="wrap footer-inner">
     <div class="footer-copy">© 2026 Divyansh Srivastava. All rights reserved.</div>
@@ -880,7 +844,6 @@ footer {
 </footer>
 
 <script>
-/* ── CURSOR ── */
 const cursor = document.getElementById('cursor');
 let mx = -100, my = -100;
 let cx = -100, cy = -100;
@@ -901,7 +864,6 @@ hovers.forEach(el => {
   el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
 });
 
-/* ── TYPEWRITER ── */
 const words = ['designer.', 'thinker.', 'enthusiast.', 'nerd.'];
 const el = document.getElementById('animated-word');
 let wi = 0, ci = words[0].length, del = true;
@@ -911,24 +873,34 @@ function type() {
   if (del) {
     ci--;
     el.textContent = w.substring(0, ci);
-    if (ci === 0) { del = false; wi = (wi + 1) % words.length; setTimeout(type, 320); return; }
+    if (ci === 0) {
+      del = false;
+      wi = (wi + 1) % words.length;
+      setTimeout(type, 320);
+      return;
+    }
     setTimeout(type, 75);
   } else {
     ci++;
     el.textContent = words[wi].substring(0, ci);
-    if (ci === words[wi].length) { setTimeout(() => { del = true; type(); }, 1100); return; }
+    if (ci === words[wi].length) {
+      setTimeout(() => {
+        del = true;
+        type();
+      }, 1100);
+      return;
+    }
     setTimeout(type, 95);
   }
 }
 setTimeout(type, 900);
 
-/* ── SCROLL REVEAL ── */
 const reveals = document.querySelectorAll('.reveal');
 const ro = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), 60);
-      ro.unobserve(e.target);
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), 60);
+      ro.unobserve(entry.target);
     }
   });
 }, { threshold: 0.1 });
@@ -936,3 +908,4 @@ reveals.forEach(r => ro.observe(r));
 </script>
 </body>
 </html>
+

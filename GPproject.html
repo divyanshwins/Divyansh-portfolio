@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,18 +12,26 @@
 <style>
 /* ─── TOKENS ─── */
 :root {
-  --cream:  #f5f0e8;
-  --cream2: #ede7da;
-  --paper:  #faf8f4;
-  --ink:    #1a1714;
-  --ink2:   #3d3830;
-  --muted:  #9a9087;
-  --border: #e2dbd0;
-  --accent: #b5601e;
-  --good:   #2e6b45;
-  --warn:   #8a5c00;
-  --bad:    #9b2335;
-  --r:  16px;
+  --frost-white: #f3f6fb;
+  --pure-white: #ffffff;
+  --mist-blue: #e8f0fb;
+  --silver-blue: #ced9e8;
+  --graphite-black: #111827;
+  --slate-blue: #334155;
+  --cool-gray: #64748b;
+  --brand-azure: #0a84ff;
+  --brand-cobalt: #2563eb;
+  --signal-green: #22a06b;
+  --signal-amber: #a16207;
+  --signal-red: #c2415d;
+  --chart-slate: #475569;
+  --chart-steel: #64748b;
+  --chart-orange: #d97706;
+  --chart-coral: #ea580c;
+  --midnight-blue: #0b1220;
+  --shadow-deep: 0 18px 40px rgba(11, 18, 32, 0.1);
+  --shadow-soft: 0 10px 24px rgba(11, 18, 32, 0.07);
+  --r: 16px;
   --rl: 22px;
   --max: 780px;
 }
@@ -34,13 +41,15 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Outfit', sans-serif;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--frost-white);
+  color: var(--graphite-black);
   line-height: 1.65;
   cursor: none;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+
+a { color: inherit; text-decoration: none; }
 
 /* ─── NOISE ─── */
 body::after {
@@ -55,7 +64,7 @@ body::after {
 #cursor {
   position: fixed;
   width: 14px; height: 14px;
-  background: var(--ink);
+  background: var(--brand-azure);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -65,7 +74,7 @@ body::after {
 }
 #cursor.expand {
   width: 38px; height: 38px;
-  background: var(--accent);
+  background: var(--brand-cobalt);
   opacity: 0.5;
 }
 
@@ -74,7 +83,7 @@ body::after {
   position: fixed;
   top: 0; left: 0;
   height: 2px;
-  background: var(--accent);
+  background: var(--brand-azure);
   width: 0%;
   z-index: 9997;
   transition: width 0.1s linear;
@@ -90,9 +99,9 @@ body::after {
 /* ─── NAV ─── */
 header {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(250,248,244,.88);
+  background: rgba(243,246,251,.88);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--silver-blue);
 }
 .nav {
   display: flex;
@@ -116,17 +125,17 @@ header {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cool-gray);
   transition: color .2s;
   cursor: none;
   text-decoration: none;
 }
-.nav-right a:hover { color: var(--ink); }
+.nav-right a:hover { color: var(--graphite-black); }
 
 /* ─── HERO ─── */
 .hero {
   padding: 56px 0 64px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--silver-blue);
   opacity: 1 !important;
   transform: none !important;
 }
@@ -139,14 +148,14 @@ header {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cool-gray);
   margin-bottom: 20px;
 }
 .hero-eyebrow::before {
   content: '';
   display: inline-block;
   width: 24px; height: 1px;
-  background: var(--muted);
+  background: var(--brand-azure);
 }
 
 h1 {
@@ -157,11 +166,11 @@ h1 {
   line-height: 1.15;
   margin-bottom: 20px;
 }
-h1 em { font-style: italic; color: var(--accent); }
+h1 em { font-style: italic; color: var(--brand-cobalt); }
 
 .hero-sub {
   font-size: 15px;
-  color: var(--muted);
+  color: var(--cool-gray);
   max-width: 580px;
   line-height: 1.85;
   margin-bottom: 40px;
@@ -171,7 +180,7 @@ h1 em { font-style: italic; color: var(--accent); }
   font-family: 'Playfair Display', serif;
   font-size: 18px;
   font-weight: 400;
-  color: var(--ink);
+  color: var(--graphite-black);
   margin-top: 36px;
   margin-bottom: 14px;
 }
@@ -181,7 +190,8 @@ h1 em { font-style: italic; color: var(--accent); }
   margin-bottom: 40px;
   border-radius: var(--rl);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--silver-blue);
+  box-shadow: var(--shadow-deep);
 }
 .hero-img-wrap img {
   display: block;
@@ -195,19 +205,21 @@ h1 em { font-style: italic; color: var(--accent); }
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0;
-  border: 1px solid var(--border);
+  border: 1px solid var(--silver-blue);
   border-radius: var(--r);
   overflow: hidden;
+  background: rgba(255,255,255,.9);
+  box-shadow: var(--shadow-soft);
 }
 .meta-cell {
   padding: 20px 22px;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--silver-blue);
 }
 .meta-cell:last-child { border-right: none; }
 
 /* Report cell */
 .meta-cell--report {
-  background: #f3ede4;
+  background: rgba(232,240,251,.78);
 }
 .report-link {
   display: inline-flex;
@@ -216,18 +228,18 @@ h1 em { font-style: italic; color: var(--accent); }
   font-family: 'Geist Mono', monospace;
   font-size: 12px;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--brand-azure);
   text-decoration: none;
   cursor: none;
   transition: color .2s, gap .2s;
   margin-bottom: 4px;
 }
-.report-link:hover { color: #8a4414; gap: 8px; }
+.report-link:hover { color: var(--brand-cobalt); gap: 8px; }
 .report-link-icon { font-size: 14px; }
 .report-sub {
   font-family: 'Geist Mono', monospace;
   font-size: 9px;
-  color: var(--muted);
+  color: var(--cool-gray);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -236,20 +248,20 @@ h1 em { font-style: italic; color: var(--accent); }
   font-size: 9px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cool-gray);
   margin-bottom: 6px;
 }
 .meta-value {
   font-size: 13px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--graphite-black);
   line-height: 1.4;
 }
 
 /* ─── SECTIONS ─── */
 section {
   padding: 64px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--silver-blue);
   opacity: 0;
   transform: translateY(20px);
   transition: opacity .6s ease, transform .6s ease;
@@ -261,7 +273,7 @@ section.visible { opacity: 1; transform: translateY(0); }
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cool-gray);
   margin-bottom: 12px;
 }
 
@@ -276,19 +288,20 @@ h2 {
 
 p {
   font-size: 15px;
-  color: var(--ink2);
+  color: var(--slate-blue);
   line-height: 1.85;
   max-width: 640px;
 }
 
 /* ─── CALLOUT ─── */
 .callout {
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  background: rgba(232,240,251,.72);
+  border: 1px solid rgba(10,132,255,.18);
+  border-left: 3px solid var(--brand-azure);
   border-radius: 10px;
   padding: 22px 26px;
   margin-top: 28px;
+  box-shadow: var(--shadow-soft);
 }
 .callout strong {
   display: block;
@@ -296,7 +309,7 @@ p {
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--brand-azure);
   margin-bottom: 14px;
 }
 .callout ul {
@@ -307,7 +320,7 @@ p {
 }
 .callout ul li {
   font-size: 14px;
-  color: var(--ink2);
+  color: var(--slate-blue);
   padding-left: 18px;
   position: relative;
   line-height: 1.65;
@@ -316,16 +329,18 @@ p {
   content: '→';
   position: absolute;
   left: 0;
-  color: var(--accent);
+  color: var(--brand-azure);
   font-size: 12px;
 }
-.callout ul li strong { font-weight: 600; color: var(--ink); }
+.callout ul li strong { font-weight: 600; color: var(--graphite-black); }
 
 .callout.danger {
-  border-left-color: var(--bad);
+  background: rgba(250,238,242,.82);
+  border-color: rgba(194,65,93,.18);
+  border-left-color: var(--signal-red);
 }
-.callout.danger strong { color: var(--bad); }
-.callout.danger ul li::before { color: var(--bad); }
+.callout.danger strong { color: var(--signal-red); }
+.callout.danger ul li::before { color: var(--signal-red); }
 
 /* ─── FUNNEL ─── */
 .funnel-wrap {
@@ -345,15 +360,15 @@ p {
 .funnel-label {
   font-family: 'Geist Mono', monospace;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--cool-gray);
 }
 
 .funnel-bar-wrap {
   height: 32px;
-  background: var(--cream2);
+  background: rgba(232,240,251,.68);
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--silver-blue);
 }
 
 .funnel-bar {
@@ -363,23 +378,23 @@ p {
   transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.f1 { background: var(--ink2); }
-.f2 { background: #6b5f52; }
-.f3 { background: var(--warn); }
-.f4 { background: var(--accent); }
-.f5 { background: var(--bad); }
+.f1 { background: var(--chart-slate); }
+.f2 { background: var(--chart-steel); }
+.f3 { background: var(--chart-orange); }
+.f4 { background: var(--chart-coral); }
+.f5 { background: var(--signal-red); }
 
 .funnel-sessions {
   font-family: 'Geist Mono', monospace;
   font-size: 11px;
-  color: var(--ink);
+  color: var(--graphite-black);
   white-space: nowrap;
 }
 
 .funnel-pct {
   font-family: 'Geist Mono', monospace;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--cool-gray);
   text-align: right;
 }
 
@@ -387,16 +402,17 @@ p {
   display: flex;
   gap: 16px;
   align-items: flex-start;
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--bad);
+  background: rgba(250,238,242,.82);
+  border: 1px solid rgba(194,65,93,.18);
+  border-left: 3px solid var(--signal-red);
   border-radius: 10px;
   padding: 22px 24px;
   margin-top: 28px;
+  box-shadow: var(--shadow-soft);
 }
 .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
-.alert-box p { font-size: 14px; color: var(--ink2); max-width: 100%; margin: 0; line-height: 1.75; }
-.alert-box strong { color: var(--bad); font-weight: 600; }
+.alert-box p { font-size: 14px; color: var(--slate-blue); max-width: 100%; margin: 0; line-height: 1.75; }
+.alert-box strong { color: var(--signal-red); font-weight: 600; }
 
 /* ─── FLOWS GRID ─── */
 .flows-grid {
@@ -407,23 +423,25 @@ p {
 }
 
 .flow-card {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: var(--r);
   padding: 24px;
-  transition: border-color .2s, transform .2s;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
   cursor: none;
+  box-shadow: var(--shadow-soft);
 }
 .flow-card:hover {
-  border-color: var(--accent);
+  border-color: var(--brand-azure);
   transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(11,18,32,.12);
 }
 .flow-card-label {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--cool-gray);
   margin-bottom: 16px;
 }
 
@@ -436,25 +454,25 @@ p {
 }
 
 .mini-node {
-  background: var(--paper);
-  border: 1px solid var(--border);
+  background: var(--pure-white);
+  border: 1px solid var(--silver-blue);
   border-radius: 6px;
   padding: 7px 12px;
   font-size: 12px;
   font-family: 'Geist Mono', monospace;
 }
 .mini-node.bad {
-  background: #f9eded;
-  border-color: #d9a8a8;
-  color: var(--bad);
+  background: rgba(250,238,242,.82);
+  border-color: rgba(194,65,93,.22);
+  color: var(--signal-red);
 }
 .mini-arrow {
-  color: var(--border);
+  color: var(--silver-blue);
   padding: 0 6px;
   font-size: 14px;
 }
 
-.flow-card p { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 100%; }
+.flow-card p { font-size: 13px; color: var(--cool-gray); line-height: 1.65; max-width: 100%; }
 
 /* ─── TIMELINE ─── */
 .timeline-track {
@@ -481,20 +499,20 @@ p {
 .tl-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: var(--border);
+  background: var(--silver-blue);
   flex-shrink: 0;
   z-index: 2;
 }
 .tl-step.danger .tl-dot {
-  background: var(--bad);
-  box-shadow: 0 0 0 3px rgba(155,35,53,0.15);
+  background: var(--signal-red);
+  box-shadow: 0 0 0 3px rgba(194,65,93,0.15);
 }
 
 .tl-line {
   flex: 1; height: 2px;
-  background: var(--border);
+  background: var(--silver-blue);
 }
-.tl-line.danger { background: rgba(155,35,53,0.35); }
+.tl-line.danger { background: rgba(194,65,93,0.35); }
 
 .tl-content {
   margin-top: 14px;
@@ -505,13 +523,13 @@ p {
   font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
-  color: var(--ink2);
+  color: var(--slate-blue);
 }
-.tl-step.danger .tl-name { color: var(--bad); }
+.tl-step.danger .tl-name { color: var(--signal-red); }
 .tl-sub {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
-  color: var(--muted);
+  color: var(--cool-gray);
   margin-top: 2px;
   white-space: nowrap;
 }
@@ -523,10 +541,11 @@ p {
   gap: 40px;
   align-items: center;
   margin-top: 36px;
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: var(--rl);
   padding: 36px;
+  box-shadow: var(--shadow-deep);
 }
 
 .gauge-wrap {
@@ -538,6 +557,8 @@ p {
   width: 130px; height: 130px;
   transform: rotate(-90deg);
 }
+#gaugeTrack { stroke: var(--silver-blue); }
+#gaugePath { stroke: var(--signal-red); }
 .gauge-center {
   position: absolute;
   top: 50%; left: 50%;
@@ -548,13 +569,13 @@ p {
   font-family: 'Playfair Display', serif;
   font-size: 40px;
   line-height: 1;
-  color: var(--bad);
+  color: var(--signal-red);
   display: block;
 }
 .gauge-lbl {
   font-family: 'Geist Mono', monospace;
   font-size: 9px;
-  color: var(--muted);
+  color: var(--cool-gray);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -567,7 +588,7 @@ p {
 }
 .perf-text p {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--cool-gray);
   line-height: 1.75;
   margin-bottom: 12px;
   max-width: 100%;
@@ -580,9 +601,9 @@ p {
 .env-tag {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
-  color: var(--muted);
-  background: var(--paper);
-  border: 1px solid var(--border);
+  color: var(--cool-gray);
+  background: var(--mist-blue);
+  border: 1px solid var(--silver-blue);
   padding: 4px 10px;
   border-radius: 4px;
 }
@@ -594,11 +615,11 @@ p {
   gap: 14px;
   margin: 44px 0 24px;
 }
-.section-head-line { flex: 1; height: 1px; background: var(--border); }
+.section-head-line { flex: 1; height: 1px; background: var(--silver-blue); }
 .section-tag {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
-  color: var(--muted);
+  color: var(--cool-gray);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   white-space: nowrap;
@@ -612,21 +633,22 @@ p {
 }
 
 .vital {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: 12px;
   padding: 18px 14px;
   text-align: center;
-  transition: transform .2s, border-color .2s;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
   cursor: none;
+  box-shadow: var(--shadow-soft);
 }
 .vital:hover { transform: translateY(-3px); }
-.vital.bad { border-color: rgba(155,35,53,0.25); }
-.vital.bad:hover { border-color: var(--bad); }
-.vital.good { border-color: rgba(46,107,69,0.25); }
-.vital.good:hover { border-color: var(--good); }
-.vital.neutral { border-color: rgba(138,92,0,0.25); }
-.vital.neutral:hover { border-color: var(--warn); }
+.vital.bad { border-color: rgba(194,65,93,0.22); }
+.vital.bad:hover { border-color: var(--signal-red); }
+.vital.good { border-color: rgba(34,160,107,0.22); }
+.vital.good:hover { border-color: var(--signal-green); }
+.vital.neutral { border-color: rgba(161,98,7,0.22); }
+.vital.neutral:hover { border-color: var(--signal-amber); }
 
 .vital-val {
   font-family: 'Playfair Display', serif;
@@ -634,10 +656,10 @@ p {
   display: block;
   margin-bottom: 6px;
 }
-.vital.bad .vital-val { color: var(--bad); }
-.vital.good .vital-val { color: var(--good); }
-.vital.neutral .vital-val { color: var(--warn); }
-.vital-name { font-size: 10px; color: var(--muted); line-height: 1.4; }
+.vital.bad .vital-val { color: var(--signal-red); }
+.vital.good .vital-val { color: var(--signal-green); }
+.vital.neutral .vital-val { color: var(--signal-amber); }
+.vital-name { font-size: 10px; color: var(--cool-gray); line-height: 1.4; }
 
 /* ─── DIAG GRID ─── */
 .diag-grid {
@@ -647,24 +669,29 @@ p {
 }
 
 .diag-card {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: 12px;
   padding: 18px 12px;
   text-align: center;
-  transition: transform .2s, border-color .2s;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
   cursor: none;
+  box-shadow: var(--shadow-soft);
 }
-.diag-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.diag-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-azure);
+  box-shadow: 0 14px 28px rgba(11,18,32,.12);
+}
 .diag-val {
   font-family: 'Geist Mono', monospace;
   font-size: 13px;
   font-weight: 500;
-  color: var(--warn);
+  color: var(--signal-amber);
   display: block;
   margin-bottom: 6px;
 }
-.diag-desc { font-size: 10px; color: var(--muted); line-height: 1.45; }
+.diag-desc { font-size: 10px; color: var(--cool-gray); line-height: 1.45; }
 
 /* ─── ISSUES GRID ─── */
 .issues-grid {
@@ -674,37 +701,43 @@ p {
 }
 
 .issue-card {
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-left: 3px solid rgba(155,35,53,0.4);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-left: 3px solid rgba(194,65,93,0.38);
   border-radius: var(--r);
   padding: 22px 24px;
-  transition: border-color .2s, transform .2s;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
   cursor: none;
+  box-shadow: var(--shadow-soft);
 }
 .issue-card:hover {
-  border-left-color: var(--bad);
+  border-left-color: var(--signal-red);
   transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(11,18,32,.12);
 }
 .issue-title {
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 8px;
-  color: var(--ink);
+  color: var(--graphite-black);
 }
-.issue-desc { font-size: 13px; color: var(--muted); line-height: 1.65; max-width: 100%; }
+.issue-desc { font-size: 13px; color: var(--cool-gray); line-height: 1.65; max-width: 100%; }
 
 /* ─── OBS CARDS ─── */
 .obs-card {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: var(--rl);
   padding: 32px;
   margin-bottom: 20px;
-  transition: border-color .2s;
+  transition: border-color .2s, box-shadow .2s;
   cursor: none;
+  box-shadow: var(--shadow-soft);
 }
-.obs-card:hover { border-color: var(--muted); }
+.obs-card:hover {
+  border-color: rgba(100,116,139,.36);
+  box-shadow: 0 16px 30px rgba(11,18,32,.09);
+}
 
 .obs-header {
   display: grid;
@@ -717,7 +750,7 @@ p {
 .obs-num {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
-  color: var(--muted);
+  color: var(--cool-gray);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 6px;
@@ -730,12 +763,12 @@ p {
   margin-bottom: 10px;
 }
 
-.obs-body { font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 100%; }
+.obs-body { font-size: 14px; color: var(--cool-gray); line-height: 1.75; max-width: 100%; }
 
 /* Carousel visual */
 .carousel-visual {
-  background: var(--paper);
-  border: 1px solid var(--border);
+  background: var(--pure-white);
+  border: 1px solid var(--silver-blue);
   border-radius: 10px;
   padding: 18px;
   min-width: 150px;
@@ -743,27 +776,27 @@ p {
 }
 .img-placeholder-sm {
   width: 110px; height: 140px;
-  background: var(--cream2);
+  background: var(--mist-blue);
   border-radius: 6px;
   margin: 0 auto 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 36px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--silver-blue);
 }
 .dots-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 8px; }
-.dot-sm { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
-.dot-sm.active { background: var(--ink); }
-.arrows-row { display: flex; justify-content: center; gap: 24px; color: var(--muted); font-size: 14px; }
+.dot-sm { width: 6px; height: 6px; border-radius: 50%; background: var(--silver-blue); }
+.dot-sm.active { background: var(--brand-cobalt); }
+.arrows-row { display: flex; justify-content: center; gap: 24px; color: var(--cool-gray); font-size: 14px; }
 
 /* Image format visual */
 .img-format-visual {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: var(--paper);
-  border: 1px solid var(--border);
+  background: var(--pure-white);
+  border: 1px solid var(--silver-blue);
   border-radius: 10px;
   padding: 20px;
   min-width: 180px;
@@ -778,13 +811,13 @@ p {
   justify-content: center;
   font-size: 24px;
 }
-.fmt-icon.jpg { background: var(--cream2); border: 1px solid var(--border); }
-.fmt-icon.webp { background: #edf5f0; border: 1px solid rgba(46,107,69,0.3); }
-.fmt-label { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted); }
+.fmt-icon.jpg { background: var(--mist-blue); border: 1px solid var(--silver-blue); }
+.fmt-icon.webp { background: rgba(232,248,241,.9); border: 1px solid rgba(34,160,107,0.3); }
+.fmt-label { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--cool-gray); }
 .fmt-size { font-size: 12px; font-weight: 600; margin-top: 2px; }
-.fmt-size.big { color: var(--bad); }
-.fmt-size.small { color: var(--good); }
-.fmt-arrow { font-size: 18px; color: var(--muted); }
+.fmt-size.big { color: var(--signal-red); }
+.fmt-size.small { color: var(--signal-green); }
+.fmt-arrow { font-size: 18px; color: var(--cool-gray); }
 
 /* Obs footer */
 .obs-footer {
@@ -798,8 +831,8 @@ p {
   padding: 16px;
   font-size: 13px;
 }
-.obs-insight { background: #f9eded; border: 1px solid #d9a8a8; }
-.obs-solution { background: #edf5f0; border: 1px solid rgba(46,107,69,0.25); }
+.obs-insight { background: rgba(250,238,242,.82); border: 1px solid rgba(194,65,93,0.22); }
+.obs-solution { background: rgba(232,248,241,.9); border: 1px solid rgba(34,160,107,0.25); }
 .obs-insight-label, .obs-solution-label {
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
@@ -807,9 +840,9 @@ p {
   letter-spacing: 0.1em;
   margin-bottom: 6px;
 }
-.obs-insight-label { color: var(--bad); }
-.obs-solution-label { color: var(--good); }
-.obs-insight p, .obs-solution p { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 100%; }
+.obs-insight-label { color: var(--signal-red); }
+.obs-solution-label { color: var(--signal-green); }
+.obs-insight p, .obs-solution p { font-size: 13px; color: var(--cool-gray); line-height: 1.6; max-width: 100%; }
 
 /* ─── RESOLUTION GRID ─── */
 .resolution-grid {
@@ -820,23 +853,28 @@ p {
 }
 
 .res-card {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: var(--r);
   padding: 28px;
-  transition: transform .2s, border-color .2s;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
   position: relative;
   overflow: hidden;
   cursor: none;
+  box-shadow: var(--shadow-soft);
 }
 .res-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--good), transparent);
+  background: var(--signal-green);
 }
-.res-card:hover { transform: translateY(-2px); border-color: rgba(46,107,69,0.4); }
+.res-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34,160,107,0.4);
+  box-shadow: 0 14px 28px rgba(11,18,32,.12);
+}
 .res-icon { font-size: 22px; margin-bottom: 12px; display: block; }
 .res-title {
   font-family: 'Playfair Display', serif;
@@ -844,7 +882,7 @@ p {
   font-weight: 400;
   margin-bottom: 8px;
 }
-.res-desc { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 100%; }
+.res-desc { font-size: 13px; color: var(--cool-gray); line-height: 1.7; max-width: 100%; }
 
 /* ─── UI COMPARE ─── */
 .ui-compare {
@@ -854,10 +892,11 @@ p {
 }
 
 .ui-panel {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: var(--r);
   padding: 22px;
+  box-shadow: var(--shadow-soft);
 }
 .ui-panel-label {
   font-family: 'Geist Mono', monospace;
@@ -866,40 +905,47 @@ p {
   letter-spacing: 0.1em;
   margin-bottom: 16px;
 }
-.ui-panel.before .ui-panel-label { color: var(--bad); }
-.ui-panel.after .ui-panel-label { color: var(--good); }
+.ui-panel.before .ui-panel-label { color: var(--signal-red); }
+.ui-panel.after .ui-panel-label { color: var(--signal-green); }
 
 .product-mockup { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
 .product-mockup.two-col { grid-template-columns: repeat(2, 1fr); }
 .prod-block {
-  background: var(--paper);
-  border: 1px solid var(--border);
+  background: var(--pure-white);
+  border: 1px solid var(--silver-blue);
   border-radius: 5px;
   aspect-ratio: 3/4;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  transition: background .2s;
+  transition: background .2s, border-color .2s;
 }
-.prod-block:hover { background: var(--cream2); }
+.prod-block:hover {
+  background: var(--mist-blue);
+  border-color: rgba(10,132,255,.24);
+}
 
-.ui-note-text { font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.6; max-width: 100%; }
+.ui-note-text { font-size: 12px; color: var(--cool-gray); margin-top: 12px; line-height: 1.6; max-width: 100%; }
 
 .view-more-btn {
   width: 100%;
   background: none;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--silver-blue);
   border-radius: 5px;
-  color: var(--muted);
+  color: var(--cool-gray);
   font-family: 'Geist Mono', monospace;
   font-size: 10px;
   padding: 8px;
   margin-top: 6px;
   cursor: none;
-  transition: border-color .2s, color .2s;
+  transition: border-color .2s, color .2s, background .2s;
 }
-.view-more-btn:hover { border-color: var(--accent); color: var(--accent); }
+.view-more-btn:hover {
+  border-color: var(--brand-azure);
+  color: var(--brand-azure);
+  background: rgba(232,240,251,.5);
+}
 
 /* ─── RESULT FLOW ─── */
 .result-flow-wrap {
@@ -910,45 +956,46 @@ p {
   padding: 8px 0;
 }
 .result-node {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: 8px;
   padding: 12px 18px;
   font-size: 12px;
   font-family: 'Geist Mono', monospace;
   flex-shrink: 0;
   white-space: nowrap;
-  transition: border-color .2s;
+  transition: border-color .2s, background .2s, color .2s;
 }
 .result-node.highlight {
-  background: #f3ede4;
-  border-color: var(--accent);
-  color: var(--accent);
+  background: rgba(232,240,251,.82);
+  border-color: rgba(10,132,255,.28);
+  color: var(--brand-azure);
 }
-.result-node:hover { border-color: var(--muted); }
-.result-arrow { color: var(--border); padding: 0 10px; font-size: 16px; flex-shrink: 0; }
+.result-node:hover { border-color: rgba(100,116,139,.36); }
+.result-arrow { color: var(--silver-blue); padding: 0 10px; font-size: 16px; flex-shrink: 0; }
 
 /* ─── CLOSING ─── */
 .closing {
-  background: var(--cream);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
   border-radius: 12px;
   padding: 28px 32px;
   margin-top: 36px;
+  box-shadow: var(--shadow-soft);
 }
-.closing p { font-size: 15px; color: var(--ink2); line-height: 1.85; max-width: 100%; font-style: italic; }
+.closing p { font-size: 15px; color: var(--slate-blue); line-height: 1.85; max-width: 100%; font-style: italic; }
 
 /* ─── CONNECT ─── */
 .connect-section {
-  background: var(--ink);
+  background: var(--midnight-blue);
   padding: 80px 0;
   border-bottom: none;
   opacity: 1 !important;
   transform: none !important;
 }
-.connect-section .section-label { color: var(--muted); margin-bottom: 10px; }
-.connect-section h2 { font-family: 'Playfair Display', serif; color: var(--paper); margin-bottom: 14px; }
-.connect-section p { color: var(--muted); margin-bottom: 32px; max-width: 100%; }
+.connect-section .section-label { color: var(--cool-gray); margin-bottom: 10px; }
+.connect-section h2 { font-family: 'Playfair Display', serif; color: var(--pure-white); margin-bottom: 14px; }
+.connect-section p { color: rgba(255,255,255,.62); margin-bottom: 32px; max-width: 100%; }
 .connect-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
 .btn-inv {
@@ -962,19 +1009,19 @@ p {
   padding: 13px 24px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.2);
-  background: transparent;
-  color: var(--paper);
+  background: rgba(255,255,255,.04);
+  color: var(--pure-white);
   cursor: none;
   text-decoration: none;
   transition: background .22s, border-color .22s, transform .2s;
 }
 .btn-inv:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
-.btn-inv.solid-inv { background: var(--accent); border-color: var(--accent); }
-.btn-inv.solid-inv:hover { background: #c86a2a; }
+.btn-inv.solid-inv { background: var(--brand-azure); border-color: var(--brand-azure); }
+.btn-inv.solid-inv:hover { background: var(--brand-cobalt); }
 
 /* ─── FOOTER ─── */
 footer {
-  background: var(--ink);
+  background: var(--midnight-blue);
   border-top: 1px solid rgba(255,255,255,.08);
   padding: 24px 0;
 }
@@ -988,7 +1035,7 @@ footer {
   .meta-cell:nth-child(1),
   .meta-cell:nth-child(2),
   .meta-cell:nth-child(3),
-  .meta-cell:nth-child(4) { border-bottom: 1px solid var(--border); }
+  .meta-cell:nth-child(4) { border-bottom: 1px solid var(--silver-blue); }
   .meta-cell:nth-child(4) { border-right: none; }
   .meta-cell--report { grid-column: 1 / -1; border-right: none; }
   .flows-grid, .issues-grid, .resolution-grid, .ui-compare, .obs-footer { grid-template-columns: 1fr; }
@@ -1008,11 +1055,11 @@ footer {
 <!-- NAV -->
 <header>
   <div class="wrap nav">
-    <span class="nav-logo">Divyansh Srivastava</span>
+    <a href="index.html" class="nav-logo">Divyansh Srivastava</a>
     <div class="nav-right">
-      <a href="#">Work</a>
-      <a href="#">Resume</a>
-      <a href="#">Connect</a>
+      <a href="index.html#work">Work</a>
+      <a href="resume.pdf">Resume</a>
+      <a href="about.html">Connect</a>
     </div>
   </div>
 </header>
@@ -1025,11 +1072,11 @@ footer {
       <div class="hero-eyebrow">Performance Investigation · 2026</div>
       <h1>Why Vero Moda was <em>losing users</em> before they even arrived</h1>
       <p class="hero-sub">
-        A deep-dive into Bestseller's product page performance, using GA4 funnel analysis and Lighthouse diagnostics to trace 600k+ sessions and find where — and why — users were vanishing.
+        A deep-dive into Bestseller's product page performance, using GA4 funnel analysis and Lighthouse diagnostics to trace 600k+ sessions and find where - and why - users were vanishing.
       </p>
 
       <div class="hero-img-wrap">
-        <img src="./shutterstock_284543756.webp" alt="Vero Moda — Bestseller Performance Investigation" loading="eager">
+        <img src="./GPproject/shutterstock_284543756.webp" alt="Vero Moda - Bestseller Performance Investigation" loading="eager">
       </div>
 
       <div class="meta-section-label">Project at a Glance</div>
@@ -1052,7 +1099,7 @@ footer {
         </div>
         <div class="meta-cell meta-cell--report">
           <div class="meta-label">Full Report</div>
-          <a href="./__FINAL DOC.pdf" target="_blank" class="report-link">
+          <a href="./GPproject/FINAL%20DOC.pdf" target="_blank" class="report-link">
             <span class="report-link-icon">📄</span>
             <span>70-page PDF ↗</span>
           </a>
@@ -1068,13 +1115,13 @@ footer {
       <div class="section-label">01 — Background</div>
       <h2>The company</h2>
       <p>
-        Bestseller is a Danish fashion company behind global brands including Vero Moda, Jack &amp; Jones, Only and Selected. Their growth is fuelled by performance marketing campaigns that send users directly to product pages — making page speed a revenue-critical metric.
+        Bestseller is a Danish fashion company behind global brands including Vero Moda, Jack & Jones, Only and Selected. Their growth is fuelled by performance marketing campaigns that send users directly to product pages - making page speed a revenue-critical metric.
       </p>
       <div class="callout">
         <strong>The business problem</strong>
         <ul>
           <li>Performance marketing spend was not converting at expected rates.</li>
-          <li>Users arriving from paid ads were exiting immediately — before any meaningful interaction.</li>
+          <li>Users arriving from paid ads were exiting immediately - before any meaningful interaction.</li>
           <li>The hypothesis: the drop was a performance issue, not a targeting issue.</li>
         </ul>
       </div>
@@ -1125,7 +1172,7 @@ footer {
 
       <div class="alert-box">
         <div class="alert-icon">⚠</div>
-        <p><strong>89% of users</strong> exited the funnel between the product page and Add to Cart — the single largest drop-off in the entire journey.</p>
+        <p><strong>89% of users</strong> exited the funnel between the product page and Add to Cart - the single largest drop-off in the entire journey.</p>
       </div>
     </section>
   </div>
@@ -1136,12 +1183,12 @@ footer {
       <div class="section-label">03 — User Flow Investigation</div>
       <h2>Two dominant entry journeys</h2>
       <p>
-        User flow analysis showed that almost no traffic entered via the homepage. Ad campaigns were sending users directly into product discovery surfaces — two patterns emerged.
+        User flow analysis showed that almost no traffic entered via the homepage. Ad campaigns were sending users directly into product discovery surfaces - two patterns emerged.
       </p>
 
       <div class="flows-grid">
         <div class="flow-card">
-          <div class="flow-card-label">Flow 01 — Direct to PDP</div>
+          <div class="flow-card-label">Flow 01 - Direct to PDP</div>
           <div class="flow-mini">
             <div class="mini-node">Ad Click</div>
             <span class="mini-arrow">→</span>
@@ -1152,7 +1199,7 @@ footer {
           <p>Users arriving directly on the product page frequently exited without scrolling or interacting. No dwell time was recorded.</p>
         </div>
         <div class="flow-card">
-          <div class="flow-card-label">Flow 02 — Product Listing</div>
+          <div class="flow-card-label">Flow 02 - Product Listing</div>
           <div class="flow-mini">
             <div class="mini-node">Ad Click</div>
             <span class="mini-arrow">→</span>
@@ -1180,7 +1227,7 @@ footer {
       <div class="section-label">04 — Critical Discovery</div>
       <h2>The bottleneck was the page itself</h2>
       <p>
-        Deeper investigation confirmed the largest exit cluster was happening during page load — before users could see any content at all. This pointed to a performance bottleneck, not a campaign targeting problem.
+        Deeper investigation confirmed the largest exit cluster was happening during page load - before users could see any content at all. This pointed to a performance bottleneck, not a campaign targeting problem.
       </p>
 
       <div class="timeline-track">
@@ -1242,22 +1289,15 @@ footer {
       <div class="perf-hero">
         <div class="gauge-wrap">
           <svg viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="52" stroke="#e2dbd0" stroke-width="10" fill="none"/>
+            <circle id="gaugeTrack" cx="60" cy="60" r="52" stroke-width="10" fill="none"/>
             <circle cx="60" cy="60" r="52"
-              stroke="url(#rg)"
+              id="gaugePath"
               stroke-width="10"
               fill="none"
               stroke-linecap="round"
               stroke-dasharray="327"
               stroke-dashoffset="200"
-              id="gaugePath"
             />
-            <defs>
-              <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#9b2335"/>
-                <stop offset="100%" stop-color="#b5601e"/>
-              </linearGradient>
-            </defs>
           </svg>
           <div class="gauge-center">
             <span class="gauge-score" id="gaugeNum">0</span>
@@ -1267,7 +1307,7 @@ footer {
         <div class="perf-text">
           <h3>Critical performance failure detected</h3>
           <p>A score of 38/100 placed the product page firmly in the "Poor" bracket. With the Largest Contentful Paint clocking in at 8 seconds, the page was effectively invisible to users by the time it rendered.</p>
-          <p>For mobile users arriving from paid ads — often on cellular connections — the experience was a blank screen that never resolved.</p>
+          <p>For mobile users arriving from paid ads - often on cellular connections - the experience was a blank screen that never resolved.</p>
           <div class="env-tags">
             <span class="env-tag">Moto G Power</span>
             <span class="env-tag">Slow 4G</span>
@@ -1344,7 +1384,7 @@ footer {
         </div>
         <div class="issue-card">
           <div class="issue-title">Excessive main-thread work</div>
-          <div class="issue-desc">12.5 seconds of total main thread work — scripts, layout recalculations, and style processing consumed far beyond acceptable thresholds.</div>
+          <div class="issue-desc">12.5 seconds of total main thread work - scripts, layout recalculations, and style processing consumed far beyond acceptable thresholds.</div>
         </div>
         <div class="issue-card">
           <div class="issue-title">Large network payload</div>
@@ -1352,7 +1392,7 @@ footer {
         </div>
         <div class="issue-card">
           <div class="issue-title">Critical request chains</div>
-          <div class="issue-desc">Dependency chains between network requests introduced an additional 1.6 seconds of latency — resources were waiting on each other before loading.</div>
+          <div class="issue-desc">Dependency chains between network requests introduced an additional 1.6 seconds of latency - resources were waiting on each other before loading.</div>
         </div>
       </div>
     </section>
@@ -1375,7 +1415,7 @@ footer {
               <div class="obs-num">Observation 01</div>
               <div class="obs-title">Image navigation rendering</div>
               <p class="obs-body">
-                Every product page dynamically generated one DOM dot indicator per product image. A product with 20 images created 20 dots, 20 click handlers, and 20 layout recalculations — multiplied across hundreds of products viewed per session.
+                Every product page dynamically generated one DOM dot indicator per product image. A product with 20 images created 20 dots, 20 click handlers, and 20 layout recalculations - multiplied across hundreds of products viewed per session.
               </p>
             </div>
             <div class="carousel-visual">
@@ -1415,7 +1455,7 @@ footer {
               <div class="obs-num">Observation 02</div>
               <div class="obs-title">High-resolution product images</div>
               <p class="obs-body">
-                Fashion e-commerce demands high image quality — fabric texture, color accuracy and garment detail are all communicated photographically. As a result, images are uploaded at maximum resolution without format optimisation, accounting for over 2 MB of avoidable payload.
+                Fashion e-commerce demands high image quality - fabric texture, color accuracy and garment detail are all communicated photographically. As a result, images are uploaded at maximum resolution without format optimisation, accounting for over 2 MB of avoidable payload.
               </p>
             </div>
             <div class="img-format-visual">
@@ -1435,7 +1475,7 @@ footer {
           <div class="obs-footer">
             <div class="obs-insight">
               <div class="obs-insight-label">Business Constraint</div>
-              <p>Reducing resolution was not feasible — visual clarity is a primary purchasing signal in fashion.</p>
+              <p>Reducing resolution was not feasible - visual clarity is a primary purchasing signal in fashion.</p>
             </div>
             <div class="obs-solution">
               <div class="obs-solution-label">Recommended Fix</div>
@@ -1461,14 +1501,14 @@ footer {
           <span class="res-icon">⚡</span>
           <div class="res-title">Lazy loading implementation</div>
           <p class="res-desc">
-            Images and non-critical assets were deferred until they entered the viewport. Users arriving from ads now saw rendered content significantly faster — critical for the first 3-second window where abandonment is highest.
+            Images and non-critical assets were deferred until they entered the viewport. Users arriving from ads now saw rendered content significantly faster - critical for the first 3-second window where abandonment is highest.
           </p>
         </div>
         <div class="res-card">
           <span class="res-icon">🛍</span>
           <div class="res-title">Expanded product discovery</div>
           <p class="res-desc">
-            Users who landed but didn't convert were shown additional products inline. Instead of exiting, they were routed into browse mode — keeping them engaged in the Vero Moda ecosystem.
+            Users who landed but didn't convert were shown additional products inline. Instead of exiting, they were routed into browse mode - keeping them engaged in the Vero Moda ecosystem.
           </p>
         </div>
       </div>
@@ -1480,7 +1520,7 @@ footer {
 
       <div class="ui-compare">
         <div class="ui-panel before">
-          <div class="ui-panel-label">Before — 3-col carousel</div>
+          <div class="ui-panel-label">Before - 3-col carousel</div>
           <div class="product-mockup">
             <div class="prod-block">👗</div>
             <div class="prod-block">👔</div>
@@ -1492,7 +1532,7 @@ footer {
           <p class="ui-note-text">Two rows of 3 products in a horizontal carousel. On mobile, only 1 product visible per row. Users rarely scrolled.</p>
         </div>
         <div class="ui-panel after">
-          <div class="ui-panel-label">After — 2-col vertical</div>
+          <div class="ui-panel-label">After - 2-col vertical</div>
           <div class="product-mockup two-col">
             <div class="prod-block">👗</div>
             <div class="prod-block">👔</div>
@@ -1520,7 +1560,7 @@ footer {
 
       <div class="closing">
         <p>
-          By mapping the drop-off to a specific performance bottleneck rather than a marketing problem, the investigation reframed the solution entirely. The redesigned experience reduces friction in the critical first seconds of a user's visit and creates secondary conversion opportunities for users who don't immediately purchase — maximising the value of every ad click.
+          By mapping the drop-off to a specific performance bottleneck rather than a marketing problem, the investigation reframed the solution entirely. The redesigned experience reduces friction in the critical first seconds of a user's visit and creates secondary conversion opportunities for users who don't immediately purchase - maximising the value of every ad click.
         </p>
       </div>
     </section>
@@ -1535,9 +1575,9 @@ footer {
     <h2>Let's build something together</h2>
     <p>Open to discussing projects, creative directions, and opportunities.</p>
     <div class="connect-btns">
-      <a href="#" class="btn-inv">Email Me</a>
-      <a href="#" class="btn-inv solid-inv">WhatsApp</a>
-      <a href="#" class="btn-inv">Resume ↗</a>
+      <a href="about.html" class="btn-inv">Email Me</a>
+      <a href="about.html" class="btn-inv solid-inv">WhatsApp</a>
+      <a href="resume.pdf" class="btn-inv">Resume ↗</a>
     </div>
   </div>
 </section>
@@ -1647,7 +1687,7 @@ setInterval(() => {
 /* ── TIMELINE PULSE ── */
 document.querySelectorAll('.tl-step.danger .tl-dot').forEach((dot, i) => {
   dot.animate(
-    [{ boxShadow: '0 0 0 0 rgba(155,35,53,0.5)' }, { boxShadow: '0 0 0 8px rgba(155,35,53,0)' }],
+    [{ boxShadow: '0 0 0 0 rgba(194,65,93,0.5)' }, { boxShadow: '0 0 0 8px rgba(194,65,93,0)' }],
     { duration: 1400, delay: i * 300, iterations: Infinity, easing: 'ease-out' }
   );
 });

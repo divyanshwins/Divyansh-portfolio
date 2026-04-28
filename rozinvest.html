@@ -3,557 +3,908 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rozinvest — Type & Visual Identity | Divyansh Srivastava</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Rozinvest — Type & Visual Identity · Divyansh Srivastava</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+/* ─── TOKENS ─── */
 :root {
-  --bg: #FAFAF8;
-  --bg-warm: #F5F3EE;
-  --bg-card: #FFFFFF;
-  --bg-elevated: #F7F7F5;
-  --green-ultra-light: #F0FDF4;
-  --green-light: #DCFCE7;
-  --text-primary: #111111;
-  --text-secondary: #4A4A4A;
-  --text-muted: #9A9A9A;
-  --green-primary: #16A34A;
-  --green-bright: #22C55E;
-  --blue-accent: #3B82F6;
-  --border: #E8E8E4;
-  --border-strong: #D4D4CF;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
-  --shadow-lg: 0 12px 48px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-  --shadow-xl: 0 24px 64px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06);
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --serif: 'Instrument Serif', Georgia, serif;
-  --sans: 'Satoshi', 'Outfit', sans-serif;
-  --mono: 'IBM Plex Mono', monospace;
+  --frost-white: #f3f6fb;
+  --pure-white: #ffffff;
+  --ice-blue: #e8f0fb;
+  --silver-blue: #ced9e8;
+  --graphite-black: #111827;
+  --slate-blue: #334155;
+  --cool-gray: #64748b;
+  --azure-blue: #0a84ff;
+  --cobalt-blue: #2563eb;
+  --emerald-green: #22a06b;
+  --midnight-blue: #0b1220;
+  --shadow-deep: 0 18px 40px rgba(11,18,32,0.1);
+  --shadow-soft: 0 10px 24px rgba(11,18,32,0.07);
+  --r: 16px;
+  --rl: 22px;
+  --max: 780px;
+
+  /* Rozinvest brand */
+  --roz-green: #16A34A;
+  --roz-green-bright: #22C55E;
+  --roz-green-light: #DCFCE7;
+  --roz-green-ultra: #F0FDF4;
+  --roz-border: #E8E8E4;
 }
 
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
+
 body {
-  background: var(--bg); color: var(--text-primary);
-  font-family: var(--sans); line-height: 1.6;
-  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  font-family: 'Outfit', sans-serif;
+  background: var(--frost-white);
+  color: var(--graphite-black);
+  line-height: 1.65;
+  cursor: none;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
-::selection { background: var(--green-bright); color: white; }
 
-/* NAV */
+a { text-decoration: none; color: inherit; }
+img { display: block; width: 100%; height: auto; }
+
+/* ─── NOISE ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ─── CURSOR ─── */
+#cursor {
+  position: fixed;
+  width: 14px; height: 14px;
+  background: var(--roz-green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .25s, height .25s, background .25s, opacity .2s;
+  mix-blend-mode: multiply;
+}
+#cursor.expand {
+  width: 38px; height: 38px;
+  background: var(--roz-green-bright);
+  opacity: 0.45;
+}
+
+/* ─── WRAP ─── */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ─── NAV (Arth style) ─── */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(243,246,251,.86);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--silver-blue);
+}
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 18px 48px;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(250,250,248,0.9); backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border); transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
 }
-.nav-brand { font-weight: 700; font-size: 14px; color: var(--text-primary); }
-.nav-back {
-  font-size: 13px; color: var(--text-secondary); text-decoration: none;
-  font-weight: 500; transition: color 0.2s;
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--graphite-black);
 }
-.nav-back:hover { color: var(--green-primary); }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-right a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  transition: color .2s;
+}
+.nav-right a:hover { color: var(--graphite-black); }
 
-/* HERO */
+/* ─── BACK LINK ─── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 48px;
+  transition: color .2s, gap .2s;
+  cursor: none;
+}
+.back-link:hover { color: var(--graphite-black); gap: 12px; }
+
+/* ─── HERO ─── */
 .hero {
-  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-  padding: 120px 48px 80px; position: relative; overflow: hidden;
+  padding: 56px 0 64px;
+  border-bottom: 1px solid var(--silver-blue);
 }
-.hero::before {
-  content: ''; position: absolute; top: -200px; right: -200px;
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(34,197,94,0.12) 0%, transparent 70%);
-  border-radius: 50%; pointer-events: none;
-}
-.hero::after {
-  content: ''; position: absolute; bottom: -100px; left: -100px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%);
-  border-radius: 50%; pointer-events: none;
-}
+
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px;
-  opacity: 0; transform: translateY(20px); animation: fadeUp 0.7s 0.2s forwards;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 20px;
 }
-.hero-pill {
-  font-family: var(--mono); font-size: 11px; font-weight: 500;
-  color: var(--green-primary); letter-spacing: 1.5px; text-transform: uppercase;
-  background: var(--green-light); padding: 6px 14px; border-radius: 100px;
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--roz-green);
 }
-.hero-year { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
-.hero h1 {
-  font-family: var(--serif); font-size: clamp(48px, 7.5vw, 108px);
-  line-height: 1.05; font-weight: 400; letter-spacing: -2px; max-width: 850px;
-  opacity: 0; transform: translateY(30px); animation: fadeUp 0.8s 0.4s forwards;
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 32px;
 }
-.hero h1 em {
+h1 em {
   font-style: italic;
-  background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+  background: linear-gradient(135deg, var(--roz-green), var(--roz-green-bright));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.hero-sub {
-  font-size: 18px; color: var(--text-secondary); max-width: 520px;
-  margin-top: 28px; font-weight: 400; line-height: 1.7;
-  opacity: 0; transform: translateY(20px); animation: fadeUp 0.7s 0.6s forwards;
-}
-.hero-meta {
-  display: flex; gap: 0; margin-top: 56px;
-  opacity: 0; transform: translateY(20px); animation: fadeUp 0.7s 0.8s forwards;
-}
-.hero-meta-item {
-  display: flex; flex-direction: column; gap: 6px;
-  padding: 0 36px; border-right: 1px solid var(--border);
-}
-.hero-meta-item:first-child { padding-left: 0; }
-.hero-meta-item:last-child { border-right: none; }
-.hero-meta-label { font-size: 10px; font-family: var(--mono); font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
-.hero-meta-value { font-size: 14px; color: var(--text-primary); font-weight: 500; }
 
-/* BANNER */
-.banner-image {
-  margin: 0 48px; border-radius: var(--radius-xl); overflow: hidden;
-  box-shadow: var(--shadow-xl);
-  opacity: 0; transform: translateY(30px) scale(0.98);
-  animation: fadeUpScale 1s 1s forwards;
+/* HERO IMAGE */
+.hero-img-wrap {
+  margin-bottom: 40px;
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--silver-blue);
+  box-shadow: var(--shadow-deep);
 }
-.banner-image img { width: 100%; display: block; }
 
-/* SECTIONS */
-.section { padding: 120px 48px; position: relative; }
-.section-number {
-  font-family: var(--mono); font-size: 11px; font-weight: 500;
-  color: var(--green-primary); letter-spacing: 2px; margin-bottom: 16px;
-  display: inline-block; background: var(--green-ultra-light); padding: 5px 12px; border-radius: 6px;
+/* META GRID */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-top: 36px;
+  background: rgba(255,255,255,.88);
+  box-shadow: var(--shadow-soft);
 }
-.section h2 {
-  font-family: var(--serif); font-size: clamp(32px, 4.5vw, 52px);
-  line-height: 1.15; font-weight: 400; margin-bottom: 20px; letter-spacing: -0.5px;
+.meta-cell {
+  padding: 20px 22px;
+  border-right: 1px solid var(--silver-blue);
 }
-.section h2 em {
+.meta-cell:last-child { border-right: none; }
+.meta-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 6px;
+}
+.meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--graphite-black);
+  line-height: 1.4;
+}
+
+/* ─── SECTIONS ─── */
+section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--silver-blue);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+.hero { opacity: 1; transform: none; border-bottom: 1px solid var(--silver-blue); }
+
+.section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 12px;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+h2 em {
   font-style: italic;
-  background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+  background: linear-gradient(135deg, var(--roz-green), var(--roz-green-bright));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.section-text { font-size: 17px; line-height: 1.8; color: var(--text-secondary); max-width: 640px; }
 
-/* OVERVIEW */
-.overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; }
-.stat-row { display: flex; gap: 48px; margin-top: 56px; flex-wrap: wrap; }
-.stat-number {
-  font-family: var(--serif); font-size: 56px;
-  background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
+p {
+  font-size: 16px;
+  color: var(--slate-blue);
+  line-height: 1.85;
+  max-width: 640px;
 }
-.stat-label { font-size: 12px; color: var(--text-muted); font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; }
 
-/* DIVIDER */
-.divider { height: 1px; margin: 0 48px; background: linear-gradient(90deg, var(--green-bright), var(--border) 30%, var(--border)); }
+/* ─── CALLOUT ─── */
+.callout {
+  background: var(--roz-green-ultra);
+  border: 1px solid rgba(22,163,74,0.2);
+  border-left: 3px solid var(--roz-green);
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-top: 28px;
+  box-shadow: var(--shadow-soft);
+}
+.callout p {
+  font-size: 15px;
+  color: var(--slate-blue);
+  font-style: italic;
+  max-width: 100%;
+}
 
-/* COLOR */
-.color-section { background: var(--bg-warm); }
-.palette-group { margin-top: 48px; }
-.palette-group-label { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 16px; }
-.color-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+/* ─── COLOUR PALETTE ─── */
+.palette-group { margin-top: 40px; }
+.palette-group-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 14px;
+}
+
+.color-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+
 .color-swatch {
-  width: 96px; border-radius: var(--radius-md); overflow: hidden;
-  background: var(--bg-card); box-shadow: var(--shadow-sm); border: 1px solid var(--border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+  width: 88px;
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--pure-white);
+  border: 1px solid var(--silver-blue);
+  box-shadow: var(--shadow-soft);
+  transition: transform .3s, box-shadow .3s;
+  cursor: pointer;
 }
-.color-swatch:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.swatch-fill { height: 88px; }
-.swatch-info { padding: 8px 10px; }
-.swatch-hex { font-family: var(--mono); font-size: 10px; font-weight: 500; color: var(--text-secondary); }
-.color-swatch.hero-swatch { width: 132px; }
-.color-swatch.hero-swatch .swatch-fill { height: 120px; }
+.color-swatch:hover { transform: translateY(-5px); box-shadow: var(--shadow-deep); }
+.swatch-fill { height: 72px; }
+.swatch-info { padding: 7px 9px; }
+.swatch-hex {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--cool-gray);
+}
+
+.color-swatch.lg { width: 112px; }
+.color-swatch.lg .swatch-fill { height: 96px; }
 
 .color-reasoning {
-  margin-top: 48px; padding: 28px 32px; background: var(--bg-card);
-  border-radius: var(--radius-lg); border: 1px solid var(--border);
-  position: relative; overflow: hidden; box-shadow: var(--shadow-sm);
+  margin-top: 32px; padding: 22px 26px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-left: 3px solid var(--roz-green);
+  border-radius: 10px;
+  box-shadow: var(--shadow-soft);
 }
-.color-reasoning::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 4px; background: linear-gradient(180deg, var(--green-primary), var(--green-bright));
+.color-reasoning p { font-size: 14px; line-height: 1.8; color: var(--slate-blue); max-width: 100%; }
+.color-reasoning strong { color: var(--graphite-black); font-weight: 600; }
+
+.accent-strip {
+  display: flex; height: 5px; margin-top: 16px;
+  border-radius: 100px; overflow: hidden; max-width: 360px;
 }
-.color-reasoning p { font-size: 15px; line-height: 1.8; color: var(--text-secondary); padding-left: 16px; }
-.color-reasoning strong { color: var(--text-primary); font-weight: 600; }
-.accent-strip { display: flex; height: 6px; margin-top: 20px; border-radius: 100px; overflow: hidden; max-width: 400px; }
 .accent-strip div { flex: 1; }
 
-/* TYPOGRAPHY */
-.type-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 64px; }
+/* ─── TYPOGRAPHY ─── */
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
 .type-card {
-  padding: 44px; border-radius: var(--radius-xl); position: relative;
-  overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid var(--border);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--rl);
+  padding: 28px 24px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  cursor: none;
+  box-shadow: var(--shadow-soft);
 }
-.type-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.type-card.marketing { background: var(--bg-card); }
-.type-card.functional { background: linear-gradient(160deg, var(--green-ultra-light) 0%, var(--bg-card) 50%); border-color: rgba(22,163,74,0.15); }
+.type-card:hover {
+  border-color: rgba(22,163,74,0.4);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-deep);
+}
+.type-card.functional {
+  background: linear-gradient(160deg, var(--roz-green-ultra) 0%, var(--pure-white) 60%);
+  border-color: rgba(22,163,74,0.15);
+}
 .type-badge {
-  font-family: var(--mono); font-size: 10px; font-weight: 500; text-transform: uppercase;
-  letter-spacing: 2px; margin-bottom: 28px; display: inline-block; padding: 5px 12px; border-radius: 6px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  background: var(--ice-blue);
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 20px;
 }
-.type-card.marketing .type-badge { color: var(--text-secondary); background: var(--bg-elevated); }
-.type-card.functional .type-badge { color: var(--green-primary); background: var(--green-light); }
-.type-name { font-size: 44px; font-weight: 900; color: var(--text-primary); margin-bottom: 20px; line-height: 1; letter-spacing: -1px; }
+.type-card.functional .type-badge {
+  color: var(--roz-green);
+  background: var(--roz-green-light);
+}
+.type-name {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--graphite-black);
+  margin-bottom: 16px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
 .type-alphabet {
-  font-size: 13px; color: var(--text-muted); line-height: 2.2; letter-spacing: 3px; margin-bottom: 28px;
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0;
+  font-size: 11px;
+  color: var(--cool-gray);
+  line-height: 2;
+  letter-spacing: 2.5px;
+  margin-bottom: 20px;
+  border-top: 1px solid var(--silver-blue);
+  border-bottom: 1px solid var(--silver-blue);
+  padding: 12px 0;
 }
-.type-description { font-size: 14px; line-height: 1.8; color: var(--text-secondary); }
+.type-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--slate-blue);
+  max-width: 100%;
+}
 
-/* ICONS */
-.icon-section { background: var(--bg-warm); }
-.icon-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 56px; }
-.icon-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 28px 20px; text-align: center;
-  transition: all 0.35s ease; position: relative; overflow: hidden;
+/* ─── ICON GRID ─── */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 28px;
 }
-.icon-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--border-strong); }
+.icon-card {
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--rl);
+  padding: 22px 14px;
+  text-align: center;
+  transition: all .3s ease;
+  position: relative;
+  box-shadow: var(--shadow-soft);
+  cursor: none;
+}
+.icon-card:hover {
+  border-color: rgba(22,163,74,0.35);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-deep);
+}
 .icon-card.final {
-  border-color: var(--green-primary);
-  background: linear-gradient(165deg, var(--green-ultra-light) 0%, var(--bg-card) 60%);
+  border-color: var(--roz-green);
+  background: linear-gradient(165deg, var(--roz-green-ultra) 0%, var(--pure-white) 60%);
   box-shadow: 0 8px 32px rgba(22,163,74,0.1);
 }
 .icon-card.final::before {
-  content: 'FINAL'; position: absolute; top: 12px; right: 12px;
-  font-family: var(--mono); font-size: 9px; font-weight: 500;
-  color: white; background: var(--green-primary);
-  padding: 3px 10px; border-radius: 100px; letter-spacing: 2px;
+  content: 'FINAL';
+  position: absolute; top: 10px; right: 10px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 8px; font-weight: 500;
+  color: white; background: var(--roz-green);
+  padding: 3px 8px; border-radius: 100px; letter-spacing: 2px;
 }
 .icon-card img {
-  width: 110px; height: 110px; border-radius: 24px;
-  object-fit: cover; margin: 0 auto 16px; display: block; box-shadow: var(--shadow-md);
+  width: 88px; height: 88px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin: 0 auto 12px; display: block;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
-.icon-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.icon-card p {
+  font-size: 12px;
+  color: var(--cool-gray);
+  line-height: 1.5;
+  max-width: 100%;
+}
 
-/* MOCKUPS */
-.mockup-gallery { margin-top: 64px; }
-.mockup-item { margin-bottom: 72px; }
-.mockup-item:last-child { margin-bottom: 0; }
+/* ─── MOCKUP FRAMES ─── */
+.mockup-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 28px;
+}
 .mockup-frame {
-  border-radius: var(--radius-xl); overflow: hidden;
-  box-shadow: var(--shadow-xl); transition: transform 0.5s ease; background: var(--bg-card);
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--silver-blue);
+  box-shadow: var(--shadow-deep);
+  transition: transform .4s ease;
 }
 .mockup-frame:hover { transform: scale(1.005); }
 .mockup-frame img { width: 100%; display: block; }
-.mockup-caption { margin-top: 16px; display: flex; justify-content: space-between; align-items: baseline; padding: 0 8px; }
-.mockup-caption-title { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+.mockup-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding: 0 4px;
+}
+.mockup-caption-title {
+  font-size: 13px;
+  color: var(--cool-gray);
+}
 .mockup-caption-tag {
-  font-family: var(--mono); font-size: 10px; font-weight: 500;
-  color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;
-  background: var(--bg-elevated); padding: 4px 10px; border-radius: 6px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  padding: 4px 10px;
+  border-radius: 6px;
 }
 
-/* CONCLUSION */
-.conclusion { text-align: center; padding: 160px 48px; position: relative; }
-.conclusion::before {
-  content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
-  border-radius: 50%; pointer-events: none;
+/* ─── CONCLUSION STATS ─── */
+.conclusion-highlight {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 32px;
 }
-.conclusion h2, .conclusion .section-text { position: relative; }
-.conclusion h2 { max-width: 600px; margin: 0 auto 24px; }
-.conclusion .section-text { max-width: 520px; margin: 0 auto; text-align: center; }
+.c-stat {
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--r);
+  padding: 22px;
+  text-align: center;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  box-shadow: var(--shadow-soft);
+  cursor: none;
+}
+.c-stat:hover {
+  border-color: rgba(22,163,74,0.4);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-deep);
+}
+.c-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  background: linear-gradient(135deg, var(--roz-green), var(--roz-green-bright));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: block;
+  margin-bottom: 4px;
+}
+.c-stat-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+}
 
-/* FOOTER */
-.footer {
-  padding: 40px 48px; border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center;
+/* ─── CONNECT ─── */
+.connect-section {
+  background: var(--midnight-blue);
+  padding: 80px 0;
+  border-bottom: none;
+  opacity: 1 !important;
+  transform: none !important;
 }
-.footer-left { font-size: 13px; color: var(--text-muted); }
-.footer-right { display: flex; gap: 24px; }
-.footer-right a { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-.footer-right a:hover { color: var(--green-primary); }
+.connect-section h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--pure-white);
+  margin-bottom: 14px;
+  background: none;
+  -webkit-text-fill-color: var(--pure-white);
+}
+.connect-section p { color: rgba(255,255,255,.62); margin-bottom: 32px; }
+.connect-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-inv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.04);
+  color: var(--pure-white);
+  cursor: none;
+  transition: background .22s, border-color .22s, transform .2s;
+}
+.btn-inv:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
+.btn-inv.solid-inv { background: var(--roz-green); border-color: var(--roz-green); }
+.btn-inv.solid-inv:hover { background: var(--roz-green-bright); border-color: var(--roz-green-bright); }
 
-/* ANIMATIONS */
-@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeUpScale { to { opacity: 1; transform: translateY(0) scale(1); } }
-.reveal {
-  opacity: 0; transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+/* ─── FOOTER ─── */
+footer {
+  background: var(--midnight-blue);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 24px 0;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-stagger > * {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+.footer-inner { display: flex; align-items: center; justify-content: space-between; }
+.footer-copy {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
 }
-.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+  transition: color .2s;
+  cursor: none;
+}
+.footer-links a:hover { color: rgba(255,255,255,.7); }
 
-/* RESPONSIVE */
-@media (max-width: 960px) {
-  .nav { padding: 14px 24px; }
-  .hero { padding: 100px 24px 60px; }
-  .section { padding: 80px 24px; }
-  .divider { margin: 0 24px; }
-  .banner-image { margin: 0 24px; }
-  .overview-grid { grid-template-columns: 1fr; gap: 48px; }
-  .type-showcase { grid-template-columns: 1fr; }
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+  .meta-cell:nth-child(2) { border-right: none; }
+  .meta-cell:nth-child(1), .meta-cell:nth-child(2) { border-bottom: 1px solid var(--silver-blue); }
+  .type-grid { grid-template-columns: 1fr; }
   .icon-grid { grid-template-columns: 1fr 1fr; }
-  .hero-meta { flex-wrap: wrap; }
-  .hero-meta-item { padding: 12px 24px 12px 0; }
-  .footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
-  .conclusion { padding: 100px 24px; }
-}
-@media (max-width: 600px) {
-  .hero h1 { font-size: 40px; letter-spacing: -1px; }
-  .icon-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .icon-card img { width: 80px; height: 80px; border-radius: 18px; }
-  .color-swatch { width: 68px; }
-  .color-swatch .swatch-fill { height: 64px; }
-  .color-swatch.hero-swatch { width: 96px; }
-  .color-swatch.hero-swatch .swatch-fill { height: 88px; }
-  .stat-number { font-size: 40px; }
-  .type-card { padding: 28px; }
-  .mockup-caption { flex-direction: column; gap: 6px; }
+  .conclusion-highlight { grid-template-columns: 1fr; }
+  h1 { font-size: 28px; }
+  .nav-right a:not(:last-child) { display: none; }
+  .color-swatch { width: 64px; }
+  .color-swatch .swatch-fill { height: 56px; }
+  .color-swatch.lg { width: 88px; }
+  .color-swatch.lg .swatch-fill { height: 76px; }
+  .mockup-caption { flex-direction: column; gap: 6px; align-items: flex-start; }
 }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a href="#" class="nav-back">← Back to work</a>
-  <div class="nav-brand">Divyansh Srivastava</div>
-</nav>
+<div id="cursor"></div>
 
-<section class="hero">
-  <div class="hero-eyebrow">
-    <span class="hero-pill">Brand Identity</span>
-    <span class="hero-year">2026</span>
-  </div>
-  <h1>Rozinvest — Type & <em>Visual Identity</em></h1>
-  <p class="hero-sub">Building the colour, type, and iconography system for a Gen Z mutual fund platform in India. Every decision rooted in market psychology.</p>
-  <div class="hero-meta">
-    <div class="hero-meta-item">
-      <span class="hero-meta-label">Client</span>
-      <span class="hero-meta-value">Rozinvest</span>
-    </div>
-    <div class="hero-meta-item">
-      <span class="hero-meta-label">Domain</span>
-      <span class="hero-meta-value">Fintech · Mutual Funds</span>
-    </div>
-    <div class="hero-meta-item">
-      <span class="hero-meta-label">Scope</span>
-      <span class="hero-meta-value">Color, Type, Iconography</span>
-    </div>
-    <div class="hero-meta-item">
-      <span class="hero-meta-label">Role</span>
-      <span class="hero-meta-value">Visual Designer</span>
+<!-- NAV -->
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="nav-logo">Divyansh Srivastava</a>
+    <div class="nav-right">
+      <a href="index.html#work">Work</a>
+      <a href="resume.pdf">Resume</a>
+      <a href="about.html">Connect</a>
     </div>
   </div>
-</section>
+</header>
 
-<div class="banner-image">
-  <img src="rozinvest/Slide 16_9 - 10.png" alt="Rozinvest — Start Small. Grow Daily.">
-</div>
+<main>
 
-<div style="height: 120px;"></div>
-<div class="divider"></div>
+  <!-- HERO -->
+  <div class="wrap">
+    <section class="hero">
+      <a href="index.html" class="back-link">← Back to work</a>
 
-<!-- 01 OVERVIEW -->
-<section class="section reveal">
-  <div class="overview-grid">
-    <div>
-      <span class="section-number">01 — Overview</span>
+      <div class="hero-eyebrow">Brand Identity · 2026</div>
+
+      <h1>Rozinvest — Type & <em>Visual Identity</em></h1>
+
+      <div class="hero-img-wrap">
+        <img src="rozinvest/Slide 16_9 - 10.png" alt="Rozinvest — Start Small. Grow Daily." loading="eager">
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="meta-label">Client</div>
+          <div class="meta-value">Rozinvest</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Domain</div>
+          <div class="meta-value">Fintech · Mutual Funds</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Scope</div>
+          <div class="meta-value">Color, Type & Iconography</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Visual Designer</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">01 — Overview</div>
       <h2>A visual language for <em>first-time investors</em></h2>
-    </div>
-    <div>
-      <p class="section-text">Rozinvest is expert-guided mutual fund investing for Gen Z. The platform tells you what to do with your money — no confusing charts, no jargon. It needed a brand identity that says "your money is safe here" and "this was made for you" in the same breath.</p>
-      <p class="section-text" style="margin-top: 16px;">The task: define the colour palette, select typefaces for marketing and in-app use, explore app icon directions, and deliver brand mockups across digital and outdoor touchpoints.</p>
-      <div class="stat-row">
-        <div class="stat-item"><span class="stat-number">5</span><span class="stat-label">Colour families</span></div>
-        <div class="stat-item"><span class="stat-number">2</span><span class="stat-label">Typefaces</span></div>
-        <div class="stat-item"><span class="stat-number">4</span><span class="stat-label">Icon directions</span></div>
+      <p>
+        Rozinvest is expert-guided mutual fund investing for Gen Z. The platform tells you what to do with your money — no confusing charts, no jargon. It needed a brand identity that says "your money is safe here" and "this was made for you" in the same breath.
+      </p>
+      <p style="margin-top: 16px;">
+        The task: define the colour palette, select typefaces for marketing and in-app use, explore app icon directions, and deliver brand mockups across digital and outdoor touchpoints.
+      </p>
+
+      <div class="callout">
+        <p>"How might we create a visual system that signals financial trust while feeling approachable enough for a 22-year-old investing for the first time?"</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- 02 COLOUR SYSTEM -->
-<section class="section color-section reveal">
-  <span class="section-number">02 — Colour System</span>
-  <h2>Rooted in <em>market psychology,</em> not trends</h2>
-  <p class="section-text">In Indian fintech, green isn't a creative choice — it's a cultural signal. Green means growth, profitability, "markets are up." Blue signals institutional trust. The palette leverages existing associations, not fights them.</p>
-
-  <div class="palette-group">
-    <div class="palette-group-label">Primary · Green (Growth)</div>
-    <div class="color-row">
-      <div class="color-swatch hero-swatch"><div class="swatch-fill" style="background:#16A34A"></div><div class="swatch-info"><span class="swatch-hex">#16A34A</span></div></div>
-      <div class="color-swatch hero-swatch"><div class="swatch-fill" style="background:#22C55E"></div><div class="swatch-info"><span class="swatch-hex">#22C55E</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#36C96C"></div><div class="swatch-info"><span class="swatch-hex">#36C96C</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#4BCD7B"></div><div class="swatch-info"><span class="swatch-hex">#4BCD7B</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#5FD189"></div><div class="swatch-info"><span class="swatch-hex">#5FD189</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#73D597"></div><div class="swatch-info"><span class="swatch-hex">#73D597</span></div></div>
-    </div>
-  </div>
-  <div class="palette-group">
-    <div class="palette-group-label">Secondary · Blue (Trust)</div>
-    <div class="color-row">
-      <div class="color-swatch"><div class="swatch-fill" style="background:#3B82F6"></div><div class="swatch-info"><span class="swatch-hex">#3B82F6</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#4D8DF5"></div><div class="swatch-info"><span class="swatch-hex">#4D8DF5</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#5F97F4"></div><div class="swatch-info"><span class="swatch-hex">#5F97F4</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#70A2F3"></div><div class="swatch-info"><span class="swatch-hex">#70A2F3</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#82ADF2"></div><div class="swatch-info"><span class="swatch-hex">#82ADF2</span></div></div>
-    </div>
-  </div>
-  <div class="palette-group">
-    <div class="palette-group-label">Neutrals</div>
-    <div class="color-row">
-      <div class="color-swatch"><div class="swatch-fill" style="background:#050505"></div><div class="swatch-info"><span class="swatch-hex">#050505</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#1C1C1C"></div><div class="swatch-info"><span class="swatch-hex">#1C1C1C</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#333333"></div><div class="swatch-info"><span class="swatch-hex">#333333</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#F8FAFC"></div><div class="swatch-info"><span class="swatch-hex">#F8FAFC</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#E0E2E3"></div><div class="swatch-info"><span class="swatch-hex">#E0E2E3</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#C7C9CB"></div><div class="swatch-info"><span class="swatch-hex">#C7C9CB</span></div></div>
-    </div>
-  </div>
-  <div class="palette-group">
-    <div class="palette-group-label">Accent · Campaigns & Marketing</div>
-    <div class="color-row">
-      <div class="color-swatch"><div class="swatch-fill" style="background:#FF5410"></div><div class="swatch-info"><span class="swatch-hex">#FF5410</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#FF2B39"></div><div class="swatch-info"><span class="swatch-hex">#FF2B39</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#6321DA"></div><div class="swatch-info"><span class="swatch-hex">#6321DA</span></div></div>
-      <div class="color-swatch"><div class="swatch-fill" style="background:#E08FD8"></div><div class="swatch-info"><span class="swatch-hex">#E08FD8</span></div></div>
-    </div>
-    <div class="accent-strip">
-      <div style="background:#FF5410"></div>
-      <div style="background:#FF2B39"></div>
-      <div style="background:#6321DA"></div>
-      <div style="background:#E08FD8"></div>
-    </div>
+    </section>
   </div>
 
-  <div class="color-reasoning reveal">
-    <p><strong>Why no purple in the core palette?</strong> Purple has become strongly associated with the crypto market in India — a space carrying declining trust and volatility stigma globally. For a mutual fund platform targeting cautious first-time investors, anchoring on green (growth, profitability) and blue (institutional trust) was the strategically defensible choice. Purple was retained only as an accent colour for campaign-specific, attention-grabbing use.</p>
-  </div>
-</section>
+  <!-- 02 COLOUR SYSTEM -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">02 — Colour System</div>
+      <h2>Rooted in <em>market psychology,</em> not trends</h2>
+      <p>
+        In Indian fintech, green isn't a creative choice — it's a cultural signal. Green means growth, profitability, "markets are up." Blue signals institutional trust. The palette leverages these existing associations rather than fighting them.
+      </p>
 
-<div class="divider"></div>
-
-<!-- 03 TYPOGRAPHY -->
-<section class="section reveal">
-  <span class="section-number">03 — Typography</span>
-  <h2>Two faces, <em>two jobs</em></h2>
-  <p class="section-text">A brand that lives between Instagram reels and portfolio value tables needs two typefaces that never compete. One grabs attention. One delivers numbers without friction.</p>
-  <div class="type-showcase">
-    <div class="type-card marketing">
-      <div class="type-badge">Marketing · Headlines</div>
-      <div class="type-name">Guton</div>
-      <div class="type-alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz</div>
-      <p class="type-description">Guton brings a distinctive, modern voice that elevates brand personality across campaigns and touchpoints. Its expressive yet balanced forms make it highly effective for headlines, social content, and marketing creatives. Strong visual presence with versatility across digital and print.</p>
-    </div>
-    <div class="type-card functional">
-      <div class="type-badge">Functional · In-App</div>
-      <div class="type-name" style="font-family:-apple-system,'SF Pro','Helvetica Neue',sans-serif">SF Pro</div>
-      <div class="type-alphabet" style="font-family:-apple-system,'SF Pro','Helvetica Neue',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 · ₹ · %</div>
-      <p class="type-description">SF Pro delivers exceptional clarity across sizes, making it highly legible for dense financial data and mobile-first interfaces. Its neutral yet refined character reinforces trust and professionalism — critical for an app handling people's money.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- 04 ICON EXPLORATION -->
-<section class="section icon-section reveal">
-  <span class="section-number">04 — Icon Exploration</span>
-  <h2>Four directions, <em>one winner</em></h2>
-  <p class="section-text">The app icon needed to work at 16px on a browser tab and 512px on the App Store. Four concepts were explored — all building on the "R" letterform with visual metaphors for growth.</p>
-  <div class="icon-grid reveal-stagger">
-    <div class="icon-card">
-      <img src="rozinvest/Frame 1 (1).png" alt="Icon 1 — RI wordmark">
-      <p>Wordmark "RI" — clean letterform, simple recognition</p>
-    </div>
-    <div class="icon-card">
-      <img src="rozinvest/icon2.png" alt="Icon 2 — Mountain">
-      <p>Mountain form — growth, strength, power of small efforts</p>
-    </div>
-    <div class="icon-card">
-      <img src="rozinvest/icon3.png" alt="Icon 3 — RV">
-      <p>R + checkmark — blending trust with the brand initial</p>
-    </div>
-    <div class="icon-card final">
-      <img src="rozinvest/Final icon.png" alt="Final icon — R↑">
-      <p>R + growth arrow — upward momentum in the letterform</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- 05 MOCKUPS -->
-<section class="section reveal">
-  <span class="section-number">05 — In Context</span>
-  <h2>From screen <em>to street</em></h2>
-  <p class="section-text">The identity was stress-tested across real-world touchpoints — at home screen scale on a device, and at environmental scale in a transit station citylight.</p>
-  <div class="mockup-gallery">
-    <div class="mockup-item reveal">
-      <div class="mockup-frame">
-        <img src="rozinvest/App Icon Mockup.png" alt="Rozinvest app icon on iPhone">
+      <div class="palette-group">
+        <div class="palette-group-label">Primary · Green (Growth)</div>
+        <div class="color-row">
+          <div class="color-swatch lg"><div class="swatch-fill" style="background:#16A34A"></div><div class="swatch-info"><span class="swatch-hex">#16A34A</span></div></div>
+          <div class="color-swatch lg"><div class="swatch-fill" style="background:#22C55E"></div><div class="swatch-info"><span class="swatch-hex">#22C55E</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#36C96C"></div><div class="swatch-info"><span class="swatch-hex">#36C96C</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#4BCD7B"></div><div class="swatch-info"><span class="swatch-hex">#4BCD7B</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#5FD189"></div><div class="swatch-info"><span class="swatch-hex">#5FD189</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#73D597"></div><div class="swatch-info"><span class="swatch-hex">#73D597</span></div></div>
+        </div>
       </div>
-      <div class="mockup-caption">
-        <span class="mockup-caption-title">App icon at home screen scale — the R↑ holds up at any size</span>
-        <span class="mockup-caption-tag">iOS · App Store</span>
+
+      <div class="palette-group">
+        <div class="palette-group-label">Secondary · Blue (Trust)</div>
+        <div class="color-row">
+          <div class="color-swatch"><div class="swatch-fill" style="background:#3B82F6"></div><div class="swatch-info"><span class="swatch-hex">#3B82F6</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#4D8DF5"></div><div class="swatch-info"><span class="swatch-hex">#4D8DF5</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#5F97F4"></div><div class="swatch-info"><span class="swatch-hex">#5F97F4</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#70A2F3"></div><div class="swatch-info"><span class="swatch-hex">#70A2F3</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#82ADF2"></div><div class="swatch-info"><span class="swatch-hex">#82ADF2</span></div></div>
+        </div>
       </div>
-    </div>
-    <div class="mockup-item reveal">
-      <div class="mockup-frame">
-        <img src="rozinvest/Free Horizontal Citylight Mockup.png" alt="Rozinvest outdoor ad">
+
+      <div class="palette-group">
+        <div class="palette-group-label">Neutrals</div>
+        <div class="color-row">
+          <div class="color-swatch"><div class="swatch-fill" style="background:#050505"></div><div class="swatch-info"><span class="swatch-hex">#050505</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#1C1C1C"></div><div class="swatch-info"><span class="swatch-hex">#1C1C1C</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#333333"></div><div class="swatch-info"><span class="swatch-hex">#333333</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#F8FAFC"></div><div class="swatch-info"><span class="swatch-hex">#F8FAFC</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#E0E2E3"></div><div class="swatch-info"><span class="swatch-hex">#E0E2E3</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#C7C9CB"></div><div class="swatch-info"><span class="swatch-hex">#C7C9CB</span></div></div>
+        </div>
       </div>
-      <div class="mockup-caption">
-        <span class="mockup-caption-title">Transit citylight — brand presence at environmental scale</span>
-        <span class="mockup-caption-tag">OOH · Advertising</span>
+
+      <div class="palette-group">
+        <div class="palette-group-label">Accent · Campaigns & Marketing</div>
+        <div class="color-row">
+          <div class="color-swatch"><div class="swatch-fill" style="background:#FF5410"></div><div class="swatch-info"><span class="swatch-hex">#FF5410</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#FF2B39"></div><div class="swatch-info"><span class="swatch-hex">#FF2B39</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#6321DA"></div><div class="swatch-info"><span class="swatch-hex">#6321DA</span></div></div>
+          <div class="color-swatch"><div class="swatch-fill" style="background:#E08FD8"></div><div class="swatch-info"><span class="swatch-hex">#E08FD8</span></div></div>
+        </div>
+        <div class="accent-strip">
+          <div style="background:#FF5410"></div>
+          <div style="background:#FF2B39"></div>
+          <div style="background:#6321DA"></div>
+          <div style="background:#E08FD8"></div>
+        </div>
       </div>
+
+      <div class="color-reasoning">
+        <p><strong>Why no purple in the core palette?</strong> Purple has become strongly associated with the crypto market in India — a space carrying declining trust and volatility stigma. For a mutual fund platform targeting cautious first-time investors, anchoring on green (growth) and blue (trust) was the strategically defensible choice. Purple was retained only as an accent for campaign-specific use.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- 03 TYPOGRAPHY -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">03 — Typography</div>
+      <h2>Two faces, <em>two jobs</em></h2>
+      <p>
+        A brand that lives between Instagram reels and portfolio value tables needs two typefaces that never compete. One grabs attention. One delivers numbers without friction.
+      </p>
+
+      <div class="type-grid">
+        <div class="type-card">
+          <div class="type-badge">Marketing · Headlines</div>
+          <div class="type-name">Guton</div>
+          <div class="type-alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz</div>
+          <p class="type-desc">Guton brings a distinctive, modern voice that elevates brand personality across campaigns. Expressive yet balanced — effective for headlines and social content that need to stand out without losing clarity.</p>
+        </div>
+        <div class="type-card functional">
+          <div class="type-badge">Functional · In-App</div>
+          <div class="type-name" style="font-family:-apple-system,'SF Pro','Helvetica Neue',sans-serif">SF Pro</div>
+          <div class="type-alphabet" style="font-family:-apple-system,'SF Pro','Helvetica Neue',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 · ₹ · %</div>
+          <p class="type-desc">SF Pro delivers exceptional clarity for dense financial data and mobile-first interfaces. Its neutral yet refined character reinforces trust — critical for an app handling people's money.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 04 ICON EXPLORATION -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">04 — Icon Exploration</div>
+      <h2>Four directions, <em>one winner</em></h2>
+      <p>
+        The app icon needed to hold up at 16px on a browser tab and 512px on the App Store. Four concepts explored — all built on the "R" letterform with visual metaphors for growth and momentum.
+      </p>
+
+      <div class="icon-grid">
+        <div class="icon-card">
+          <img src="rozinvest/Frame 1 (1).png" alt="Icon 1 — RI wordmark">
+          <p>Wordmark "RI" — clean letterform, simple recognition</p>
+        </div>
+        <div class="icon-card">
+          <img src="rozinvest/icon2.png" alt="Icon 2 — Mountain">
+          <p>Mountain — growth, strength, power of small efforts</p>
+        </div>
+        <div class="icon-card">
+          <img src="rozinvest/icon3.png" alt="Icon 3 — RV checkmark">
+          <p>R + checkmark — blending trust with the brand initial</p>
+        </div>
+        <div class="icon-card final">
+          <img src="rozinvest/Final icon.png" alt="Final icon — R with growth arrow">
+          <p>R + growth arrow — upward momentum in the letterform</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 05 IN CONTEXT -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">05 — In Context</div>
+      <h2>From screen <em>to street</em></h2>
+      <p>
+        The identity was stress-tested across real-world touchpoints — at home screen scale on a device, and at environmental scale in a transit station citylight.
+      </p>
+
+      <div class="mockup-stack">
+        <div>
+          <div class="mockup-frame">
+            <img src="rozinvest/App Icon Mockup.png" alt="Rozinvest app icon on iPhone home screen">
+          </div>
+          <div class="mockup-caption">
+            <span class="mockup-caption-title">App icon at home screen scale — R↑ holds at any size</span>
+            <span class="mockup-caption-tag">iOS · App Store</span>
+          </div>
+        </div>
+        <div>
+          <div class="mockup-frame">
+            <img src="rozinvest/Free Horizontal Citylight Mockup.png" alt="Rozinvest outdoor transit ad">
+          </div>
+          <div class="mockup-caption">
+            <span class="mockup-caption-title">Transit citylight — brand presence at environmental scale</span>
+            <span class="mockup-caption-tag">OOH · Advertising</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 06 CONCLUSION -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">06 — Conclusion</div>
+      <h2>A system built for <em>trust at first sight</em></h2>
+      <p>
+        Rozinvest's visual identity bridges institutional credibility and Gen Z approachability. Every decision — from green as the primary cultural signal to SF Pro for data legibility — was anchored in how Indian first-time investors already perceive finance, not in design trends.
+      </p>
+
+      <div class="conclusion-highlight">
+        <div class="c-stat">
+          <span class="c-stat-val">5</span>
+          <span class="c-stat-label">Colour families</span>
+        </div>
+        <div class="c-stat">
+          <span class="c-stat-val">2</span>
+          <span class="c-stat-label">Typefaces</span>
+        </div>
+        <div class="c-stat">
+          <span class="c-stat-val">4</span>
+          <span class="c-stat-label">Icon directions</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<!-- CONNECT -->
+<section class="connect-section">
+  <div class="wrap">
+    <div class="section-label" style="color:var(--cool-gray);margin-bottom:10px;">Get in touch</div>
+    <h2>Let's build something together</h2>
+    <p>Open to discussing projects, creative directions, and opportunities. Reach out through any channel — I usually reply within a day.</p>
+    <div class="connect-btns">
+      <a href="about.html" class="btn-inv">Email Me</a>
+      <a href="https://wa.me/+918576069278" class="btn-inv solid-inv" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="resume.pdf" class="btn-inv">Resume ↗</a>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
-
-<!-- 06 CONCLUSION -->
-<section class="conclusion reveal">
-  <span class="section-number">06 — Conclusion</span>
-  <h2>A system built for <em>trust at first sight</em></h2>
-  <p class="section-text">Rozinvest's visual identity bridges institutional credibility and Gen Z approachability. Every decision — from green as the primary cultural signal to SF Pro for data legibility — was anchored in how Indian first-time investors already perceive finance.</p>
-</section>
-
-<footer class="footer">
-  <div class="footer-left">© 2026 Divyansh Srivastava · IIT Roorkee</div>
-  <div class="footer-right">
-    <a href="#">LinkedIn</a>
-    <a href="#">Email</a>
-    <a href="#">Resume</a>
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-copy">© 2026 Divyansh Srivastava. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#work">Work</a>
+    </div>
   </div>
 </footer>
 
 <script>
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+/* CURSOR */
+const cursor = document.getElementById('cursor');
+let mx = -100, my = -100, cx = -100, cy = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function loop() {
+  cx += (mx - cx) * 0.18;
+  cy += (my - cy) * 0.18;
+  cursor.style.left = cx + 'px';
+  cursor.style.top  = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, .color-swatch, .type-card, .icon-card, .c-stat, .mockup-frame').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+});
 
+/* SCROLL REVEAL */
+const secs = document.querySelectorAll('section:not(.hero):not(.connect-section)');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.08 });
+secs.forEach(s => ro.observe(s));
+
+/* HEX COPY */
 document.querySelectorAll('.color-swatch').forEach(s => {
   s.addEventListener('click', () => {
     const h = s.querySelector('.swatch-hex'), v = h.textContent;
     navigator.clipboard.writeText(v).then(() => {
-      h.textContent = 'Copied!'; s.style.borderColor = 'var(--green-primary)';
+      h.textContent = 'Copied!';
+      s.style.borderColor = 'var(--roz-green)';
       setTimeout(() => { h.textContent = v; s.style.borderColor = ''; }, 900);
     });
   });
-});
-
-window.addEventListener('scroll', () => {
-  document.querySelector('.nav').style.padding = window.scrollY > 80 ? '10px 48px' : '18px 48px';
 });
 </script>
 </body>

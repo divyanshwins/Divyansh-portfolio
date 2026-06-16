@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DigitalBeauty — Creative Intelligence for Beauty & Fashion · Divyansh Srivastava</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── TOKENS ─── */
+:root {
+  --frost-white: #f3f6fb;
+  --pure-white: #ffffff;
+  --ice-blue: #e8f0fb;
+  --silver-blue: #ced9e8;
+  --graphite-black: #111827;
+  --slate-blue: #334155;
+  --cool-gray: #64748b;
+  --azure-blue: #0a84ff;
+  --cobalt-blue: #2563eb;
+  --emerald-green: #22a06b;
+  --amber-gold: #a16207;
+  --midnight-blue: #0b1220;
+  --shadow-deep: 0 18px 40px rgba(11, 18, 32, 0.1);
+  --shadow-soft: 0 10px 24px rgba(11, 18, 32, 0.07);
+  --r: 16px;
+  --rl: 22px;
+  --max: 780px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--frost-white);
+  color: var(--graphite-black);
+  line-height: 1.65;
+  cursor: none;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; width: 100%; height: auto; }
+
+/* ─── NOISE ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ─── CURSOR ─── */
+#cursor {
+  position: fixed;
+  width: 14px; height: 14px;
+  background: var(--azure-blue);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .25s, height .25s, background .25s, opacity .2s;
+  mix-blend-mode: multiply;
+}
+#cursor.expand {
+  width: 38px; height: 38px;
+  background: var(--cobalt-blue);
+  opacity: 0.5;
+}
+
+/* ─── WRAP ─── */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ─── NAV ─── */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(243,246,251,.86);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--silver-blue);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-right a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  transition: color .2s;
+}
+.nav-right a:hover { color: var(--graphite-black); }
+
+/* ─── BACK LINK ─── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 48px;
+  transition: color .2s, gap .2s;
+  cursor: none;
+}
+.back-link:hover { color: var(--graphite-black); gap: 12px; }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 56px 0 64px;
+  border-bottom: 1px solid var(--silver-blue);
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 20px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 1px;
+  background: var(--azure-blue);
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 32px;
+}
+h1 em { font-style: italic; color: var(--cobalt-blue); }
+
+.hero-img-wrap {
+  margin-bottom: 40px;
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--silver-blue);
+  box-shadow: var(--shadow-deep);
+  background: var(--pure-white);
+}
+
+/* META GRID */
+.meta-section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--graphite-black);
+  margin-top: 36px;
+  margin-bottom: 14px;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: rgba(255,255,255,.9);
+  box-shadow: var(--shadow-soft);
+}
+
+.meta-cell {
+  padding: 20px 22px;
+  border-right: 1px solid var(--silver-blue);
+}
+.meta-cell:last-child { border-right: none; }
+
+.meta-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 6px;
+}
+.meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--graphite-black);
+  line-height: 1.4;
+}
+
+/* ─── SECTIONS ─── */
+section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--silver-blue);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+.hero { opacity: 1; transform: none; }
+
+.section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+  margin-bottom: 12px;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+h2 em { font-style: italic; color: var(--cobalt-blue); }
+
+p {
+  font-size: 16px;
+  color: var(--slate-blue);
+  line-height: 1.85;
+  max-width: 640px;
+}
+
+/* ─── CALLOUT ─── */
+.callout {
+  background: rgba(232,240,251,.72);
+  border: 1px solid rgba(10,132,255,.18);
+  border-left: 3px solid var(--azure-blue);
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-top: 28px;
+  box-shadow: var(--shadow-soft);
+}
+.callout p {
+  font-size: 15px;
+  color: var(--slate-blue);
+  font-style: italic;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* ─── INSIGHT LIST ─── */
+.insight-list {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.insight-item {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid var(--silver-blue);
+  font-size: 15px;
+  color: var(--slate-blue);
+  transition: color .2s;
+  line-height: 1.6;
+}
+.insight-item:last-child { border-bottom: 1px solid var(--silver-blue); }
+.insight-item:hover { color: var(--graphite-black); }
+.insight-item strong { color: var(--graphite-black); font-weight: 500; }
+
+.insight-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--cool-gray);
+  flex-shrink: 0;
+  width: 24px;
+}
+
+/* ─── CARD GRID (challenges / principles) ─── */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.principle-card {
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--r);
+  padding: 22px 24px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  cursor: none;
+  box-shadow: var(--shadow-soft);
+}
+.principle-card:hover {
+  border-color: var(--azure-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(11,18,32,.12);
+}
+.principle-card-icon { font-size: 20px; margin-bottom: 10px; }
+.principle-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--graphite-black);
+  margin-bottom: 6px;
+}
+.principle-card-desc {
+  font-size: 13px;
+  color: var(--cool-gray);
+  line-height: 1.65;
+}
+
+/* ─── DESIGN STACK (product screenshots) ─── */
+.design-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 36px;
+}
+
+.design-frame {
+  position: relative;
+  border-radius: var(--rl);
+  overflow: hidden;
+  border: 1px solid var(--silver-blue);
+  background: var(--pure-white);
+  box-shadow: var(--shadow-deep);
+}
+
+.design-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.design-label {
+  position: absolute;
+  top: 16px; left: 16px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate-blue);
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--silver-blue);
+  padding: 6px 12px;
+  border-radius: 6px;
+  z-index: 2;
+}
+
+.design-caption {
+  margin-top: 10px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--cool-gray);
+  text-align: center;
+}
+
+/* ─── CONCLUSION STATS ─── */
+.conclusion-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.c-stat {
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--silver-blue);
+  border-radius: var(--r);
+  padding: 22px;
+  text-align: center;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  cursor: none;
+  box-shadow: var(--shadow-soft);
+}
+.c-stat:hover {
+  border-color: var(--azure-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(11,18,32,.12);
+}
+
+.c-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--cobalt-blue);
+  display: block;
+  margin-bottom: 4px;
+}
+.c-stat-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cool-gray);
+}
+
+/* ─── LIVE NOTE (matching ongoing-note pattern from Arth) ─── */
+.live-note {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-top: 32px;
+  background: rgba(232,248,241,.82);
+  border: 1px solid rgba(34,160,107,.18);
+  border-left: 3px solid var(--emerald-green);
+  border-radius: 10px;
+  padding: 24px 26px;
+  box-shadow: var(--shadow-soft);
+}
+.live-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--emerald-green);
+  flex-shrink: 0;
+  margin-top: 6px;
+  animation: pulse-green 2.4s ease-in-out infinite;
+}
+@keyframes pulse-green {
+  0%,100% { box-shadow: 0 0 0 0 rgba(34,160,107,.5); }
+  50% { box-shadow: 0 0 0 6px rgba(34,160,107,0); }
+}
+.live-title {
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--emerald-green);
+  margin-bottom: 2px;
+}
+
+/* ─── CONNECT ─── */
+.connect-section {
+  background: var(--midnight-blue);
+  padding: 80px 0;
+  border-bottom: none;
+  opacity: 1 !important;
+  transform: none !important;
+}
+.connect-section h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--pure-white);
+  margin-bottom: 14px;
+}
+.connect-section p {
+  color: rgba(255,255,255,.62);
+  margin-bottom: 32px;
+  max-width: 100%;
+}
+.connect-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.btn-inv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.04);
+  color: var(--pure-white);
+  cursor: none;
+  transition: background .22s, border-color .22s, transform .2s;
+}
+.btn-inv:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.4); transform: translateY(-1px); }
+.btn-inv.solid-inv { background: var(--azure-blue); border-color: var(--azure-blue); }
+.btn-inv.solid-inv:hover { background: var(--cobalt-blue); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--midnight-blue);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 24px 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-copy {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,.3);
+  transition: color .2s;
+  cursor: none;
+}
+.footer-links a:hover { color: rgba(255,255,255,.7); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+  .meta-cell:nth-child(2) { border-right: none; }
+  .meta-cell:nth-child(1),
+  .meta-cell:nth-child(2) { border-bottom: 1px solid var(--silver-blue); }
+  .card-grid { grid-template-columns: 1fr; }
+  .conclusion-stats { grid-template-columns: 1fr; }
+  h1 { font-size: 28px; }
+  .nav-right a:not(:last-child) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="nav-logo">Divyansh Srivastava</a>
+    <div class="nav-right">
+      <a href="index.html#work">Work</a>
+      <a href="resume.pdf">Resume</a>
+      <a href="about.html">Connect</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <div class="wrap">
+    <section class="hero">
+      <a href="index.html" class="back-link">← Back to work</a>
+
+      <div class="hero-eyebrow">Case Study · 2025</div>
+
+      <h1>DigitalBeauty — designing <em>creative intelligence</em> for beauty &amp; fashion</h1>
+
+      <div class="hero-img-wrap">
+        <img src="digitalbeauty-assets/hero.png" alt="DigitalBeauty hero — Track how beauty evolves" loading="eager">
+      </div>
+
+      <div class="meta-section-label">Project at a Glance</div>
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="meta-label">Company</div>
+          <div class="meta-value">Figmenta</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Product</div>
+          <div class="meta-value">DigitalBeauty — AI creative intelligence</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Role</div>
+          <div class="meta-value">Product Design Intern · 1 month</div>
+        </div>
+        <div class="meta-cell">
+          <div class="meta-label">Year</div>
+          <div class="meta-value">2025</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">01 — Overview</div>
+      <h2>The intelligence existed. The output didn't sell it.</h2>
+      <p>
+        Figmenta is building DigitalBeauty — a creative intelligence platform for the beauty and fashion industry. Instead of gut instinct and mood boards, brand teams get live aesthetic signals and AI-generated analysis across 354+ monitored brands, updated weekly.
+      </p>
+      <p style="margin-top: 16px;">
+        The product runs on three AI agents — Competitor Analysis, Trend Radar, and Creative Brief. When I joined, the intelligence layer was already working. But the outputs looked like raw data extracts, and the marketing surface didn't communicate who the product was for. The job was to fix both.
+      </p>
+
+      <div class="callout">
+        <p>"How might we make AI-generated intelligence feel trustworthy enough for a brand team to forward in a strategy meeting — and build a product surface that speaks to nine different personas without losing coherence?"</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- WORKSTREAMS -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">02 — Scope of work</div>
+      <h2>Three workstreams, one month</h2>
+      <p>
+        The internship covered the full surface of the product — from how prospects discover it, to what they pay for once inside, to how the value leaves the platform.
+      </p>
+
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="insight-num">01</span>
+          <div><strong>Use case flow</strong> — the end-to-end marketing surface, designed across nine personas spanning Creative Directors to Brand Owners across skincare, fragrance, haircare, sportswear, and apparel</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">02</span>
+          <div><strong>Artifact-style reports</strong> — three AI-generated outputs (Competitor Analysis, Trend Radar, Creative Brief) redesigned to read like strategy documents instead of data dumps</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">03</span>
+          <div><strong>Download &amp; share system</strong> — the missing component that lets users actually get reports out of the platform and into a meeting</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- USE CASE FLOW -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">03 — Use Case Flow</div>
+      <h2>Speaking to nine personas without sprawl</h2>
+      <p>
+        DigitalBeauty isn't a single-persona product. A Creative Director cares about aesthetic shift tracking. A Brand Owner cares about knowing when a competitor's visual direction is becoming a cliché. A Social Media Manager cares about content signal volume. Same product, nine entry points.
+      </p>
+      <p style="margin-top: 16px;">
+        The architecture needed to give each persona their own landing surface without the navbar collapsing into a wall of links. The solution: a Platform mega-menu that organises product areas on one side and audience types on the other — every persona reachable in two clicks from any page.
+      </p>
+
+      <p style="margin-top: 16px;">
+        Each persona page then had to answer one question in different language: <em>why does this matter to me specifically?</em>
+      </p>
+
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="insight-num">01</span>
+          <div>Persona-specific problem framing — the exact words each role uses for their frustration with current tools</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">02</span>
+          <div>Live signal previews — a glanceable widget grounding abstract intelligence claims in tangible, real-time data</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">03</span>
+          <div>Social proof — "Trusted by teams at" with category-recognisable logos (NARS, Fenty Beauty, Rhode)</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">04</span>
+          <div>Quantified outcomes — 354+ brands, 40+ signals per week, 52× weekly freshness</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">05</span>
+          <div>FAQ pre-handling the most common sales objections before they reach a call</div>
+        </div>
+      </div>
+
+      <div class="design-stack">
+        <div class="design-frame">
+          <div class="design-label">01 / Hero</div>
+          <img src="digitalbeauty-assets/hero.png" alt="DigitalBeauty hero — Track how beauty evolves">
+        </div>
+        <p class="design-caption">The hero — Molle script "beauty" carries the brand voice without leaning on imagery.</p>
+
+        <div class="design-frame">
+          <div class="design-label">02 / Platform mega-menu</div>
+          <img src="digitalbeauty-assets/mega-menu.png" alt="Platform mega-menu with two columns">
+        </div>
+        <p class="design-caption">The mega-menu — product surface on the left, nine audience entry points on the right.</p>
+
+        <div class="design-frame">
+          <div class="design-label">03 / Persona page — Creative Directors</div>
+          <img src="digitalbeauty-assets/usecase-page.png" alt="Full Creative Directors use case page">
+        </div>
+        <p class="design-caption">The full use case page — Problem → How it works → Quantified value → Outcomes → FAQ → CTA.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- AI REPORT ARTIFACTS -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">04 — Artifact Reports</div>
+      <h2>Making AI output read like a <em>strategy document</em></h2>
+      <p>
+        The three AI agents already worked. They produced accurate, structured intelligence. But the outputs landed as wall-of-text reports with embedded data — the kind of thing a user skims once and doesn't return to.
+      </p>
+      <p style="margin-top: 16px;">
+        The credibility problem with AI-generated content is subtle. When users know an algorithm wrote something, they unconsciously look for reasons to dismiss it. The design has to work against that instinct. Hierarchy, restraint, and consistent structure all signal "this was authored, not auto-generated" — even when it was.
+      </p>
+
+      <p style="margin-top: 16px;">
+        Four design decisions held the system together across all three report types:
+      </p>
+
+      <div class="card-grid">
+        <div class="principle-card">
+          <div class="principle-card-icon">🏷</div>
+          <div class="principle-card-title">Eyebrow labels everywhere</div>
+          <div class="principle-card-desc">Every section is tagged — "Signal Intelligence", "Agent Report", "Period". Orients the reader instantly without eating into the prose flow.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card-icon">🎨</div>
+          <div class="principle-card-title">Brand-coloured tags</div>
+          <div class="principle-card-desc">Each monitored brand gets a consistent colour chip across charts, headings, and tags. Scanning becomes a spatial task, not a text-parsing one.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card-icon">📊</div>
+          <div class="principle-card-title">Data before analysis</div>
+          <div class="principle-card-desc">Charts and signal scores always appear above the prose interpretation. Users form their own read of the data before being told what to think.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card-icon">↗</div>
+          <div class="principle-card-title">Share at top-right, always</div>
+          <div class="principle-card-desc">Getting the report out of the platform is the primary action. The share button is the first thing the eye hits after the title.</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 36px;">
+        Each agent has its own report structure tuned to the work it supports — competitive intelligence reads differently than a creative brief — but they share the same skeleton.
+      </p>
+
+      <div class="design-stack">
+        <div class="design-frame">
+          <div class="design-label">Agent 01 / Competitor Analysis</div>
+          <img src="digitalbeauty-assets/report-competitor.png" alt="Competitor Analysis report — Nike vs Adidas">
+        </div>
+        <p class="design-caption">A 14-day competitive intelligence window. Signal activity, campaign impact scores, top content, then per-brand analysis and cross-brand patterns.</p>
+
+        <div class="design-frame">
+          <div class="design-label">Agent 02 / Trend Radar</div>
+          <img src="digitalbeauty-assets/report-radar.png" alt="Trend Radar report">
+        </div>
+        <p class="design-caption">A 26-day window across up to four tracked brands. Opens with executive summary, then volume trends, identified trends with confidence tags, and hashtag signals.</p>
+
+        <div class="design-frame">
+          <div class="design-label">Agent 03 / Creative Brief</div>
+          <img src="digitalbeauty-assets/report-brief.png" alt="Creative Brief report">
+        </div>
+        <p class="design-caption">The most complex output — three developed creative concepts with visual direction, production notes, KPI targets, risk flags, plus tone guidelines.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- DOWNLOAD SYSTEM -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">05 — Download &amp; Share</div>
+      <h2>The button that was missing</h2>
+      <p>
+        Before this work, the AI reports were viewable inside the platform — but there was no way to get them out. No download, no share link. For a product whose value proposition is intelligence you take into a meeting, that gap mattered more than it looked.
+      </p>
+      <p style="margin-top: 16px;">
+        The interaction itself isn't novel. What needed solving was the variability — a single download component had to handle one brand or five, .pdf or .html, single attachment or stacked. Without any of that visual variability creating noise inside the report itself.
+      </p>
+
+      <div class="insight-list">
+        <div class="insight-item">
+          <span class="insight-num">01</span>
+          <div><strong>Single-brand report</strong> — one brand thumbnail, file type, size, timestamp, download action</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">02</span>
+          <div><strong>Multi-brand report</strong> — thumbnails stack with a +N overflow badge, one Download action for the full package</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">03</span>
+          <div><strong>View + Download</strong> — HTML reports get a secondary View button for in-browser preview before the download commits</div>
+        </div>
+        <div class="insight-item">
+          <span class="insight-num">04</span>
+          <div><strong>Completion micro-state</strong> — once the download finishes, the button state changes, closing the loop without firing a toast</div>
+        </div>
+      </div>
+
+      <div class="design-stack">
+        <div class="design-frame">
+          <div class="design-label">All states</div>
+          <img src="digitalbeauty-assets/button-states.png" alt="Download button — all variants and states">
+        </div>
+        <p class="design-caption">Single brand, stacked multi-brand, +N overflow, and View + Download variants — same skeleton, different content density.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="wrap">
+    <section>
+      <div class="section-label">06 — Conclusion</div>
+      <h2>What shipped</h2>
+      <p>
+        All three workstreams — use case flow, report artifacts, and download system — went through iteration cycles, were approved, and are live on the DigitalBeauty platform.
+      </p>
+      <p style="margin-top: 16px;">
+        The most useful thing I took away wasn't a visual technique — it was learning to design for AI-generated content. Where the information is dynamic and the designer's job is to build a container that makes any output feel credible, structured, and worth acting on. The container is the trust signal.
+      </p>
+
+      <div class="conclusion-stats">
+        <div class="c-stat">
+          <span class="c-stat-val">3</span>
+          <span class="c-stat-label">Agent reports designed</span>
+        </div>
+        <div class="c-stat">
+          <span class="c-stat-val">9+</span>
+          <span class="c-stat-label">User personas covered</span>
+        </div>
+        <div class="c-stat">
+          <span class="c-stat-val">1</span>
+          <span class="c-stat-label">New component shipped</span>
+        </div>
+      </div>
+
+      <div class="live-note">
+        <div class="live-dot"></div>
+        <div>
+          <div class="live-title">Live on the platform</div>
+          <p style="margin-top: 6px; max-width: 100%;">All designs from this internship were approved by the Figmenta team and are currently published on the DigitalBeauty product surface.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<!-- CONNECT -->
+<section class="connect-section">
+  <div class="wrap">
+    <div class="section-label" style="color:var(--cool-gray);margin-bottom:10px;">Get in touch</div>
+    <h2>Let's build something together</h2>
+    <p>Open to discussing projects, creative directions, and opportunities.</p>
+    <div class="connect-btns">
+      <a href="about.html" class="btn-inv">Email Me</a>
+      <a href="about.html" class="btn-inv solid-inv">WhatsApp</a>
+      <a href="resume.pdf" class="btn-inv">Resume ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-copy">© 2026 Divyansh Srivastava. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#work">Work</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+let mx = -100, my = -100, cx = -100, cy = -100;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function loop() {
+  cx += (mx - cx) * 0.18;
+  cy += (my - cy) * 0.18;
+  cursor.style.left = cx + 'px';
+  cursor.style.top  = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a, button, .principle-card, .c-stat, .insight-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+});
+
+/* ── SCROLL REVEAL ── */
+const sections = document.querySelectorAll('section:not(.hero):not(.connect-section)');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+sections.forEach(s => ro.observe(s));
+</script>
+
+</body>
+</html>
